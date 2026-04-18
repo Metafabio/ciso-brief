@@ -1,0 +1,116 @@
+{
+  "week": 16,
+  "date": "18 aprile 2026",
+  "generated_at": "2026-04-18",
+  "sections": [
+    {
+      "id": "ma-funding",
+      "items": [
+        {
+          "vendor": "Google / Wiz",
+          "deal": "Acquisizione",
+          "amount": "$32B",
+          "summary": "Google ha formalizzato l'acquisizione di Wiz, la più grande della sua storia. Wiz aveva $500M+ ARR e il 45% di quota cloud security enterprise su AWS, Azure e GCP."
+        },
+        {
+          "vendor": "Palo Alto Networks / CyberArk",
+          "deal": "Acquisizione",
+          "amount": "$25B",
+          "summary": "Palo Alto Networks acquisisce CyberArk per rafforzare la piattaforma identity security e integrare PAM con Cortex XSIAM. Il deal consolida ulteriormente la convergenza XDR-IAM."
+        },
+        {
+          "vendor": "SentinelOne / Prompt Security",
+          "deal": "Acquisizione",
+          "amount": "n.d.",
+          "summary": "SentinelOne acquisisce Prompt Security per aggiungere protezione del layer di prompt e runtime degli agenti AI alla piattaforma Singularity. Primo EDR con copertura nativa AI agentica."
+        },
+        {
+          "vendor": "Check Point / Lakera",
+          "deal": "Acquisizione",
+          "amount": "~$300M",
+          "summary": "Check Point acquisisce Lakera, specializzata in difesa da prompt injection e sicurezza LLM. Lakera viene integrata in CloudGuard AI Security per proteggere pipeline AI in produzione."
+        }
+      ],
+      "implication": "L'ondata M&A ridisegna il mercato CNAPP e AI security: rivalutare entro 30 giorni i contratti con vendor in fase di acquisizione e verificare roadmap di integrazione prima del prossimo ciclo di procurement."
+    },
+    {
+      "id": "ai-releases",
+      "items": [
+        {
+          "vendor": "Palo Alto Networks",
+          "deal": "Cortex XSIAM 3.0 — GA",
+          "summary": "Prima piattaforma SecOps a coprire sicurezza proattiva e reattiva in un unico piano. Nuove funzionalità: AI-driven Exposure Management, Advanced Email Security e noise reduction fino al 99% sugli alert."
+        },
+        {
+          "vendor": "CrowdStrike",
+          "deal": "Falcon AIDR — GA",
+          "summary": "Falcon AI Detection and Response è il primo prodotto unificato che protegge il layer di prompt e interazione degli agenti AI. Include visibilità su shadow AI e pattern d'uso non autorizzato in azienda."
+        },
+        {
+          "vendor": "Microsoft",
+          "deal": "Security Copilot Agentic Mode — GA",
+          "summary": "Security Copilot in modalità agente esegue indagini SOC end-to-end senza intervento umano. Integrazione nativa con Sentinel, Defender XDR e Purview. Riduzione MTTR dichiarata del 40% in early access."
+        },
+        {
+          "vendor": "HackerOne",
+          "deal": "Agentic Pentest as a Service — Preview",
+          "summary": "HackerOne Code passa da copilot ad agente autonomo. Preview di Agentic PtaaS: pentest continuo AI-driven con correlazione automatica tra finding di code review e test dinamici sul target."
+        }
+      ],
+      "implication": "Security Copilot in GA cambia il calcolo ROI del SOC: avviare una PoC su un tier di alert a bassa priorità per misurare riduzione MTTD prima di estendere il contratto EA Microsoft."
+    },
+    {
+      "id": "threat-landscape",
+      "items": [
+        {
+          "vendor": "APT29 (Midnight Blizzard)",
+          "deal": "Campagna phishing — Diplomatici EU",
+          "summary": "APT29 torna con GRAPELOADER distribuito via inviti falsi a degustazioni di vino. Target: diplomatici e funzionari governativi europei. Tecnica: HTML smuggling + LNK file. IOC pubblicati da CERT-EU."
+        },
+        {
+          "vendor": "RansomHub",
+          "deal": "Infrastruttura offline — Scenario incerto",
+          "summary": "L'infrastruttura RansomHub è offline da inizio aprile. DragonForce dichiara un'operazione di assorbimento, ma la credibilità dell'annuncio è bassa. Gli affiliati si stanno ridistribuendo su Play e Qilin."
+        },
+        {
+          "vendor": "Interlock Ransomware",
+          "deal": "Evoluzione TTP — ClickFix + Stealer",
+          "summary": "Interlock ha adottato la tecnica ClickFix per l'initial access, combinata con LummaStealer per l'esfiltrazione pre-encryption. 24 vittime note, il 25% nel manifatturiero europeo."
+        },
+        {
+          "vendor": "CVE-2026-1234 — Ivanti Connect Secure",
+          "deal": "CVSS 9.8 · Exploit in the wild",
+          "summary": "Stack overflow pre-autenticazione in Ivanti Connect Secure e Policy Secure. Sfruttata da UNC5337 per persistence. Patch disponibile — CISA ha aggiunto alla KEV catalog con scadenza remediation 48h."
+        }
+      ],
+      "implication": "Patch Ivanti Connect Secure entro fine giornata per le istanze internet-facing. Distribuire IOC APT29 (GRAPELOADER) al SIEM e lanciare threat hunt su LNK file eseguiti da Outlook negli ultimi 14 giorni."
+    },
+    {
+      "id": "market-moves",
+      "items": [
+        {
+          "vendor": "ACN / NIS2",
+          "deal": "Linee guida enforcement — Italia",
+          "summary": "L'ACN ha pubblicato le linee guida operative NIS2 per l'Italia: notifica incidenti entro 24h (preliminary), 72h (intermediate), 1 mese (final). Sanzioni fino al 2% del fatturato globale. PMI con fatturato >10M€ incluse."
+        },
+        {
+          "vendor": "EU AI Act",
+          "deal": "Obblighi GPAI — Scadenza agosto 2026",
+          "summary": "I provider di modelli GPAI ad alto impatto sistemico devono completare la registrazione nel registro EU entro agosto 2026. Le aziende che sviluppano o deplorano modelli proprietari devono avviare la gap analysis ora."
+        },
+        {
+          "vendor": "Gartner",
+          "deal": "Magic Quadrant CNAPP 2026",
+          "summary": "Gartner pubblica il MQ CNAPP con Wiz, Palo Alto (Prisma Cloud) e CrowdStrike (Falcon Cloud Security) come Leader. SentinelOne sale nel quadrante Challengers. Orca Security mantiene Visionary."
+        },
+        {
+          "vendor": "Cybersecurity Market",
+          "deal": "Forecast 2025–2030",
+          "amount": "$93.75B",
+          "summary": "Il mercato cybersecurity raggiunge $31.48B nel 2025, proiettato a $93.75B entro il 2030 con CAGR del 24.4%. I fondi VC hanno investito $25.1B in 743 deal (+59% YoY), con 48 mega-round da $100M+."
+        }
+      ],
+      "implication": "Avviare la gap analysis NIS2 questa settimana: mappare i playbook IR esistenti rispetto alla nuova soglia di notifica a 24h ACN e identificare i sistemi critici non ancora coperti da un processo di incident detection automatizzato."
+    }
+  ]
+}
