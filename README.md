@@ -16,6 +16,25 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## CISO Brief workflow
+
+The dashboard is populated by two static files:
+
+- `public/brief.json`
+- `public/market_analysis.json`
+
+The project does not call an LLM API directly. Generate the content in the reference PromptOps session, then paste the resulting JSON into the two files above.
+
+Useful commands:
+
+```bash
+npm run brief:prompt     # print the manual PromptOps prompt
+npm run brief:validate   # validate the JSON files used by the dashboard
+npm run build            # verify the Next.js app
+```
+
+After updating the JSON files, run `npm run brief:validate` before deploying.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

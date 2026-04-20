@@ -1,0 +1,213 @@
+{
+  "week": 16,
+  "generated_at": "2026-04-20",
+  "summary": "Il mercato cybersecurity è dominato dai vendor che integrano nativamente l'AI nei loro prodotti questa settimana. CrowdStrike e Palo Alto Networks consolidano la leadership rispettivamente in endpoint e CNAPP, mentre IBM entra prepotentemente nel segmento agentic security con nuovi servizi. Il funding record di Q1 ($4.62B, +33% YoY) conferma la crescita esplosiva del settore.",
+  "brands": [
+    {
+      "name": "CrowdStrike",
+      "segment": "EDR / CNAPP",
+      "momentum": "rising",
+      "momentum_reason": "Falcon platform espansa con AI security e agentic SOC, inclusa nella CRN AI 100 2026 come vendor più hot.",
+      "ai_integration": {
+        "score": 9,
+        "label": "Native",
+        "features": ["Agentic SOC", "AI-powered threat detection", "Charlotte AI", "Falcon Go"],
+        "llm_model": "Charlotte AI (LLM proprietario)"
+      },
+      "products_in_focus": [
+        {
+          "name": "Falcon Platform",
+          "category": "CNAPP",
+          "key_differentiator": "Unica piattaforma pura cybersecurity con $5.25B ARR, espansione AgentWorks per partner",
+          "ai_feature": "Agentic SOC per autonomous defense",
+          "target_buyer": "CISO / IT Manager"
+        }
+      ],
+      "competitive_threat": "Minaccia directa a Palo Alto Networks e Microsoft Defender, grazie alla velocità di rilevamento (27 secondi breakout time record)",
+      "sales_angle": "Usa i dati di CrowdStrike: 89% increase in AI-enabled attacks per convincere i CISO che servono soluzioni AI-native, non legacy con AI aggiunto."
+    },
+    {
+      "name": "Palo Alto Networks",
+      "segment": "CNAPP / SIEM",
+      "momentum": "stable",
+      "momentum_reason": "Continua dominanza con acquisizione CyberArk ($25B), Prisma AIRS 3.0 per AI-agent security, ma attacchi moving 4x faster richiede risposte più rapide.",
+      "ai_integration": {
+        "score": 8,
+        "label": "Advanced",
+        "features": ["Prisma AIRS 3.0", "Cortex XSIAM", "AI-powered analytics"],
+        "llm_model": "n.d."
+      },
+      "products_in_focus": [
+        {
+          "name": "Prisma AIRS 3.0",
+          "category": "AI Security",
+          "key_differentiator": "Secures full AI-agent lifecycle, unico prodotto che copre l'intera catena degli agenti AI",
+          "ai_feature": "AI-agent lifecycle security",
+          "target_buyer": "CISO / IT Manager"
+        },
+        {
+          "name": "Cortex XSIAM",
+          "category": "SIEM",
+          "key_differentiator": "AI-powered SIEM con automazione avanzata",
+          "ai_feature": "AI-driven threat detection",
+          "target_buyer": "SOC Manager"
+        }
+      ],
+      "competitive_threat": "CrowdStrike erode market share in endpoint, IBM minaccia con Autonomous Security",
+      "sales_angle": "Posiziona come piattaforma consolidata per enterprise che cercano un vendor unico per tutta la security stack."
+    },
+    {
+      "name": "IBM",
+      "segment": "Security Services / AI",
+      "momentum": "rising",
+      "momentum_reason": "Entra nel mercato agentic security con IBM Autonomous Security e nuova assessment per frontier AI threats.",
+      "ai_integration": {
+        "score": 8,
+        "label": "Advanced",
+        "features": ["IBM Autonomous Security", "AI threat assessment", "Multi-agent powered services"],
+        "llm_model": "Watson AI (internal)"
+      },
+      "products_in_focus": [
+        {
+          "name": "IBM Autonomous Security",
+          "category": "Security Services",
+          "key_differentiator": "Primo servizio multi-agent vendor-agnostic per coordinated decision making e response",
+          "ai_feature": "Agentic AI per SOC automation",
+          "target_buyer": "CISO / IT Manager"
+        }
+      ],
+      "competitive_threat": "Minaccia i managed security providers tradizionali e i vendor SIEM con approccio agentic",
+      "sales_angle": "Paradigm shift: 'Devi usare AI contro AI'. Offri assessment gratuito per misurare readiness alle minacce agentic."
+    },
+    {
+      "name": "XBOW",
+      "segment": "Offensive Security",
+      "momentum": "rising",
+      "momentum_reason": "Unicorn status con $120M round, $1B+ valutazione per autonomous offensive cybersecurity.",
+      "ai_integration": {
+        "score": 9,
+        "label": "Native",
+        "features": ["Autonomous penetration testing", "AI-driven vulnerability discovery"],
+        "llm_model": "n.d."
+      },
+      "products_in_focus": [
+        {
+          "name": "XBOW Platform",
+          "category": "Offensive Security",
+          "key_differentiator": "Primo vendor con valutazione $1B+ per autonomous offensive security, player nuovo che ridesfinisce il mercato",
+          "ai_feature": "Autonomous red teaming",
+          "target_buyer": "CISO / Security Engineer"
+        }
+      ],
+      "competitive_threat": "Minaccia i penetration testing tradizionali e vendor come Rapid7",
+      "sales_angle": "Mostra come il mercato premia chi automatizza il red teaming. Offri demo per dimostrare ROI vs manual testing."
+    },
+    {
+      "name": "Check Point",
+      "segment": "Security Gateway",
+      "momentum": "stable",
+      "momentum_reason": "Rimane rilevante con threat intelligence aggiornata ma market share in calo vs vendor nativi cloud.",
+      "ai_integration": {
+        "score": 6,
+        "label": "Basic",
+        "features": ["ThreatCloud AI", "Quantum security"],
+        "llm_model": "n.d."
+      },
+      "products_in_focus": [
+        {
+          "name": "Threat Intelligence",
+          "category": "Threat Intelligence",
+          "key_differentiator": "Report mensili dettagliati su ransomware e GenAI risks, utili per prospect",
+          "ai_feature": "AI-driven threat analysis",
+          "target_buyer": "CISO / IT Manager"
+        }
+      ],
+      "competitive_threat": "CrowdStrike e Palo Alto Networks erodono share in enterprise",
+      "sales_angle": "Usa i loro report per educare i prospect sulle minacce, poi posiziona la tua soluzione come risposta."
+    }
+  ],
+  "market_signals": [
+    {
+      "signal": "Cybersecurity funding surge: $4.62B in Q1 2026, +33% YoY",
+      "type": "investment",
+      "impact": "high",
+      "description": "Il funding raddoppia rispetto a Q1 2025, segnalando renewed confidence nel settore. 4 nuovi unicorns, 10 rounds above $100M per $1.8B totali. Il mercato premia vendor con AI integration nativa.",
+      "who_wins": "CrowdStrike, Palo Alto Networks, XBOW, Armadin",
+      "who_loses": "Legacy vendor senza strategia AI chiara"
+    },
+    {
+      "signal": "AI-agent security: da niche a category con 3+ product launches",
+      "type": "disruption",
+      "impact": "high",
+      "description": "Palo Alto Prisma AIRS 3.0, IBM Autonomous Security, CrowdStrike Agentic SOC. Gli agenti AI creano nuova attack surface che richiede soluzioni dedicate.",
+      "who_wins": "Palo Alto Networks, IBM, CrowdStrike",
+      "who_loses": "Legacy security vendors"
+    },
+    {
+      "signal": "Claude Mythos e frontier AI models weaponizzati per vulnerability discovery",
+      "type": "disruption",
+      "impact": "high",
+      "description": "Riduce cost and capability floor per exploit discovery. CISA chiede AI companies nel CVE program. 70,000 CVEs attese nel 2026 (+27% YoY).",
+      "who_wins": "Check Point, CrowdStrike (con AI defense)",
+      "who_loses": "Organization senza AI-powered defense"
+    },
+    {
+      "signal": "Ransomware remains elevated: 51% victims in US, new groups emerging",
+      "type": "adoption",
+      "impact": "medium",
+      "description": "The Gentlemen RaaS group emerge come nuova minaccia. USA target principale (51% vittime). Attack volumes stabili ma più sofisticati.",
+      "who_wins": "CrowdStrike, Palo Alto (con backup/DR)",
+      "who_loses": "SMB senza soluzioni modern backup"
+    },
+    {
+      "signal": "CIRCIA mandatory reporting: 300k critical infrastructure entities",
+      "type": "regulation",
+      "impact": "medium",
+      "description": "CIRCIA enforcement Maggio 2026 crea nuovi obblighi di reporting per 300k entities. Aumenta domanda di compliance e threat intelligence.",
+      "who_wins": "Vendor con compliance automation",
+      "who_loses": "Organizzazioni non compliant"
+    }
+  ],
+  "ai_llm_leaderboard": [
+    {
+      "rank": 1,
+      "brand": "CrowdStrike",
+      "product": "Falcon Platform + Charlotte AI",
+      "why": "Unica piattaforma con $5.25B ARR completamente focalizzata su cybersecurity, con agentic SOC e AI nativa che copre l'intera kill chain. Leader riconosciuto da CRN AI 100.",
+      "integration_type": "Agentic SOC con Charlotte AI LLM proprietario, RAG su threat data"
+    },
+    {
+      "rank": 2,
+      "brand": "Palo Alto Networks",
+      "product": "Prisma AIRS 3.0 + Cortex XSIAM",
+      "why": "Approccio platform con AI security dedicato agli agenti AI. Cortex XSIAM integra AI per threat detection con automazione SOC.",
+      "integration_type": "AI-agent lifecycle security + AI-powered SIEM"
+    },
+    {
+      "rank": 3,
+      "brand": "IBM",
+      "product": "IBM Autonomous Security",
+      "why": "Primo servizio multi-agent vendor-agnostic che orchestra digital workers across tools. Approccio unico nel mercato enterprise.",
+      "integration_type": "Multi-agent orchestration con Watson AI"
+    },
+    {
+      "rank": 4,
+      "brand": "XBOW",
+      "product": "XBOW Platform",
+      "why": "Unicorn con $1B+ valuation per autonomous offensive security. Ridefinisce come vulnerability assessment viene fatto con AI.",
+      "integration_type": "Autonomous penetration testing con AI"
+    },
+    {
+      "rank": 5,
+      "brand": "Cyble",
+      "product": "Blaze AI Platform",
+      "why": "AI-native threat intelligence con Blaze AI engine. Riconosciuta da Forrester come leader in external threat intelligence.",
+      "integration_type": "AI-powered threat intelligence e digital risk protection"
+    }
+  ],
+  "recommendation": {
+    "for_manager": "Prioritizza la valutazione della readiness AI-security della tua organizzazione: misura l'esposizione agli agentic AI threats e identifica gap nella tua security stack.",
+    "for_sales": "Usa i dati: '89% increase in AI-enabled attacks' per creare urgenza. Posiziona la tua soluzione come necessità, non optional. Offri assessment gratuito per dimostrare valore.",
+    "watch_next_week": "Monitora l'evoluzione del mercato AI-agent security: nuovi vendor emergeranno e i big provider annunceranno integrazioni. Palo Alto Networks e IBM rilascerannolikely nuovi aggiornamenti prodotto."
+  }
+}

@@ -138,31 +138,10 @@ function validateDashboardJSON() {
   console.log('\nOK: i JSON sono strutturalmente validi per la dashboard.')
 }
 
-function printPrompt() {
-  const existingBrief = readJSON(BRIEF_FILE)
-
-  console.log(`Sei un analista di market intelligence specializzato in cybersecurity, data protection, backup/DR e AI integration.
-
-Data di oggi: ${DATE}
-Settimana ISO corrente: ${WEEK}
-Data italiana dashboard: ${DATE_IT}
-
-Obiettivo:
-Produci DUE oggetti JSON validi per popolare una dashboard Next.js:
-1. public/brief.json
-2. public/market_analysis.json
-
-Regole generali:
-- Usa ricerche web aggiornate sugli ultimi 7 giorni.
-- Scrivi in italiano, tono business, concreto per CISO, manager e sales.
-- Non inventare CVE, acquisizioni, certificazioni, importi o date: se non sei certo, ometti o scrivi "n.d.".
-- Non aggiungere testo narrativo fuori dai JSON, salvo i titoli esatti:
-  BRIEF_JSON
-  MARKET_ANALYSIS_JSON
-- Mantieni week=${WEEK} e generated_at="${DATE}" in entrambi i file.
-- Il secondo JSON deve essere coerente con vendor, segnali e priorita del primo.
-
-BRIEF_JSON deve avere questa struttura esatta:
+const BRIEF_JSON_PROMPT = `Sei un analista di market intelligence specializzato in cybersecurity, data protection e AI integration.
+La data di oggi è ${DATE}.
+La settimana ISO corrente è ${WEEK}.
+Esegui ricerche web aggiornate sulle notizie degli ULTIMI 7 GIORNI e produci un oggetto JSON valido con questa struttura esatta. Non aggiungere testo prima o dopo il JSON.
 {
   "week": ${WEEK},
   "date": "${DATE_IT}",
@@ -195,70 +174,75 @@ BRIEF_JSON deve avere questa struttura esatta:
     }
   ]
 }
+Regole: Massimo 5 item per sezione. ogni item deve avere vendor, deal, summary; amount opzionale, usa "n.d." se non noto.`
 
-Vincoli BRIEF_JSON:
-- Esattamente 5 sezioni, con gli id indicati sopra.
-- Massimo 5 item per sezione.
-- Ogni item deve avere vendor, deal, summary. amount e opzionale.
-
-MARKET_ANALYSIS_JSON deve avere questa struttura esatta:
+const MARKET_ANALYSIS_JSON_PROMPT = `Sei un analista di market intelligence specializzato in cybersecurity, data protection e AI integration.
+La data di oggi è ${DATE}.
+La settimana ISO corrente è ${WEEK}.
+Esegui ricerche web aggiornate sulle notizie degli ULTIMI 7 GIORNI e produci un oggetto JSON valido con questa struttura esatta. Non aggiungere testo prima o dopo il JSON.
 {
   "week": ${WEEK},
   "generated_at": "${DATE}",
-  "summary": "2-3 frasi executive summary.",
-  "brands": [{
-    "name": "...",
-    "segment": "...",
-    "momentum": "rising|stable|declining",
-    "momentum_reason": "...",
-    "ai_integration": {
-      "score": 0,
-      "label": "None|Basic|Advanced|Native",
-      "features": [],
-      "llm_model": "..."
-    },
-    "products_in_focus": [{
-      "name": "...",
-      "category": "...",
-      "key_differentiator": "...",
-      "ai_feature": "...",
-      "target_buyer": "..."
-    }],
-    "competitive_threat": "...",
-    "sales_angle": "..."
-  }],
-  "market_signals": [{
-    "signal": "...",
-    "type": "consolidation|disruption|regulation|adoption|investment",
-    "impact": "high|medium|low",
-    "description": "...",
-    "who_wins": "...",
-    "who_loses": "..."
-  }],
-  "ai_llm_leaderboard": [{
-    "rank": 1,
-    "brand": "...",
-    "product": "...",
-    "why": "...",
-    "integration_type": "..."
-  }],
+  "summary": "2-3 frasi executive summary: chi sta vincendo questa settimana e perché.",
+  "brands": [
+    {
+      "name": "Nome brand",
+      "segment": "Es: CNAPP / EDR / Backup & DR / SIEM / Identity",
+      "momentum": "rising | stable | declining",
+      "momentum_reason": "Una frase: perché ha questo momentum questa settimana.",
+      "ai_integration": {
+        "score": 0,
+        "label": "None | Basic | Advanced | Native",
+        "features": ["feature 1", "feature 2"],
+        "llm_model": "Nome modello usato internamente o n.d."
+      },
+      "products_in_focus": [
+        {
+          "name": "Nome prodotto",
+          "category": "Categoria",
+          "key_differentiator": "Cosa lo distingue dai competitor questa settimana.",
+          "ai_feature": "Funzionalità AI/LLM specifica o n.d.",
+          "target_buyer": "Es: CISO / IT Manager / Sales Engineer / SMB"
+        }
+      ],
+      "competitive_threat": "A chi fa più paura questo brand/prodotto ora e perché.",
+      "sales_angle": "Come usare questa notizia in una conversazione di vendita."
+    }
+  ],
+  "market_signals": [
+    {
+      "signal": "Titolo del segnale di mercato",
+      "type": "consolidation | disruption | regulation | adoption | investment",
+      "impact": "high | medium | low",
+      "description": "2 frasi: cosa sta succedendo e dove va il mercato.",
+      "who_wins": "Brand o categoria che ne beneficia di più.",
+      "who_loses": "Brand o categoria che rischia di più."
+    }
+  ],
+  "ai_llm_leaderboard": [
+    {
+      "rank": 1,
+      "brand": "Nome brand",
+      "product": "Nome prodotto",
+      "why": "Perché è in cima questa settimana in termini di AI/LLM integration.",
+      "integration_type": "Es: RAG su log SIEM / Agentic SOC / LLM per policy generation"
+    }
+  ],
   "recommendation": {
-    "for_manager": "...",
-    "for_sales": "...",
-    "watch_next_week": "..."
+    "for_manager": "Una sola azione strategica da fare questa settimana.",
+    "for_sales": "Un pitch angle concreto da usare questa settimana con i clienti.",
+    "watch_next_week": "Il brand o trend da monitorare nella prossima settimana."
   }
 }
+Regole:
+Massimo 5 brand, 4 market_signals, 5 ai_llm_leaderboard
+Score AI da 0 a 10
+Ogni summary in italiano, tono professionale ma comprensibile a manager non tecnici
+Il JSON deve essere valido e parseable — nessun testo fuori dal JSON
+Se un campo non è disponibile usa "n.d." per amount, mai null`
 
-Vincoli MARKET_ANALYSIS_JSON:
-- Massimo 5 brand.
-- Massimo 4 market_signals.
-- Massimo 5 elementi in ai_llm_leaderboard.
-- score AI da 0 a 10.
-- Usa solo momentum, label, type e impact ammessi dallo schema.
-
-Brief attualmente pubblicato, da usare solo come riferimento di stile e non come fonte da copiare se datato:
-${JSON.stringify(existingBrief, null, 2)}
-`)
+function printPrompt() {
+  console.log(`=== BRIEF_JSON ===\n${BRIEF_JSON_PROMPT}\n\n=== MARKET_ANALYSIS_JSON ===\n${MARKET_ANALYSIS_JSON_PROMPT}`)
 }
 
 const args = new Set(process.argv.slice(2))
