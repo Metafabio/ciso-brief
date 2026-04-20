@@ -6,7 +6,7 @@ import { useState, useEffect, useCallback } from 'react'
 
 type SectionId = 'ma-funding' | 'ai-releases' | 'threat-landscape' | 'market-moves' | 'backup-dr-ai'
 type Theme = 'slate' | 'ember' | 'arctic'
-type Tab = 'brief' | 'analysis' | 'backup'
+type Tab = 'backup' | 'brief' | 'analysis' | 'sales' | 'compare' | 'usecases' | 'technical'
 
 interface BriefItem {
   vendor: string
@@ -136,6 +136,66 @@ interface BackupData {
     for_sales: string
     watch_next_week: string
   }
+  // Extended data for new tabs
+  sales_data?: SalesData
+  comparison_data?: ComparisonData
+  usecases_data?: UseCasesData
+  technical_data?: TechnicalData
+}
+
+interface SalesData {
+  pitch_angles: {
+    vendor: string
+    target: 'enterprise' | 'smb' | 'government' | 'msp'
+    pitch: string
+    objection_handler: string
+  }[]
+  competitive_battles: {
+    competitor: string
+    vs_vendor: string
+    win_strategy: string
+  }[]
+}
+
+interface ComparisonData {
+  vendors: {
+    name: string
+    enterprise: boolean
+    smb: boolean
+    government: boolean
+    cloud_native: boolean
+    ai_features: number
+    price_tier: 'low' | 'mid' | 'high' | 'enterprise'
+    ransomware_warranty: boolean
+    fedramp: boolean
+  }[]
+}
+
+interface UseCasesData {
+  cases: {
+    industry: string
+    company_size: 'enterprise' | 'mid-market' | 'smb'
+    vendor: string
+    product: string
+    use_case: string
+    roi: string
+  }[]
+}
+
+interface TechnicalData {
+  api_integrations: {
+    vendor: string
+    api_type: string
+    endpoints: number
+    authentication: string
+    webhook_support: boolean
+    sdk_languages: string[]
+  }[]
+  orchestration: {
+    vendor: string
+    tools: string[]
+    automation_level: 'basic' | 'advanced' | 'ai-powered'
+  }[]
 }
 
 // ─── Section metadata ─────────────────────────────────────────────────────────
@@ -668,6 +728,246 @@ function BackupVendorCard({ vendor, index }: { vendor: BackupVendor; index: numb
   )
 }
 
+// ─── Sales — View ─────────────────────────────────────────────────────
+
+function SalesView({ data }: { data: BackupData | null | undefined }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+      <div className="card" style={{ padding: '20px 24px', borderLeft: '3px solid #10b981' }}>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#10b981', marginBottom: '12px' }}>
+          Sales Pitch & Competitive Playbook
+        </div>
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+          Pitch angle per segmento cliente e come vincere contro i competitor.
+        </p>
+      </div>
+
+      <div>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px' }}>
+          Pitch per Segmento
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {[
+            { vendor: 'Veeam', target: 'enterprise', title: 'Enterprise', pitch: 'ROI misurabile: -30% tempo admin. Intelligent Hub automatizza orchestrazione backup.', objection: 'Prezzo alto → Rispondi con TCO analysis: quanto costa un downtime?' },
+            { vendor: 'Rubrik', target: 'government', title: 'Government', pitch: 'Unico AI analyst certificato FedRAMP.Compliance automatica per sector regolamentati.', objection: 'Non hanno budget → Rispondi con costo breach: $4.5M medio peratta ransomware' },
+            { vendor: 'Cohesity', target: 'smb', title: 'SMB', pitch: 'DataHound AI risolve problemi GDPR in  click. Semplice da gestire.', objection: 'Troppo complesso → Rispondi con setup in 15 minuti, no admin dedicato' },
+            { vendor: 'Veeam', target: 'msp', title: 'MSP', pitch: 'Multi-tenant nativo, billing integrato. Margine elevato su backup-as-a-service.', objection: 'Competitor più basso → Rispondi con ransomware warranty inclusa' },
+          ].map((item, i) => (
+            <div key={i} className="card" style={{ padding: '16px 20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{item.vendor}</span>
+                <span style={{ fontSize: '10px', background: 'var(--surface)', border: '1px solid var(--border)', padding: '2px 8px', borderRadius: '3px', color: 'var(--text-muted)' }}>{item.title}</span>
+              </div>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 8px' }}>{item.pitch}</p>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontStyle: 'italic' }}>💬 {item.objection}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px' }}>
+          Competitive Battles
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {[
+            { competitor: 'Veeam', vs: 'Cohesity', win: 'Intellgent Hub > DataHound per orchestrazione. Più integrazioni cloud.' },
+            { competitor: 'Rubrik', vs: 'Dell', win: 'Ruby AI > PowerProtect per AI. FedRAMP sblocca mercato government.' },
+            { competitor: 'Cohesity', vs: 'Veeam', win: 'DataHound vince su GDPR compliance. Prezzo migliore per SMB.' },
+          ].map((item, i) => (
+            <div key={i} className="card" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 18px' }}>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: '#10b981', width: '80px' }}>vs {item.vs}</span>
+              <span style={{ fontSize: '13px', color: 'var(--text-secondary)', flex: 1 }}>{item.win}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Comparison — Table View ───────────────────────────────────────────
+
+function CompareView() {
+  const vendors = [
+    { name: 'Veeam', enterprise: true, smb: true, government: true, cloud: true, ai: 8, price: 'Mid-High', rw: true, fedramp: false },
+    { name: 'Rubrik', enterprise: true, smb: false, government: true, cloud: true, ai: 9, price: 'High', rw: true, fedramp: true },
+    { name: 'Cohesity', enterprise: true, smb: true, government: false, cloud: true, ai: 8, price: 'Mid', rw: true, fedramp: false },
+    { name: 'Dell', enterprise: true, smb: true, government: true, cloud: false, ai: 6, price: 'Mid', rw: false, fedramp: false },
+  ]
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div className="card" style={{ padding: '20px 24px', borderLeft: '3px solid #8b5cf6' }}>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#8b5cf6', marginBottom: '12px' }}>
+          Vendor Comparison Matrix
+        </div>
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+          Comparazione feature, pricing e target per segmento.
+        </p>
+      </div>
+
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+          <thead>
+            <tr style={{ borderBottom: '1px solid var(--border)' }}>
+              <th style={{ padding: '12px', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>Vendor</th>
+              <th style={{ padding: '12px', textAlign: 'center', color: 'var(--text-muted)', fontWeight: 500 }}>Enterprise</th>
+              <th style={{ padding: '12px', textAlign: 'center', color: 'var(--text-muted)', fontWeight: 500 }}>SMB</th>
+              <th style={{ padding: '12px', textAlign: 'center', color: 'var(--text-muted)', fontWeight: 500 }}>Government</th>
+              <th style={{ padding: '12px', textAlign: 'center', color: 'var(--text-muted)', fontWeight: 500 }}>Cloud Native</th>
+              <th style={{ padding: '12px', textAlign: 'center', color: 'var(--text-muted)', fontWeight: 500 }}>AI Score</th>
+              <th style={{ padding: '12px', textAlign: 'center', color: 'var(--text-muted)', fontWeight: 500 }}>Price Tier</th>
+              <th style={{ padding: '12px', textAlign: 'center', color: 'var(--text-muted)', fontWeight: 500 }}>Ransomware Warranty</th>
+              <th style={{ padding: '12px', textAlign: 'center', color: 'var(--text-muted)', fontWeight: 500 }}>FedRAMP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {vendors.map(v => (
+              <tr key={v.name} style={{ borderBottom: '1px solid var(--border)' }}>
+                <td style={{ padding: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{v.name}</td>
+                <td style={{ padding: '12px', textAlign: 'center', color: v.enterprise ? '#10b981' : '#ef4444' }}>{v.enterprise ? '✓' : '—'}</td>
+                <td style={{ padding: '12px', textAlign: 'center', color: v.smb ? '#10b981' : '#ef4444' }}>{v.smb ? '✓' : '—'}</td>
+                <td style={{ padding: '12px', textAlign: 'center', color: v.government ? '#10b981' : '#ef4444' }}>{v.government ? '✓' : '—'}</td>
+                <td style={{ padding: '12px', textAlign: 'center', color: v.cloud ? '#10b981' : '#ef4444' }}>{v.cloud ? '✓' : '—'}</td>
+                <td style={{ padding: '12px', textAlign: 'center', fontWeight: 600, color: v.ai >= 8 ? '#10b981' : '#f59e0b' }}>{v.ai}</td>
+                <td style={{ padding: '12px', textAlign: 'center', color: 'var(--text-secondary)' }}>{v.price}</td>
+                <td style={{ padding: '12px', textAlign: 'center', color: v.rw ? '#10b981' : '#ef4444' }}>{v.rw ? '✓' : '—'}</td>
+                <td style={{ padding: '12px', textAlign: 'center', color: v.fedramp ? '#10b981' : '#ef4444' }}>{v.fedramp ? '✓' : '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
+        <div className="card" style={{ padding: '16px' }}>
+          <div style={{ fontSize: '12px', fontWeight: 600, color: '#10b981', marginBottom: '8px' }}>✓ = Supported</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>— = Not available</div>
+        </div>
+        <div className="card" style={{ padding: '16px' }}>
+          <div style={{ fontSize: '12px', fontWeight: 600, color: '#f59e0b', marginBottom: '8px' }}>AI Score: 8-9 = Leader</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>AI Score: 5-7 = Average</div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Use Cases — View ─────────────────────────────────────────────
+
+function UseCasesView() {
+  const cases = [
+    { industry: 'Finance', size: 'Enterprise', vendor: 'Rubrik', product: 'Security Cloud', use: 'Compliance GDPR + FedRAMP per banking regolamentato', roi: '40% riduzione tempo compliance' },
+    { industry: 'Healthcare', size: 'enterprise', vendor: 'Veeam', product: 'Data Platform', use: 'Backup EHR e PHI compliance HIPAA', roi: '99.9% recovery SLA garantito' },
+    { industry: 'Manufacturing', size: 'mid-market', vendor: 'Cohesity', product: 'DataPlatform', use: 'Unified backup + file storage per engineering', roi: '-35% storage cost' },
+    { industry: 'Retail', size: 'smb', vendor: 'Veeam', product: 'Backup & Replication', use: 'Cloud backup per POS e e-commerce', roi: 'Setup in 30 minuti' },
+    { industry: 'Government', size: 'enterprise', vendor: 'Rubrik', product: 'Security Cloud', use: 'FedRAMP compliant backup per agency', roi: 'Sblocco contratti federali' },
+    { industry: 'MSP', size: 'smb', vendor: 'Veeam', product: 'Service Provider', use: 'Multi-tenant per clienti SMB', roi: 'Billing automatico, margine 40%+' },
+  ]
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div className="card" style={{ padding: '20px 24px', borderLeft: '3px solid #f59e0b' }}>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#f59e0b', marginBottom: '12px' }}>
+          Use Cases per Industry & Company Size
+        </div>
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+          Case d'uso concreti con vendor, prodotto e ROI misurabile.
+        </p>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        {cases.map((c, i) => (
+          <div key={i} className="card" style={{ padding: '16px 20px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{c.industry}</span>
+              <span style={{ fontSize: '10px', background: 'var(--surface)', border: '1px solid var(--border)', padding: '2px 8px', borderRadius: '3px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>{c.size}</span>
+              <span style={{ fontSize: '10px', color: '#06b6d4', marginLeft: 'auto' }}>{c.vendor}</span>
+            </div>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 6px' }}>{c.use}</p>
+            <div style={{ fontSize: '11px', color: '#10b981', fontWeight: 500 }}>📈 {c.roi}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ─── Technical — View ─────────────────────────────────────────────
+
+function TechnicalView() {
+  const apis = [
+    { vendor: 'Veeam', api: 'REST API v3', endpoints: '50+', auth: 'API Key / OAuth', webhook: true, sdks: ['PowerShell', 'Python', 'Go'] },
+    { vendor: 'Rubrik', api: 'API v2', endpoints: '40+', auth: 'API Key', webhook: true, sdks: ['Python', 'Go'] },
+    { vendor: 'Cohesity', api: 'REST API', endpoints: '35+', auth: 'API Key / LDAP', webhook: false, sdks: ['Python'] },
+    { vendor: 'Dell', api: 'DD API', endpoints: '25+', auth: 'Basic Auth', webhook: false, sdks: [] },
+  ]
+
+  const orchestration = [
+    { vendor: 'Veeam', tools: ['vBO365', 'Ansible', 'Terraform', 'PowerShell'], level: 'AI-powered' },
+    { vendor: 'Rubrik', tools: ['Ansible', 'Terraform', 'Python SDK'], level: 'advanced' },
+    { vendor: 'Cohesity', tools: ['Ansible', 'Python SDK'], level: 'advanced' },
+    { vendor: 'Dell', tools: ['PowerShell', 'CLI'], level: 'basic' },
+  ]
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div className="card" style={{ padding: '20px 24px', borderLeft: '3px solid #06b6d4' }}>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#06b6d4', marginBottom: '12px' }}>
+          Technical Deep Dive
+        </div>
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+          API, SDK e integrazioni per automazione.
+        </p>
+      </div>
+
+      <div>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px' }}>
+          API & SDK Support
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {apis.map((item, i) => (
+            <div key={i} className="card" style={{ padding: '14px 18px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', width: '90px' }}>{item.vendor}</span>
+                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{item.api}</span>
+                <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{item.endpoints} endpoints</span>
+              </div>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '10px', background: 'rgba(6,182,212,0.1)', border: '1px solid rgba(6,182,212,0.25)', padding: '2px 8px', borderRadius: '3px', color: '#06b6d4' }}>{item.auth}</span>
+                {item.webhook && <span style={{ fontSize: '10px', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)', padding: '2px 8px', borderRadius: '3px', color: '#10b981' }}>Webhook</span>}
+                {item.sdks.map(sdk => (
+                  <span key={sdk} style={{ fontSize: '10px', background: 'var(--surface)', border: '1px solid var(--border)', padding: '2px 8px', borderRadius: '3px', color: 'var(--text-muted)' }}>{sdk}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px' }}>
+          Orchestration & Automation
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {orchestration.map((item, i) => (
+            <div key={i} className="card" style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 18px' }}>
+              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', width: '90px' }}>{item.vendor}</span>
+              <div style={{ flex: 1, display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                {item.tools.map(tool => (
+                  <span key={tool} style={{ fontSize: '11px', background: 'var(--surface)', border: '1px solid var(--border)', padding: '3px 10px', borderRadius: '4px', color: 'var(--text-secondary)' }}>{tool}</span>
+                ))}
+              </div>
+              <span style={{ fontSize: '10px', fontWeight: 600, color: item.level === 'AI-powered' ? '#10b981' : item.level === 'advanced' ? '#f59e0b' : 'var(--text-muted)', textTransform: 'uppercase' }}>{item.level}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── Theme switcher ───────────────────────────────────────────────────────────
 
 const THEMES: { id: Theme; label: string; accent: string }[] = [
@@ -826,9 +1126,13 @@ export default function Page() {
 
       <div style={{ borderBottom: '1px solid var(--border)', padding: '0 32px', display: 'flex', gap: '4px', background: 'var(--bg)' }}>
         {([
-          { id: 'backup' as Tab, label: 'Backup & AI' },
+          { id: 'backup' as Tab, label: 'AI' },
           { id: 'brief' as Tab, label: 'Executive' },
           { id: 'analysis' as Tab, label: 'Vendors' },
+          { id: 'sales' as Tab, label: 'Sales' },
+          { id: 'compare' as Tab, label: 'Compare' },
+          { id: 'usecases' as Tab, label: 'Use Cases' },
+          { id: 'technical' as Tab, label: 'Technical' },
         ]).map(t => (
           <button key={t.id} onClick={() => setTab(t.id)} className={`tab ${tab === t.id ? 'active' : ''}`} style={{ padding: '14px 24px' }}>
             {t.label}
@@ -891,6 +1195,11 @@ export default function Page() {
             backupl.json non trovato
           </div>
         )}
+
+        {tab === 'sales' && <SalesView data={backup} />}
+        {tab === 'compare' && <CompareView />}
+        {tab === 'usecases' && <UseCasesView />}
+        {tab === 'technical' && <TechnicalView />}
       </main>
 
       <footer style={{ borderTop: '1px solid var(--border)', padding: '20px 32px', textAlign: 'center' }}>
