@@ -128,18 +128,6 @@ function buildBriefMd(brief: BriefData): string {
   return lines.join('\n')
 }
 
-// ─── Skeleton ─────────────────────────────────────────────────────────────────
-
-function Skeleton() {
-  return (
-    <div style={{ padding: '2px 0' }}>
-      {[88, 100, 72, 100, 58, 82, 100, 42].map((w, i) => (
-        <div key={i} className="skel" style={{ width: `${w}%`, animationDelay: `${i * 0.06}s` }} />
-      ))}
-    </div>
-  )
-}
-
 // ─── Brief — Section body ─────────────────────────────────────────────────────
 
 function SectionBody({ section, accent }: { section: BriefSection; accent: string }) {
@@ -392,17 +380,15 @@ function ThemeSwitcher({ current, onChange }: { current: Theme; onChange: (t: Th
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function Page() {
-  const [theme, setTheme] = useState<Theme>('slate')
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window === 'undefined') return 'slate'
+    return (localStorage.getItem('ciso_theme') as Theme | null) || 'slate'
+  })
   const [tab, setTab] = useState<Tab>('brief')
   const [brief, setBrief] = useState<BriefData | null>(null)
   const [analysis, setAnalysis] = useState<MarketAnalysis | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [openSections, setOpenSections] = useState<Set<SectionId>>(new Set())
-
-  useEffect(() => {
-    const stored = localStorage.getItem('ciso_theme') as Theme | null
-    if (stored) setTheme(stored)
-  }, [])
 
   useEffect(() => {
     Promise.all([

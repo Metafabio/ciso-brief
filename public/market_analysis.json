@@ -1,205 +1,233 @@
 {
-  "week": 16,
+  "week": 17,
   "generated_at": "2026-04-20",
-  "summary": "Settimana dominata da Google/Wiz che ridisegna il mercato CNAPP, mentre Microsoft consolida la leadership AI nel SOC con Security Copilot in GA. Nel backup/DR, Rubrik e Veeam accelerano l'integrazione AI con modelli proprietari, rendendo il recovery predittivo una realtà commerciale.",
+  "summary": "La settimana 17 è dominata dall'onda RSA 2026: l'AI agentiva è il nuovo standard di mercato e ogni vendor principale ha annunciato capacità di SOC autonomo o governance degli AI agent. Google completa l'acquisizione di Wiz per $32B creando il CNAPP più grande del mondo, mentre SentinelOne ottiene la certificazione FedRAMP-High per Purple AI consolidando il mercato federale USA e sovereign europeo. Il report Veeam rivela un gap critico tra percezione di recovery e realtà post-ransomware, aprendo opportunità concrete per i vendor di cyber resilience.",
   "brands": [
     {
-      "name": "Google / Wiz",
+      "name": "Google Cloud Security (ex-Wiz)",
       "segment": "CNAPP",
       "momentum": "rising",
-      "momentum_reason": "Acquisizione da $32B completata — massima visibilità mediatica e conversazioni commerciali riaperte su tutto il parco clienti cloud.",
+      "momentum_reason": "Acquisizione Wiz da $32B completata con approvazione EU e showcased a RSA 2026 come piattaforma CNAPP unificata AI-ready su tutti gli ambienti cloud con Mandiant intelligence.",
       "ai_integration": {
         "score": 9,
         "label": "Native",
-        "features": ["AI-driven misconfiguration detection", "LLM-based policy remediation", "Graph-based attack path analysis"],
-        "llm_model": "Gemini 1.5 Pro (integrazione Google Cloud)"
+        "features": [
+          "Agentic SOC con Google SecOps",
+          "Threat intelligence Mandiant su pipeline AI",
+          "Wiz AI-powered cloud security graph"
+        ],
+        "llm_model": "Gemini 2.0"
       },
       "products_in_focus": [
         {
-          "name": "Wiz CNAPP",
-          "category": "Cloud Security Posture Management",
-          "key_differentiator": "Unica piattaforma con agentless scanning su tutti e tre i hyperscaler, ora con backing Google Cloud.",
-          "ai_feature": "AI remediation suggestions con one-click fix su GCP",
-          "target_buyer": "CISO / Cloud Architect"
+          "name": "Google Cloud Security + Wiz CNAPP",
+          "category": "CNAPP / Cloud Security",
+          "key_differentiator": "Unica piattaforma che combina CNAPP #1 per mindshare (Gartner) con SOC agentivo Google-native e threat intelligence Mandiant real-time su infrastruttura iper-scalabile.",
+          "ai_feature": "Agentic SOC con frontline threat intelligence Mandiant integrata nativamente via Gemini 2.0",
+          "target_buyer": "CISO / Cloud Security Architect"
         }
       ],
-      "competitive_threat": "Palo Alto Prisma Cloud e CrowdStrike Falcon Cloud Security perdono terreno narrativo — l'integrazione nativa GCP di Wiz è ora un argomento di vendita fortissimo.",
-      "sales_angle": "Usa l'acquisizione Google per riaprire conversazioni con clienti GCP o multi-cloud: 'Wiz ora è nativo nel tuo stack Google — vuoi vedere come cambia la tua postura cloud security?'"
+      "competitive_threat": "Rappresenta la minaccia più immediata per Palo Alto Prisma Cloud e CrowdStrike Falcon Cloud Security nel mercato enterprise multi-cloud: combina best-of-breed CNAPP con distribuzione Google Cloud nativa.",
+      "sales_angle": "Usare la notizia del deal completato per aprire conversazioni sulla roadmap CNAPP dei clienti: chi usa Google Cloud ha ora un percorso nativo verso CNAPP best-of-breed senza cambiare vendor cloud."
     },
     {
-      "name": "Microsoft",
-      "segment": "SIEM / XDR / AI Security",
+      "name": "SentinelOne",
+      "segment": "EDR / CNAPP / SIEM",
       "momentum": "rising",
-      "momentum_reason": "Security Copilot in GA con agentic mode — primo vendor a offrire autonomia SOC end-to-end su scala enterprise.",
+      "momentum_reason": "Prima piattaforma a ottenere FedRAMP-High su EDR, CNAPP e AI SIEM simultaneamente, più espansione sovereign cloud Europa con STACKIT — doppio sblocco mercato regolamentato.",
       "ai_integration": {
-        "score": 10,
+        "score": 9,
         "label": "Native",
-        "features": ["Agentic SOC automation", "Natural language threat hunting", "Auto-triage e escalation", "Cross-product correlation"],
+        "features": [
+          "Purple AI (AI SOC analyst conversazionale)",
+          "Hyperautomation per incident response",
+          "AI SIEM su dati endpoint e cloud unificati"
+        ],
+        "llm_model": "n.d. (modello proprietario Purple AI)"
+      },
+      "products_in_focus": [
+        {
+          "name": "Singularity Platform (Purple AI + CNAPP + Hyperautomation)",
+          "category": "EDR / CNAPP / AI SIEM",
+          "key_differentiator": "Unica piattaforma con FedRAMP-High su EDR, CNAPP e AI SIEM contemporaneamente — sblocca mercato federale USA e sovereign EU in un solo move.",
+          "ai_feature": "Purple AI: analyst AI conversazionale certificato FedRAMP-High per triage, hunting e risposta automatica",
+          "target_buyer": "CISO / SOC Manager / IT Director Pubblica Amministrazione"
+        }
+      ],
+      "competitive_threat": "Mette sotto pressione CrowdStrike sul mercato federale USA e Palo Alto sulla promessa di piattaforma unificata AI nativa — entrambi non hanno ancora la stessa certificazione cumulativa.",
+      "sales_angle": "Per clienti in settori regolamentati (PA, finance, healthcare, difesa): FedRAMP-High e sovereign cloud EU sono argomenti di compliance immediata oggi, non roadmap futura — differenziatore concorrenziale chiaro."
+    },
+    {
+      "name": "CrowdStrike",
+      "segment": "EDR / CNAPP / SIEM",
+      "momentum": "stable",
+      "momentum_reason": "Annunciate a RSA 2026 innovazioni per sicurezza degli AI agent e governance shadow AI su endpoint, SaaS e cloud; $500M in buyback segnala solidità finanziaria post-incidente 2024.",
+      "ai_integration": {
+        "score": 8,
+        "label": "Advanced",
+        "features": [
+          "AI agent security discovery su endpoint, SaaS e cloud",
+          "Falcon Next-Gen SIEM con ingestion EDR terze parti",
+          "Shadow AI governance e policy enforcement"
+        ],
+        "llm_model": "Charlotte AI (modello proprietario CrowdStrike)"
+      },
+      "products_in_focus": [
+        {
+          "name": "Falcon Platform (AI Agent Security + Next-Gen SIEM)",
+          "category": "EDR / XDR / SIEM",
+          "key_differentiator": "Primo vendor EDR a portare discovery e governance degli AI agent non autorizzati (shadow AI) direttamente nel layer endpoint con visibilità unificata cloud-SaaS.",
+          "ai_feature": "Charlotte AI: threat hunting, triage automatico, AI agent discovery e governance su tutto il footprint",
+          "target_buyer": "CISO / SOC Manager / Sales Engineer"
+        }
+      ],
+      "competitive_threat": "Minaccia diretta a Microsoft Defender XDR e SentinelOne nell'area SIEM+EDR convergente; il tema shadow AI governance è un differenziatore temporaneo ma potente.",
+      "sales_angle": "Il tema 'shadow AI governance' è il perfetto conversation starter con CISO preoccupati per uso non autorizzato di AI: CrowdStrike è oggi l'unico vendor EDR con AI agent discovery nativo — e il 59% delle aziende non sa quanti AI agent ha in produzione."
+    },
+    {
+      "name": "Microsoft Security",
+      "segment": "XDR / Identity / SIEM",
+      "momentum": "stable",
+      "momentum_reason": "Defender XDR April update porta Security Copilot con chat in-console e agentic triage su identity e cloud; Entra ID Protection con auto-remediation diventa GA ad aprile 2026.",
+      "ai_integration": {
+        "score": 9,
+        "label": "Native",
+        "features": [
+          "Security Copilot chat in-console SOC",
+          "Agentic triage alert identity+cloud+phishing",
+          "Entra identity risk score 0-100 AI-driven"
+        ],
         "llm_model": "GPT-4o (Azure OpenAI)"
       },
       "products_in_focus": [
         {
-          "name": "Security Copilot",
-          "category": "AI SOC Automation",
-          "key_differentiator": "Unico prodotto che orchestra Sentinel + Defender XDR + Purview in linguaggio naturale con azioni autonome.",
-          "ai_feature": "Agentic investigation: dall'alert alla chiusura del caso senza intervento umano",
-          "target_buyer": "CISO / SOC Manager"
+          "name": "Microsoft Defender XDR + Security Copilot",
+          "category": "XDR / SIEM",
+          "key_differentiator": "Copilot conversazionale in console Defender con reasoning step-by-step trasparente per ogni alert — il SOC analyst può interrogare in linguaggio naturale qualsiasi minaccia.",
+          "ai_feature": "Security Copilot: chat in-console, agentic triage multi-signal con natural language findings e reasoning esplicito",
+          "target_buyer": "SOC Analyst / IT Security Manager"
         },
         {
-          "name": "Microsoft Sentinel",
-          "category": "SIEM",
-          "key_differentiator": "SIEM cloud-native con il più ampio ecosistema di connettori (300+) e integrazione AI nativa.",
-          "ai_feature": "Copilot for Sentinel: query SIEM in linguaggio naturale",
-          "target_buyer": "SOC Analyst / IT Manager"
+          "name": "Microsoft Entra ID Protection",
+          "category": "Identity Security",
+          "key_differentiator": "Auto-remediation GA su tutti i metodi di autenticazione (passwordless + legacy) con risk score unificato da AD, Entra e Okta — eliminando silos di identity.",
+          "ai_feature": "Identity risk score AI-driven (0-100) con auto-remediation basata su probabilità compromissione e impatto ruolo",
+          "target_buyer": "Identity Architect / IT Manager"
         }
       ],
-      "competitive_threat": "Splunk e IBM QRadar perdono differenziazione — il gap AI con Sentinel si allarga ogni trimestre.",
-      "sales_angle": "Se il cliente ha già EA Microsoft, Security Copilot è incluso o a costo marginale: 'Stai già pagando per questo — vuoi attivarlo e misurare la riduzione MTTR?'"
+      "competitive_threat": "La combinazione Defender XDR+Copilot+Entra esercita pressione fortissima su CrowdStrike nel mid-market Microsoft-centric dove il costo di switching verso una soluzione integrata è quasi zero.",
+      "sales_angle": "Per clienti già su M365 E5: il Copilot Security è incluso — usare il tema 'AI-enabled device code phishing' pubblicato da Microsoft ad aprile per accelerare upsell su Defender XDR P2 o SIEM upgrade."
     },
     {
-      "name": "CrowdStrike",
-      "segment": "EDR / XDR / AI Security",
+      "name": "Palo Alto Networks",
+      "segment": "CNAPP / SASE / Platform",
       "momentum": "stable",
-      "momentum_reason": "Falcon AIDR in GA è un prodotto rilevante ma il mercato sta aspettando dati concreti su efficacia dopo l'incidente del 2024.",
-      "ai_integration": {
-        "score": 9,
-        "label": "Native",
-        "features": ["Charlotte AI detection", "AI threat hunting", "Prompt injection protection", "AI usage visibility"],
-        "llm_model": "Modello proprietario + integrazioni LLM esterne"
-      },
-      "products_in_focus": [
-        {
-          "name": "Falcon AIDR",
-          "category": "AI Detection & Response",
-          "key_differentiator": "Primo EDR che protegge il layer di prompt e interazione degli agenti AI — categoria nuova senza competitor diretti maturi.",
-          "ai_feature": "Runtime protection per agenti AI aziendali",
-          "target_buyer": "CISO / AI Engineer / DevSecOps"
-        }
-      ],
-      "competitive_threat": "SentinelOne con Prompt Security acquisita è il competitor diretto più pericoloso nel segmento AI security.",
-      "sales_angle": "Per clienti che stanno deployando agenti AI: 'Chi protegge i tuoi agenti AI da prompt injection? Falcon AIDR è l'unica soluzione enterprise GA oggi.'"
-    },
-    {
-      "name": "Rubrik",
-      "segment": "Backup & DR / Data Security",
-      "momentum": "rising",
-      "momentum_reason": "Secondary offering da $800M segnala fiducia del mercato. Rubrik è il vendor backup con la narrativa AI più forte nel 2026.",
+      "momentum_reason": "Prisma AIRS 3.0 e Agentic SASE annunciati a RSA 2026 rafforzano la platformization; revenue Q2 FY26 $2.6B (+15% YoY), NGS ARR $6.3B (+33%) — fondamentali solidi.",
       "ai_integration": {
         "score": 8,
         "label": "Advanced",
-        "features": ["AI-powered anomaly detection", "Predictive recovery time", "Ransomware blast radius analysis", "NLP policy management"],
-        "llm_model": "Modello proprietario Ruby AI"
+        "features": [
+          "Prisma AIRS 3.0 protezione AI full-lifecycle",
+          "Agentic SASE con policy AI-driven",
+          "AI-powered SOC automation"
+        ],
+        "llm_model": "n.d. (modello proprietario PANW AI)"
       },
       "products_in_focus": [
         {
-          "name": "Rubrik Security Cloud",
-          "category": "Data Security & Backup",
-          "key_differentiator": "Unica piattaforma che unisce backup, data security e cyber recovery in un'unica console con AI integrata.",
-          "ai_feature": "Ruby AI: identifica il punto di recovery pulito prima dell'infezione ransomware",
-          "target_buyer": "IT Manager / CISO / Storage Admin"
+          "name": "Prisma AIRS 3.0",
+          "category": "AI Security / CNAPP",
+          "key_differentiator": "Protezione full-lifecycle per workload AI (build→deploy→runtime) con rilevamento prompt injection e model poisoning — risposta diretta alla minaccia Google/Wiz.",
+          "ai_feature": "AI Runtime Security: anomaly detection su pipeline AI, governance AI agent enterprise, protezione da attacchi su modelli LLM",
+          "target_buyer": "CISO / AI Platform Owner / Cloud Security Architect"
         }
       ],
-      "competitive_threat": "Veeam perde conversazioni enterprise dove Rubrik può dimostrare ROI cyber recovery. Cohesity rimane il competitor più vicino.",
-      "sales_angle": "Il CFO capisce questo: 'Rubrik non è solo backup — è l'assicurazione che sai esattamente quando e come recuperare dopo un ransomware, con AI che sceglie il punto di restore pulito.'"
-    },
-    {
-      "name": "Veeam",
-      "segment": "Backup & DR",
-      "momentum": "stable",
-      "momentum_reason": "Solida base installata ma narrativa AI ancora in costruzione rispetto a Rubrik e Cohesity.",
-      "ai_integration": {
-        "score": 6,
-        "label": "Advanced",
-        "features": ["AI-assisted recovery validation", "Intelligent scheduling", "Anomaly detection su snapshot"],
-        "llm_model": "n.d."
-      },
-      "products_in_focus": [
-        {
-          "name": "Veeam Data Platform",
-          "category": "Backup & Recovery",
-          "key_differentiator": "Maggiore compatibilità con ambienti ibridi e legacy — nessun altro vendor supporta più workload.",
-          "ai_feature": "Veeam AI Assistant: chatbot per configurazione e troubleshooting",
-          "target_buyer": "IT Admin / IT Manager / MSP"
-        }
-      ],
-      "competitive_threat": "Rubrik e Cohesity erodono il mercato enterprise. Veeam rimane forte su SMB e mid-market.",
-      "sales_angle": "Per clienti con ambienti ibridi complessi: 'Veeam è l'unico vendor che protegge tutto — VMware, Hyper-V, AWS, Azure, fisico — in una sola licenza.'"
+      "competitive_threat": "La strategia di platformization è la minaccia più strutturale per vendor best-of-breed: Okta (identity), Zscaler (SASE), CrowdStrike (EDR standalone) rischiano di perdere deal a bundle PANW.",
+      "sales_angle": "Usare i dati finanziari forti (NGS ARR +33%) per rassicurare CISO sulla solidità della piattaforma e supportare consolidamento vendor: PANW è il 'safe bet' per chi deve ridurre il numero di fornitori security nel 2026."
     }
   ],
   "market_signals": [
     {
-      "signal": "Consolidazione CNAPP: i grandi hyperscaler acquisiscono invece di costruire",
-      "type": "consolidation",
-      "impact": "high",
-      "description": "Google/Wiz e il pattern di acquisizioni cloud security segnalano che hyperscaler preferiscono comprare competenze piuttosto che svilupparle. Il mercato CNAPP si sta riducendo a 3-4 player dominanti.",
-      "who_wins": "Wiz, Palo Alto Prisma Cloud, CrowdStrike Falcon Cloud",
-      "who_loses": "Vendor CNAPP mid-size senza partnership hyperscaler (Orca, Lacework)"
-    },
-    {
-      "signal": "AI agentica nel SOC: da copilot ad autonomia operativa",
+      "signal": "RSA 2026: l'AI agentiva ridefinisce il SOC — non è più differenziante, è requisito minimo",
       "type": "disruption",
       "impact": "high",
-      "description": "Security Copilot in GA segna il passaggio da AI assistiva ad AI operativa nel SOC. I vendor che non hanno una storia credibile di autonomia AI nei prossimi 12 mesi perderanno conversazioni enterprise.",
-      "who_wins": "Microsoft, CrowdStrike, Palo Alto Networks",
-      "who_loses": "SIEM tradizionali (Splunk standalone, IBM QRadar), MDR provider senza AI differenziata"
+      "description": "RSA 2026 ha sancito che l'AI agentiva per il SOC è il nuovo baseline: ogni major vendor ha presentato triage autonomo, incident response agentivo o AI agent governance. Il mercato si polarizza tra vendor con AI nativa credibile e quelli con AI-washing su architetture legacy.",
+      "who_wins": "Vendor con AI nativa e SOC agentivo certificato: Microsoft Security Copilot, SentinelOne Purple AI, Google SecOps, Arctic Wolf Aurora.",
+      "who_loses": "SIEM legacy (IBM QRadar, Splunk non-agentivo) e vendor EDR standalone senza layer AI conversazionale trasparente e certificabile."
     },
     {
-      "signal": "NIS2 enforcement Italia: le PMI entrano in scope",
-      "type": "regulation",
+      "signal": "Google completa acquisizione Wiz per $32B: nasce il CNAPP più potente del mercato",
+      "type": "consolidation",
       "impact": "high",
-      "description": "Le linee guida ACN portano per la prima volta le PMI con fatturato >10M€ in scope NIS2 con obbligo di notifica incidenti a 24h. Si apre un mercato enorme di compliance-driven security spending.",
-      "who_wins": "Vendor con offerte SMB/mid-market (Veeam, Acronis, vendor MDR italiani)",
-      "who_loses": "Aziende non conformi — rischio sanzioni fino al 2% fatturato globale"
+      "description": "Con l'approvazione EU e il completamento del deal, Google unisce CNAPP #1 per mindshare con l'infrastruttura Google Cloud e l'intelligence Mandiant. Il mercato CNAPP si riposiziona attorno a tre super-piattaforme: Google/Wiz, Palo Alto Prisma, Microsoft Defender for Cloud.",
+      "who_wins": "Google Cloud e clienti che cercano CNAPP integrata nativa; Mandiant che ottiene distribuzione massiva.",
+      "who_loses": "Orca Security (mindshare in calo da 8.1% a 6.3%) e vendor CNAPP mid-size che perdono spazio nell'enterprise: Lacework (già acquisita da Fortinet) e Sysdig sotto pressione."
     },
     {
-      "signal": "AI security come categoria si dissolve nelle piattaforme",
+      "signal": "Veeam report: solo il 28% delle vittime ransomware recupera tutti i dati — gap critico recovery",
       "type": "adoption",
+      "impact": "high",
+      "description": "Il Data Trust and Resilience Report Veeam (14 aprile 2026) rivela che il 90% delle organizzazioni si dichiara sicuro nella recovery, ma solo il 28% recupera effettivamente tutti i dati post-ransomware. Questo gap tra percezione e realtà è il principale argomento di vendita per cyber resilience nel Q2 2026.",
+      "who_wins": "Rubrik (vault isolato + forensics), Cohesity (data intelligence), Veeam (flessibilità multi-cloud) con messaging su 'proven recovery' certificabile vs 'confidence'.",
+      "who_loses": "Team IT con backup non testati e vendor di backup tradizionale senza immutability, air-gap e cyber resilience reporting auditabili."
+    },
+    {
+      "signal": "Cybersecurity M&A Q1 2026: $47B di deal value con AI security come driver principale",
+      "type": "consolidation",
       "impact": "medium",
-      "description": "L'AI security non è più una categoria standalone — viene assorbita in ogni prodotto esistente. I buyer non cercano 'soluzioni AI security' ma 'il loro vendor preferito con AI integrata'.",
-      "who_wins": "Vendor con piattaforme consolidate (Microsoft, Palo Alto, CrowdStrike, Rubrik)",
-      "who_loses": "Pure-play AI security startup senza integrazione in stack esistenti"
+      "description": "Il Q1 2026 ha registrato $47B in deal cybersecurity (+270% di deal value YoY), con Cisco che acquisisce ShieldX per $850M e Fortinet che integra Lacework. La tendenza verso piattaforme unificate sta erodendo lo spazio per vendor best-of-breed isolati.",
+      "who_wins": "Vendor platform (CrowdStrike, Palo Alto, Microsoft, Cisco) che acquisiscono capability AI e completano il portafoglio con acquisizioni strategiche.",
+      "who_loses": "Startup CNAPP, identity e AI security di piccola-media dimensione che rischiano acquisizioni a valutazioni compresse o perdita di deal a favore delle super-piattaforme."
+    },
+    {
+      "signal": "Regolamentazione AI+cybersecurity accelera: NDAA FY26 CMMC-for-AI, EU AI Act enforcement",
+      "type": "regulation",
+      "impact": "medium",
+      "description": "La NDAA FY2026 impone un framework di sicurezza AI per contractor DoD con integrazione nel programma CMMC, mentre l'EU AI Act entra in fase di enforcement pratico. Le organizzazioni devono ora dimostrare AI governance auditabile, spingendo domanda di AI security posture management.",
+      "who_wins": "Vendor con AI governance integrata e reporting compliance (Palo Alto Prisma AIRS, Microsoft Purview, CrowdStrike AI agent visibility) e consulenza specializzata compliance AI.",
+      "who_loses": "Organizzazioni che usano AI senza audit trail e vendor di AI security senza capacità di reporting verso framework regolatori CMMC/EU AI Act."
     }
   ],
   "ai_llm_leaderboard": [
     {
       "rank": 1,
       "brand": "Microsoft",
-      "product": "Security Copilot",
-      "why": "Unico vendor con agentic mode in GA — autonomia SOC end-to-end senza intervento umano. GPT-4o su scala Azure.",
-      "integration_type": "Agentic SOC — orchestrazione multi-prodotto in linguaggio naturale"
+      "product": "Security Copilot + Defender XDR",
+      "why": "Unico vendor con LLM (GPT-4o) nativo in console SOC con agentic triage live su identity, cloud e phishing + Entra risk scoring GA ad aprile 2026 — copertura end-to-end dall'alert alla remediation su scala enterprise.",
+      "integration_type": "Agentic triage SOC multi-signal / LLM in-console con reasoning trasparente step-by-step / Auto-remediation identity passwordless"
     },
     {
       "rank": 2,
-      "brand": "Google / Wiz",
-      "product": "Wiz CNAPP + Gemini",
-      "why": "Integrazione Gemini 1.5 Pro su tutto lo stack cloud security Google — remediation AI nativa su GCP.",
-      "integration_type": "RAG su cloud configuration + LLM remediation suggestions"
+      "brand": "SentinelOne",
+      "product": "Purple AI + Singularity Hyperautomation",
+      "why": "Prima piattaforma a ottenere FedRAMP-High per un AI SOC assistant con hyperautomation per IR su endpoint, cloud e SIEM in un'unica console — credenziali uniche nel mercato regolamentato.",
+      "integration_type": "AI SOC analyst conversazionale certificato FedRAMP-High / Hyperautomation IR / AI SIEM su dati endpoint+cloud unificati"
     },
     {
       "rank": 3,
-      "brand": "CrowdStrike",
-      "product": "Falcon AIDR + Charlotte AI",
-      "why": "Prima protezione runtime per agenti AI enterprise — categoria nuova senza competitor maturi.",
-      "integration_type": "Runtime AI agent protection + LLM threat hunting"
+      "brand": "Google Cloud",
+      "product": "Google SecOps + Wiz AI Cloud Graph",
+      "why": "Gemini 2.0 nel SOC agentivo con threat intelligence Mandiant real-time e cloud security graph Wiz AI-powered — la stack più completa per ambienti cloud-native post-acquisizione.",
+      "integration_type": "Agentic SOC / RAG su threat intel Mandiant / AI cloud graph CNAPP per correlazione rischi multi-cloud"
     },
     {
       "rank": 4,
-      "brand": "Rubrik",
-      "product": "Ruby AI (Security Cloud)",
-      "why": "AI più matura nel segmento backup/DR — predice il punto di recovery pulito pre-ransomware.",
-      "integration_type": "Predictive recovery + anomaly detection su snapshot"
+      "brand": "Palo Alto Networks",
+      "product": "Prisma AIRS 3.0",
+      "why": "Unica soluzione con protezione AI full-lifecycle (build→deploy→runtime) e rilevamento nativo di prompt injection e model poisoning su workload AI enterprise — categoria creata da PANW.",
+      "integration_type": "AI Runtime Security / Governance AI agent enterprise / LLM per policy generation SASE / Anomaly detection su pipeline AI"
     },
     {
       "rank": 5,
-      "brand": "Palo Alto Networks",
-      "product": "Cortex XSIAM 3.0",
-      "why": "Noise reduction AI al 99% sugli alert SOC — il dato più misurabile e vendibile del mercato.",
-      "integration_type": "ML-based alert correlation + AI exposure management"
+      "brand": "CrowdStrike",
+      "product": "Charlotte AI + Falcon Next-Gen SIEM",
+      "why": "Charlotte AI espande la propria funzione verso discovery e governance degli AI agent shadow su endpoint, SaaS e cloud — primo vendor EDR a usare AI per governare l'AI stessa nell'enterprise.",
+      "integration_type": "AI agent discovery e governance / LLM per threat hunting autonomo / SIEM ingestion multi-vendor con correlazione AI"
     }
   ],
   "recommendation": {
-    "for_manager": "Avvia una valutazione formale di Rubrik o Cohesity per il tuo stack backup/DR: il cyber recovery con AI è diventato un requisito board-level, non un nice-to-have.",
-    "for_sales": "Usa l'acquisizione Google/Wiz per qualificare tutti i clienti GCP o multi-cloud — è il miglior conversation starter della settimana: ogni CTO ne ha sentito parlare.",
-    "watch_next_week": "Palo Alto Networks: attesi annunci su integrazione Wiz post-acquisizione e risposta competitiva a Security Copilot. Potrebbe cambiare il posizionamento su CNAPP."
+    "for_manager": "Avviare questa settimana un inventario degli AI agent e tool AI in uso non governato nell'organizzazione (shadow AI): il 59% delle aziende non li conosce tutti e RSA 2026 ha confermato che sono il prossimo vettore di attacco prioritario — priorità operativa immediata.",
+    "for_sales": "Usare il Veeam Data Trust Report come conversation starter con CISO e IT Manager: 'Il vostro piano DR è basato su confidence o su proof? Solo il 28% delle aziende recupera tutto dopo ransomware' — poi mappare il gap e proporre una sessione di DR testing con la soluzione.",
+    "watch_next_week": "Google/Wiz post-acquisizione: i primi annunci di integrazione tecnica con Google SecOps e Mandiant definiranno se il nuovo CNAPP sarà un vero game-changer nel Q3 2026 o un'integrazione lenta — monitorare ogni release note, customer win e pricing bundle."
   }
 }
