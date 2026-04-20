@@ -39,9 +39,13 @@ These files were modified in recent commits — likely relevant to current work:
 - `.gitignore`
 - `AGENTS.md`
 - `CLAUDE.md`
+- `README.md`
+- `app/globals.css`
 - `app/page.tsx`
-- `archive/.gitkeep`
 - `generate-brief.mjs`
+- `package-lock.json`
+- `package.json`
 - `public/market_analysis.json`
+- `weekly-cybersecurity-intel.json`
 
 <!-- /PROMPTOPS:CONTEXT -->

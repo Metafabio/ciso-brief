@@ -6,7 +6,7 @@ import { useState, useEffect, useCallback } from 'react'
 
 type SectionId = 'ma-funding' | 'ai-releases' | 'threat-landscape' | 'market-moves' | 'backup-dr-ai'
 type Theme = 'slate' | 'ember' | 'arctic'
-type Tab = 'brief' | 'analysis'
+type Tab = 'brief' | 'analysis' | 'backup'
 
 interface BriefItem {
   vendor: string
@@ -82,6 +82,57 @@ interface MarketAnalysis {
   ai_llm_leaderboard: LeaderboardEntry[]
   recommendation: {
     for_manager: string
+    for_sales: string
+    watch_next_week: string
+  }
+}
+
+// ─── Types — Backup Intelligence ────────────────────────────────
+
+interface BackupAI {
+  score: number
+  label: 'None' | 'Basic' | 'Advanced' | 'Native'
+  features: string[]
+  llm_model: string
+}
+
+interface BackupProduct {
+  name: string
+  category: string
+  key_differentiator: string
+  ai_feature: string
+  target_buyer: string
+}
+
+interface BackupVendor {
+  name: string
+  segment: string
+  momentum: 'rising' | 'stable' | 'declining'
+  momentum_reason: string
+  ai_integration: BackupAI
+  products: BackupProduct[]
+  competitive_threat: string
+  sales_angle: string
+}
+
+interface BackupLeaderboard {
+  rank: number
+  vendor: string
+  product: string
+  ai_score: number
+  why: string
+  use_case: string
+}
+
+interface BackupData {
+  week: number
+  generated_at: string
+  summary: string
+  sections: BriefSection[]
+  vendors: BackupVendor[]
+  ai_leaderboard: BackupLeaderboard[]
+  recommendations: {
+    for_engineer: string
     for_sales: string
     watch_next_week: string
   }
@@ -163,7 +214,7 @@ function AccordionSection({ section, isOpen, onToggle }: {
     <div className="card" style={{ overflow: 'hidden', borderLeft: `3px solid ${meta.accent}` }}>
       <button onClick={onToggle} style={{
         width: '100%', padding: '18px 20px', display: 'flex', alignItems: 'center', gap: '14px',
-        background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', background: 'var(--surface)',
+        background: 'var(--surface)', border: 'none', cursor: 'pointer', textAlign: 'left',
       }}>
         <span style={{ color: meta.accent, fontSize: '18px', lineHeight: 1, flexShrink: 0 }}>{meta.icon}</span>
         <span style={{
@@ -382,6 +433,158 @@ function AnalysisView({ data }: { data: MarketAnalysis }) {
   )
 }
 
+// ─── Backup — View ────────────────────────────────────────────────────────
+
+function BackupView({ data }: { data: BackupData }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+
+      <div className="card" style={{ padding: '20px 24px' }}>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--accent)', marginBottom: '12px' }}>
+          Executive Summary
+        </div>
+        <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.8 }}>{data.summary}</p>
+      </div>
+
+      <div>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px', paddingLeft: '4px' }}>
+          AI Leaderboard
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {data.ai_leaderboard.map((entry) => (
+            <div key={entry.rank} className="card" style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', padding: '16px 20px' }}>
+              <div style={{
+                fontFamily: 'var(--font-dm-mono)', fontSize: '24px', fontWeight: 700,
+                color: entry.rank === 1 ? '#f59e0b' : entry.rank === 2 ? '#94a3b8' : 'var(--text-muted)',
+                lineHeight: 1, flexShrink: 0, width: '32px', textAlign: 'center',
+              }}>
+                #{entry.rank}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '6px', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>{entry.vendor}</span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{entry.product}</span>
+                  <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '12px', color: '#10b981', fontWeight: 600 }}>AI: {entry.ai_score}</span>
+                </div>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: '0 0 10px' }}>{entry.why}</p>
+                <span style={{
+                  fontFamily: 'var(--font-dm-mono)', fontSize: '11px', color: '#06b6d4',
+                  background: 'rgba(6,182,212,0.1)', border: '1px solid rgba(6,182,212,0.25)',
+                  padding: '4px 10px', borderRadius: '4px',
+                }}>💡 {entry.use_case}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px', paddingLeft: '4px' }}>
+          Vendor Analysis
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {data.vendors.map((vendor, i) => <BackupVendorCard key={vendor.name} vendor={vendor} index={i} />)}
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
+        {[
+          { label: 'Per il Backup Engineer', value: data.recommendations.for_engineer, accent: '#06b6d4' },
+          { label: 'Per il Sales', value: data.recommendations.for_sales, accent: '#10b981' },
+          { label: 'Da monitorare', value: data.recommendations.watch_next_week, accent: '#f59e0b' },
+        ].map((r) => (
+          <div key={r.label} className="card" style={{ padding: '16px 20px', borderTop: `3px solid ${r.accent}` }}>
+            <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: r.accent, marginBottom: '10px' }}>{r.label}</div>
+            <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>{r.value}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function BackupVendorCard({ vendor, index }: { vendor: BackupVendor; index: number }) {
+  const [open, setOpen] = useState(false)
+  const mColor = MOMENTUM_COLOR[vendor.momentum]
+  const scoreColor = vendor.ai_integration.score >= 8 ? '#10b981' : vendor.ai_integration.score >= 5 ? '#f59e0b' : '#64748b'
+
+  return (
+    <div className={`card stagger-${Math.min(index + 1, 5)}`} style={{ overflow: 'hidden' }}>
+      <button onClick={() => setOpen(v => !v)} style={{
+        width: '100%', padding: '18px 20px', display: 'flex', alignItems: 'center', gap: '14px',
+        background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left',
+      }}>
+        <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '20px', color: mColor, lineHeight: 1, flexShrink: 0 }}>
+          {MOMENTUM_ICON[vendor.momentum]}
+        </span>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>{vendor.name}</span>
+            <span style={{
+              fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)',
+              background: 'var(--surface)', border: '1px solid var(--border)',
+              padding: '3px 8px', borderRadius: '4px',
+            }}>{vendor.segment}</span>
+          </div>
+          <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: 1.5 }}>{vendor.momentum_reason}</div>
+        </div>
+        <div style={{ textAlign: 'center', flexShrink: 0 }}>
+          <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '20px', fontWeight: 700, color: scoreColor, lineHeight: 1 }}>{vendor.ai_integration.score}</div>
+          <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '9px', color: 'var(--text-muted)', letterSpacing: '0.08em' }}>AI</div>
+        </div>
+        <svg className={`chevron ${open ? 'open' : ''}`} width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+          <path d="M3 5l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
+      <div className={`accordion-grid ${open ? 'open' : ''}`}>
+        <div className="accordion-inner">
+          <div style={{ padding: '0 20px 20px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
+
+            <div style={{ padding: '14px 16px', background: 'rgba(6,182,212,0.08)', borderLeft: '3px solid #06b6d4', borderRadius: '0 8px 8px 0' }}>
+              <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#06b6d4', marginBottom: '8px' }}>
+                AI Integration · {vendor.ai_integration.label} · {vendor.ai_integration.llm_model}
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {vendor.ai_integration.features.map((f, i) => (
+                  <span key={i} style={{
+                    fontFamily: 'var(--font-dm-mono)', fontSize: '11px', color: 'var(--text-secondary)',
+                    background: 'var(--surface)', border: '1px solid var(--border)',
+                    padding: '4px 10px', borderRadius: '4px',
+                  }}>{f}</span>
+                ))}
+              </div>
+            </div>
+
+            {vendor.products.map((p, i) => (
+              <div key={i}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{p.name}</span>
+                  <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{p.category} · {p.target_buyer}</span>
+                </div>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: '0 0 8px' }}>{p.key_differentiator}</p>
+                {p.ai_feature !== 'n.d.' && (
+                  <p style={{ fontSize: '13px', color: '#06b6d4', lineHeight: 1.6, margin: 0 }}>⬡ {p.ai_feature}</p>
+                )}
+              </div>
+            ))}
+
+            <div>
+              <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#ef4444', marginBottom: '6px' }}>Minaccia competitiva</div>
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>{vendor.competitive_threat}</p>
+            </div>
+
+            <div style={{ padding: '14px 16px', background: 'rgba(16,185,129,0.08)', borderLeft: '3px solid #10b981', borderRadius: '0 8px 8px 0' }}>
+              <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#10b981', marginBottom: '6px' }}>Sales Angle</div>
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>{vendor.sales_angle}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── Theme switcher ───────────────────────────────────────────────────────────
 
 const THEMES: { id: Theme; label: string; accent: string }[] = [
@@ -417,9 +620,10 @@ export default function Page() {
     if (typeof window === 'undefined') return 'slate'
     return (localStorage.getItem('ciso_theme') as Theme | null) || 'slate'
   })
-  const [tab, setTab] = useState<Tab>('analysis')
+  const [tab, setTab] = useState<Tab>('backup')
   const [brief, setBrief] = useState<BriefData | null>(null)
   const [analysis, setAnalysis] = useState<MarketAnalysis | null>(null)
+  const [backup, setBackup] = useState<BackupData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [openSections, setOpenSections] = useState<Set<SectionId>>(new Set())
 
@@ -427,9 +631,11 @@ export default function Page() {
     Promise.all([
       fetch('/brief.json').then(r => r.json()) as Promise<BriefData>,
       fetch('/market_analysis.json').then(r => r.json()) as Promise<MarketAnalysis>,
-    ]).then(([b, a]) => {
+      fetch('/backupl.json').then(r => r.json()) as Promise<BackupData>,
+    ]).then(([b, a, bu]) => {
       setBrief(b)
       setAnalysis(a)
+      setBackup(bu)
       setOpenSections(new Set(b.sections.map(s => s.id)))
       setIsLoading(false)
     }).catch(() => setIsLoading(false))
@@ -470,8 +676,8 @@ export default function Page() {
     URL.revokeObjectURL(url)
   }, [brief])
 
-  const currentWeek = analysis?.week || brief?.week || 0
-  const currentDate = analysis?.generated_at || brief?.date || ''
+  const currentWeek = backup?.week || analysis?.week || brief?.week || 0
+  const currentDate = backup?.generated_at || analysis?.generated_at || brief?.date || ''
 
   return (
     <div data-theme={theme} style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
@@ -487,7 +693,7 @@ export default function Page() {
               Week {currentWeek}
             </span>
             <span style={{ fontSize: '20px', color: 'var(--text-primary)', fontWeight: 600, letterSpacing: '-0.02em' }}>
-              CISO Intelligence
+              Backup & Resilience
             </span>
           </div>
           <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
@@ -499,8 +705,9 @@ export default function Page() {
 
       <div style={{ borderBottom: '1px solid var(--border)', padding: '0 32px', display: 'flex', gap: '4px', background: 'var(--bg)' }}>
         {([
-          { id: 'brief' as Tab, label: 'Brief Settimanale' },
-          { id: 'analysis' as Tab, label: 'Analisi Comparativa' },
+          { id: 'backup' as Tab, label: 'Backup & AI' },
+          { id: 'brief' as Tab, label: 'Brief' },
+          { id: 'analysis' as Tab, label: 'Analisi' },
         ]).map(t => (
           <button key={t.id} onClick={() => setTab(t.id)} className={`tab ${tab === t.id ? 'active' : ''}`} style={{ padding: '14px 24px' }}>
             {t.label}
@@ -549,11 +756,21 @@ export default function Page() {
             market_analysis.json non trovato
           </div>
         )}
+
+        {!isLoading && tab === 'backup' && backup && (
+          <BackupView data={backup} />
+        )}
+
+        {!isLoading && tab === 'backup' && !backup && (
+          <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '14px', color: 'var(--text-secondary)', padding: '60px 0', textAlign: 'center' }}>
+            backupl.json non trovato
+          </div>
+        )}
       </main>
 
       <footer style={{ borderTop: '1px solid var(--border)', padding: '20px 32px', textAlign: 'center' }}>
         <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-          CISO Intelligence Brief · Week {currentWeek} · Updated {currentDate}
+          Backup & Resilience Intelligence · Week {currentWeek} · Updated {currentDate}
         </span>
       </footer>
     </div>
