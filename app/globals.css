@@ -312,3 +312,20 @@ h1, h2, h3, h4 {
 .stagger-3 { animation: slide-up 0.4s ease 0.15s forwards; opacity: 0; }
 .stagger-4 { animation: slide-up 0.4s ease 0.2s forwards; opacity: 0; }
 .stagger-5 { animation: slide-up 0.4s ease 0.25s forwards; opacity: 0; }
+
+/* ─── Spin animation ─────────────────────────────────────────── */
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Print styles ────────────────────────────────────────────── */
+
+@media print {
+  body { background: white !important; color: black !important; }
+  .no-print { display: none !important; }
+  .card { border: 1px solid #ccc !important; box-shadow: none !important; }
+  main { padding: 20px !important; max-width: 100% !important; }
+  header { position: static !important; background: white !important; }
+}

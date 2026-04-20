@@ -433,6 +433,89 @@ function AnalysisView({ data }: { data: MarketAnalysis }) {
   )
 }
 
+// ─── Comparison — View ─────────────────────────────────────────────────────
+
+function ComparisonView({ current, previous }: { current: BackupData; previous: BackupData }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+
+      <div className="card" style={{ padding: '20px 24px', borderTop: '3px solid #10b981' }}>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#10b981', marginBottom: '12px' }}>
+          Week {previous.week} → Week {current.week} Comparison
+        </div>
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+          Track how vendors and market signals evolved between weeks.
+        </p>
+      </div>
+
+      <div>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px' }}>
+          AI Leaderboard Changes
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {current.ai_leaderboard.map((entry, i) => {
+            const prevEntry = previous.ai_leaderboard.find(p => p.vendor === entry.vendor)
+            const prevRank = prevEntry?.rank || 0
+            const change = prevRank - entry.rank
+            return (
+              <div key={entry.vendor} className="card" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '14px 18px' }}>
+                <div style={{
+                  fontFamily: 'var(--font-dm-mono)', fontSize: '16px', fontWeight: 700,
+                  color: change > 0 ? '#10b981' : change < 0 ? '#ef4444' : 'var(--text-muted)',
+                  width: '24px', textAlign: 'center',
+                }}>
+                  {change > 0 ? `+${change}` : change < 0 ? `${change}` : '—'}
+                </div>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', width: '32px' }}>#{entry.rank}</div>
+                <div style={{ flex: 1 }}>
+                  <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{entry.vendor}</span>
+                  <span style={{ fontSize: '12px', color: 'var(--text-muted)', marginLeft: '8px' }}>{entry.product}</span>
+                </div>
+                <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '12px', color: '#10b981' }}>AI: {entry.ai_score}</div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      <div>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px' }}>
+          Vendor Momentum Changes
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {current.vendors.map((vendor) => {
+            const prevVendor = previous.vendors.find(p => p.name === vendor.name)
+            const prevMomentum = prevVendor?.momentum || 'stable'
+            const changed = prevMomentum !== vendor.momentum
+            return (
+              <div key={vendor.name} className={`card ${changed ? 'card-elevated' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 18px' }}>
+                <span style={{ fontSize: '16px', color: MOMENTUM_COLOR[vendor.momentum] }}>
+                  {MOMENTUM_ICON[vendor.momentum]}
+                </span>
+                <div style={{ flex: 1 }}>
+                  <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{vendor.name}</span>
+                  {changed && (
+                    <span style={{
+                      fontSize: '10px', color: 'var(--text-muted)', marginLeft: '8px',
+                      background: 'rgba(245,158,11,0.2)', padding: '2px 6px', borderRadius: '3px',
+                    }}>
+                      {prevMomentum} → {vendor.momentum}
+                    </span>
+                  )}
+                </div>
+                <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', color: 'var(--text-muted)' }}>
+                  {vendor.momentum_reason.substring(0, 60)}...
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+    </div>
+  )
+}
+
 // ─── Backup — View ────────────────────────────────────────────────────────
 
 function BackupView({ data }: { data: BackupData }) {
@@ -624,7 +707,10 @@ export default function Page() {
   const [brief, setBrief] = useState<BriefData | null>(null)
   const [analysis, setAnalysis] = useState<MarketAnalysis | null>(null)
   const [backup, setBackup] = useState<BackupData | null>(null)
+  const [backupPrev, setBackupPrev] = useState<BackupData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [showCompare, setShowCompare] = useState(false)
   const [openSections, setOpenSections] = useState<Set<SectionId>>(new Set())
 
   useEffect(() => {
@@ -632,10 +718,12 @@ export default function Page() {
       fetch('/brief.json').then(r => r.json()) as Promise<BriefData>,
       fetch('/market_analysis.json').then(r => r.json()) as Promise<MarketAnalysis>,
       fetch('/backupl.json').then(r => r.json()) as Promise<BackupData>,
-    ]).then(([b, a, bu]) => {
+      fetch('/archive/market-analysis-w16-2026-04-20.json').then(r => r.json()).catch(() => null),
+    ]).then(([b, a, bu, prev]) => {
       setBrief(b)
       setAnalysis(a)
       setBackup(bu)
+      setBackupPrev(prev as BackupData | null)
       setOpenSections(new Set(b.sections.map(s => s.id)))
       setIsLoading(false)
     }).catch(() => setIsLoading(false))
@@ -644,6 +732,17 @@ export default function Page() {
   const handleTheme = useCallback((t: Theme) => {
     setTheme(t)
     localStorage.setItem('ciso_theme', t)
+  }, [])
+
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true)
+    setTimeout(() => {
+      window.location.reload()
+    }, 1500)
+  }, [])
+
+  const handleExportPDF = useCallback(() => {
+    window.print()
   }, [])
 
   const toggleSection = useCallback((id: SectionId) => {
@@ -700,7 +799,29 @@ export default function Page() {
             {currentDate ? `Generated: ${currentDate}` : 'Loading...'}
           </div>
         </div>
-        <ThemeSwitcher current={theme} onChange={handleTheme} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button onClick={handleRefresh} disabled={isRefreshing} className="btn" title="Refresh data">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7, animation: isRefreshing ? 'spin 1s linear infinite' : 'none' }}>
+              <path d="M12 7a5 5 0 11-8.5-3.5M12 3v4H8M12 3L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            {isRefreshing ? 'Refreshing...' : 'Refresh'}
+          </button>
+          <button onClick={handleExportPDF} className="btn" title="Export PDF">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7 }}>
+              <path d="M7 1v8M3 5l4 4 4-4M2 12h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            PDF
+          </button>
+          {backupPrev && (
+            <button onClick={() => setShowCompare(v => !v)} className={`btn ${showCompare ? 'btn-primary' : ''}`} title="Compare with previous week">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7 }}>
+                <path d="M2 4h4l-4 4V4zM12 10H8l4-4v4z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Compare
+            </button>
+          )}
+          <ThemeSwitcher current={theme} onChange={handleTheme} />
+        </div>
       </header>
 
       <div style={{ borderBottom: '1px solid var(--border)', padding: '0 32px', display: 'flex', gap: '4px', background: 'var(--bg)' }}>
@@ -758,7 +879,11 @@ export default function Page() {
         )}
 
         {!isLoading && tab === 'backup' && backup && (
-          <BackupView data={backup} />
+          showCompare && backupPrev ? (
+            <ComparisonView current={backup} previous={backupPrev} />
+          ) : (
+            <BackupView data={backup} />
+          )
         )}
 
         {!isLoading && tab === 'backup' && !backup && (
