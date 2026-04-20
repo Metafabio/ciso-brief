@@ -1088,9 +1088,6 @@ export default function Page() {
       }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <span style={{ fontSize: '11px', fontFamily: 'var(--font-dm-mono)', letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 600 }}>
-              Week {currentWeek}
-            </span>
             <span style={{ fontSize: '20px', color: 'var(--text-primary)', fontWeight: 600, letterSpacing: '-0.02em' }}>
               Backup & Resilience
             </span>
@@ -1155,21 +1152,28 @@ export default function Page() {
         )}
 
         {!isLoading && tab === 'brief' && brief && (
-          <>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div className="card" style={{ padding: '20px 24px', borderLeft: '3px solid #6366f1' }}>
+              <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#6366f1', marginBottom: '12px' }}>
+                Executive Summary
+              </div>
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+                {brief.sections.slice(0, 3).map(s => s.implication).join(' • ')}
+              </p>
+            </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {brief.sections.map(section => (
-                <AccordionSection key={section.id} section={section} isOpen={openSections.has(section.id)} onToggle={() => toggleSection(section.id)} />
+              {brief.sections.slice(0, 3).map((section) => (
+                <div key={section.id} className="card" style={{ padding: '16px 20px' }}>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+                    {section.items.length} {section.id.replace('-', ' ')} updates
+                  </div>
+                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
+                    {section.implication}
+                  </p>
+                </div>
               ))}
             </div>
-            <div className="fade-in" style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '28px' }}>
-              <button onClick={handleExport} className="btn">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7 }}>
-                  <path d="M7 1v8M3 5l4 4 4-4M2 12h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Export .md
-              </button>
-            </div>
-          </>
+          </div>
         )}
 
         {!isLoading && tab === 'analysis' && analysis && (
@@ -1204,7 +1208,7 @@ export default function Page() {
 
       <footer style={{ borderTop: '1px solid var(--border)', padding: '20px 32px', textAlign: 'center' }}>
         <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-          Backup & Resilience Intelligence · Week {currentWeek} · Updated {currentDate}
+          Backup & Resilience Intelligence · Ultimo aggiornamento: {currentDate}
         </span>
       </footer>
     </div>
