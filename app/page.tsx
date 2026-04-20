@@ -87,7 +87,108 @@ interface MarketAnalysis {
   }
 }
 
-// ─── Types — Backup Intelligence ────────────────────────────────
+// ─── Unified Data Types ───────────────────────────────────────
+
+interface Summary {
+  headline: string
+  key_points: string[]
+  trend: 'rising' | 'stable' | 'declining'
+}
+
+interface AILeaderboardItem {
+  rank: number
+  vendor: string
+  product: string
+  ai_score: number
+  key_feature: string
+  why: string
+}
+
+interface NewsItem {
+  section: string
+  title: string
+  vendor: string
+  amount?: string
+  description: string
+  implication: string
+}
+
+interface SelectionByIndustry {
+  industry: string
+  size: string
+  vendor_recommended: string
+  reason: string
+  key_features: string[]
+  pricing_indicative: string
+  implementation_hint: string
+}
+
+interface SelectionByUseCase {
+  use_case: string
+  vendor_recommended: string
+  reason: string
+  implementation_hint: string
+}
+
+interface SelectionGuide {
+  by_industry: SelectionByIndustry[]
+  by_use_case: SelectionByUseCase[]
+}
+
+interface VendorAPI {
+  version: string
+  endpoints: string
+  auth: string
+  webhook: boolean
+  sdks: string[]
+}
+
+interface VendorDeployment {
+  options: string[]
+  requirements: string
+  setup_time: string
+}
+
+interface VendorPricing {
+  model: string
+  indicative_range: string
+}
+
+interface VendorTech {
+  name: string
+  api: VendorAPI
+  deployment: VendorDeployment
+  pricing: VendorPricing
+}
+
+interface BestPractice {
+  scenario: string
+  steps: string[]
+  tips: string[]
+}
+
+interface TechnicalData {
+  vendors: VendorTech[]
+  best_practices: BestPractice[]
+}
+
+interface UnifiedData {
+  version: string
+  generated_at: string
+  week: number
+  summary: Summary
+  ai_leaderboard: AILeaderboardItem[]
+  news: NewsItem[]
+  selection_guide: SelectionGuide
+  technical: TechnicalData
+  vendors: BackupVendor[]
+  recommendations: {
+    for_engineer: string
+    for_sales: string
+  }
+}
+
+// ─── Backup Intelligence ────────────────────────────────
 
 interface BackupAI {
   score: number

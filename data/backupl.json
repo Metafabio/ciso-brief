@@ -1,0 +1,120 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-04-20",
+  "week": 16,
+  "summary": {
+    "headline": "Executive summary in 1-2 frasi",
+    "key_points": ["punto 1", "punto 2", "punto 3"],
+    "trend": "rising | stable | declining"
+  },
+  "ai_leaderboard": [
+    {
+      "rank": 1,
+      "vendor": "Veeam",
+      "product": "Intelligent Hub",
+      "ai_score": 9,
+      "key_feature": "AI orchestration automatica",
+      "why": "Perché è in cima"
+    },
+    {
+      "rank": 2,
+      "vendor": "Rubrik",
+      "product": "Ruby AI",
+      "ai_score": 8,
+      "key_feature": "Incident investigation in linguaggio naturale",
+      "why": "Perché è al secondo posto"
+    }
+  ],
+  "news": [
+    {
+      "section": "ma-funding",
+      "title": "Titolo notizia",
+      "vendor": "Vendor coinvolto",
+      "amount": "$250M | n.d.",
+      "description": "Descrizione dettagliata",
+      "implication": "Cosa significa per un system integrator"
+    }
+  ],
+  "selection_guide": {
+    "by_industry": [
+      {
+        "industry": "Manufacturing",
+        "size": "enterprise | smb",
+        "vendor_recommended": "Veeam | Rubrik | Cohesity",
+        "reason": "Perché questo vendor",
+        "key_features": ["feature 1", "feature 2"],
+        "pricing_indicative": "€X.XXX - €X.XXX",
+        "implementation_hint": "Come strutturare il progetto"
+      }
+    ],
+    "by_use_case": [
+      {
+        "use_case": "Cloud Migration",
+        "vendor_recommended": "Veeam",
+        "reason": "Perché",
+        "implementation_hint": "Step-by-step"
+      },
+      {
+        "use_case": "Ransomware Protection",
+        "vendor_recommended": "Rubrik",
+        "reason": "Perché",
+        "implementation_hint": "Step-by-step"
+      }
+    ]
+  },
+  "technical": {
+    "vendors": [
+      {
+        "name": "Veeam",
+        "api": {
+          "version": "v3",
+          "endpoints": 50,
+          "auth": "API Key / OAuth",
+          "webhook": true,
+          "sdks": ["PowerShell", "Python", "Go"]
+        },
+        "deployment": {
+          "options": ["On-prem", "Cloud", "Hybrid"],
+          "requirements": "Requisiti minimi",
+          "setup_time": "2-4 ore"
+        },
+        "pricing": {
+          "model": "Per socket / per VM / subscription",
+          "indicative_range": "€5.000 - €50.000+"
+        }
+      }
+    ],
+    "best_practices": [
+      {
+        "scenario": "Nuovo progetto backup",
+        "steps": ["Step 1", "Step 2", "Step 3"],
+        "tips": ["Suggerimento 1", "Suggerimento 2"]
+      }
+    ]
+  },
+  "vendors": [
+    {
+      "name": "Veeam",
+      "segment": "Backup & DR",
+      "momentum": "rising",
+      "momentum_reason": "Perché",
+      "ai_integration": {
+        "score": 9,
+        "label": "Advanced",
+        "features": ["Intelligent Hub", "AI Policy Automation"]
+      },
+      "products": [
+        {
+          "name": "Veeam Data Platform",
+          "category": "Enterprise",
+          "key_differentiator": "Cosa lo distingue",
+          "target_buyer": "CISO / IT Manager"
+        }
+      ]
+    }
+  ],
+  "recommendations": {
+    "for_engineer": "Azione per me come Backup Engineer",
+    "for_sales": "Azione per il team sales"
+  }
+}
