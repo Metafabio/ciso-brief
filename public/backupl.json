@@ -1,228 +1,333 @@
 {
-  "week": 16,
+  "version": "1.0",
   "generated_at": "2026-04-20",
-  "summary": "Il mercato backup & resilience è dominato da Veeam con la nuova Intelligent Hub e Cohesity che espande AI. Il ransomware continua a evolversi con nuovi vettori di attacco, rendendo critical la postura di cyber recovery. Gli investimenti in AI per backup orchestration accelerano.",
-  "sections": [
+  "week": 16,
+  "summary": {
+    "headline": "Veeam consolida leadership con Gartner Customers' Choice. Il 90% delle aziende crede di poter recuperare da ransomware, ma solo il 28% riesce davvero. Il gap tra fiducia e capacità reali è l'opportunità per i System Integrator.",
+    "key_points": [
+      "Veeam Leader Gartner per 9° anno consecutivo",
+      "Solo 28% recovery reale post-ransomware",
+      "AI orchestration diventa requisito minimo",
+      "Budget cybersecurity +49% YoY per chi ha avuto attacchi"
+    ],
+    "trend": "rising"
+  },
+  "ai_leaderboard": [
     {
-      "id": "ma-funding",
-      "items": [
-        {
-          "vendor": "Cohesity",
-          "deal": "Funding Round",
-          "amount": "$250M",
-          "summary": "Cohesity chiude un round da $250M per accelerare lo sviluppo di AI per data management. Valutazione a $7.3B."
-        },
-        {
-          "vendor": "Veritas",
-          "deal": "Acquisizione",
-          "amount": "$1.2B",
-          "summary": "Veritas acquires a startup di AI governance per rafforzare la piattaforma enterprise data management."
-        }
-      ],
-      "implication": "Il funding conferma la crescita del mercato backup AI-driven. Valutare partnership con vendor in acquisizione。"
+      "rank": 1,
+      "vendor": "Veeam",
+      "product": "Intelligent Hub",
+      "ai_score": 9,
+      "key_feature": "AI orchestration automatica + Securiti AI",
+      "why": "Leader Gartner, 4.8/5 stelle, 98% consiglierebbero. Securiti aggiunge data governance."
     },
     {
-      "id": "product-releases",
-      "items": [
-        {
-          "vendor": "Veeam",
-          "deal": "Veeam Data Platform v12.5 — GA",
-          "summary": "Veeam introduce Intelligent Hub con AI per orchestrazione automatica backup. Supporto nativo per AWS, Azure, GCP con policy AI-driven."
-        },
-        {
-          "vendor": "Rubrik",
-          "deal": "Ruby AI Analyst — GA",
-          "summary": "Ruby AI Analyst per incident investigation in язык naturale. Primo AI analyst certificato FedRAMP per backup."
-        },
-        {
-          "vendor": "Dell",
-          "deal": "PowerProtect DD990 — GA",
-          "summary": "Nuovo appliance con deduplica aumentata AI e supporto fino a 1.5PB. Performance aumentata del 40% per workloads cloud-native."
-        }
-      ],
-      "implication": "L'AI diventa requisito minimo nei vendor enterprise backup. Agliornare roadmap di valutazione entro Q2."
+      "rank": 2,
+      "vendor": "Rubrik",
+      "product": "Ruby AI + Security Cloud",
+      "ai_score": 8,
+      "key_feature": "Agentic Recovery in linguaggio naturale",
+      "why": "Primo AI analyst FedRAMP, recovery automatica per AD/Entra ID. Posizione forte in government."
     },
     {
-      "id": "threat-ransomware",
-      "items": [
-        {
-          "vendor": "Interlock",
-          "deal": "Nuova variante ransomware",
-          "summary": "Interlock ransomware usa now tecnica ClickFix per initial access, Combinato con LummaStealer per esfiltrazione pre-encryption."
-        },
-        {
-          "vendor": "RansomHub",
-          "deal": "Attacchi a critical infrastructure",
-          "summary": "RansomHub ha colpito 45 organizzazioni critical infrastructure nel Q1 2026. Settori: healthcare, manufacturing, government."
-        }
-      ],
-      "implication": "Aggiornare policy di backup per includere ClickFix come vettore di initial access. Verificare immutability su tutti i backup."
-    },
-    {
-      "id": "ai-orchestration",
-      "items": [
-        {
-          "vendor": "Veeam",
-          "deal": "Intelligent Backup Advisor",
-          "summary": "AI che analiza workload patterns e consiglia scheduling ottimale, retention policy e storage tiering automatico."
-        },
-        {
-          "vendor": "Cohesity",
-          "deal": "Cohesity DataHound AI",
-          "summary": "AI-powered Data Classification per GDPR compliance automatica. Identifica dati sensibili e applica policy automaticamente."
-        }
-      ],
-      "implication": "L'AI elimina task ripetitive. Iniziare PoC con Intelligent Backup Advisor su 3 workload non critical."
-    },
-    {
-      "id": "market-trends",
-      "items": [
-        {
-          "vendor": "Gartner",
-          "deal": "Magic Quadrant Enterprise Backup",
-          "summary": "Gartner posiziona Veeam Leader insieme a Dell e Cohesity. Rubrik sale in Visionaries per AI-first approach."
-        },
-        {
-          "vendor": "IDC",
-          "deal": "Forecast 2026-2030",
-          "amount": "$15.2B",
-          "summary": "Il mercato backup software raggiunge $15.2B entro 2030. CAGR 12.3%. Cloud backup占比 60% del mercato."
-        }
-      ],
-      "implication": "Investire in cloud backup capabilities ora. Il 60% del mercato sarà cloud entro 2030."
+      "rank": 3,
+      "vendor": "Cohesity",
+      "product": "DataHound + DataPlatform",
+      "ai_score": 7,
+      "key_feature": "AI data classification per GDPR",
+      "why": "DataHound semplifica compliance. Mindshare in calo (1.9%) ma prodotto solido."
     }
   ],
+  "news": [
+    {
+      "section": "market",
+      "title": "Veeam Gartner Customers' Choice 2026",
+      "vendor": "Veeam",
+      "amount": "n.c.",
+      "description": "Veeam ottiene Gartner Peer Insights Customers' Choice con 4.8/5 basato su 124 recensioni. 98% clienti consiglierebbero.",
+      "implication": "Usare come social proof nelle proposte. Dato verificabile attira deal."
+    },
+    {
+      "section": "market",
+      "title": "90% fiducia recovery ma solo 28% recovera davvero",
+      "vendor": "Veeam",
+      "amount": "Report",
+      "description": "Veeam Data Trust Report 2026 rivela gap critico: 90% confidenti di recoverare, solo 28% riesce davvero post-ransomware.",
+      "implication": "Opportunità per servizi di assessments e validation. Proporre DR test come servizio aggiuntivo."
+    },
+    {
+      "section": "release",
+      "title": "Veeam acquisisce Securiti",
+      "vendor": "Veeam",
+      "amount": "$350M stimato",
+      "description": "Veeam acquisisce Securiti per data governance e privacy. Passa da backup a production data resilience.",
+      "implication": "Veeam si posiziona come piattaforma completa. Differenziazione forte vs competitor."
+    },
+    {
+      "section": "release",
+      "title": "Rubrik Identity Recovery GA",
+      "vendor": "Rubrik",
+      "amount": "n.c.",
+      "description": "Rubrik introduce Active Directory e Microsoft Entra ID recovery. Prima della categoria.",
+      "implication": "Vendere Rubrik per clienti con problemi AD frequenti. Differenziatore forte."
+    },
+    {
+      "section": "threat",
+      "title": "Ransomware colpisce 51% organizzazioni",
+      "vendor": "Industry",
+      "amount": "Report",
+      "description": "51% ransomware victims US nel Q1 2026. Healthcare e manufacturing target principali.",
+      "implication": "Proporre always-on immutability come minimum. Ransomware warranty come argomento di vendita."
+    }
+  ],
+  "selection_guide": {
+    "by_industry": [
+      {
+        "industry": "Manufacturing",
+        "size": "enterprise",
+        "vendor_recommended": "Veeam",
+        "reason": "Leader di mercato, supporta qualsiasi hypervisor e cloud. Flessibilità per ambienti eterogenei.",
+        "key_features": ["Immutable storage", "Instant VM recovery", "Cloud tiering"],
+        "pricing_indicative": "€15.000 - €80.000/anno",
+        "implementation_hint": "1. Assessment workload 2. Design architettura 3-2-1 3. POC 2 settimane 4. Go-live. Timeline: 4-6 settimane."
+      },
+      {
+        "industry": "Healthcare",
+        "size": "enterprise",
+        "vendor_recommended": "Rubrik",
+        "reason": "FedRAMP, HIPAA compliance nativa. Ruby AI semplifica audit.",
+        "key_features": ["FedRAMP High", "HIPAA reporting", "Malware scanning"],
+        "pricing_indicative": "€25.000 - €100.000/anno",
+        "implementation_hint": "RHEL-based appliance. PoC healthcare specifica. Timeline: 4-6 settimane."
+      },
+      {
+        "industry": "Finance",
+        "size": "enterprise",
+        "vendor_recommended": "Veeam o Rubrik",
+        "reason": "Entrambi supportano compliance stringenti. Veeam più flessibile, Rubrik più semplice.",
+        "key_features": ["Immutable", "Encryption", "Audit trail"],
+        "pricing_indicative": "€20.000 - €100.000/anno",
+        "implementation_hint": " SOC 2 Type II compliance richiesta. Implementazione con VPN dedicata."
+      },
+      {
+        "industry": "Government",
+        "size": "enterprise",
+        "vendor_recommended": "Rubrik",
+        "reason": "Unico con FedRAMP High certificato. Sblocca mercato pubblico.",
+        "key_features": ["FedRAMP High", "Sovereign cloud", "Ransomware warranty"],
+        "pricing_indicative": "€30.000 - €150.000/anno",
+        "implementation_hint": "Agenzie federali/regionali. Richiede certificazione. Timeline più lunga: 8-12 settimane."
+      },
+      {
+        "industry": "Retail",
+        "size": "smb",
+        "vendor_recommended": "Veeam",
+        "reason": "Veeam ONE per monitoring + pricing accessibile. Setup rapido.",
+        "key_features": ["Cloud backup", "Monitoring", "Veeam GO"],
+        "pricing_indicative": "€3.000 - €10.000/anno",
+        "implementation_hint": "中小. Cloud-first per negozi. Setup in 1 settimana."
+      },
+      {
+        "industry": "MSP",
+        "size": "smb",
+        "vendor_recommended": "Veeam",
+        "reason": "Service Provider edition con multi-tenant e billing. Margine 40%+.",
+        "key_features": ["Multi-tenant", "Pricing per VM", "Self-service portal"],
+        "pricing_indicative": "€500 - €2.000/cliente/anno",
+        "implementation_hint": "Veeam Service Provider Console. Billing automatico. Start con 5 clienti."
+      }
+    ],
+    "by_use_case": [
+      {
+        "use_case": "Cloud Migration",
+        "vendor_recommended": "Veeam",
+        "reason": "Cloud Direct migra da on-prem a cloud senza rehydration. Supporta AWS/Azure/GCP.",
+        "implementation_hint": "1.评估 source 2. Setup cloud target 3. Migrazione incremental 4. Cutover. Tempo: 2-4 ore per VM."
+      },
+      {
+        "use_case": "Ransomware Protection",
+        "vendor_recommended": "Rubrik",
+        "reason": "Ransomware warranty inclusa. Air-gapped immutable per design.",
+        "implementation_hint": "1. Design ransomware architecture 2. Config immutable 3. Test recovery 4. Documenta for client. Consiglia sempre 3-2-1."
+      },
+      {
+        "use_case": "GDPR Compliance",
+        "vendor_recommended": "Cohesity",
+        "reason": "DataHound trova automaticamente dati personali. Classification automatica.",
+        "implementation_hint": "1. Enable DataHound 2. Scan 3. Review findings 4. Policy applied. Tempo: 1 settimana."
+      },
+      {
+        "use_case": "DRaaS",
+        "vendor_recommended": "Veeam",
+        "reason": "Veeam Disaster Recovery Cloud orchestrazione completa. Failover automatico.",
+        "implementation_hint": "1. Design RPO/RTO 2. Setup DR cloud 3. Failover test 4. Documenta runbook. Richiede network design."
+      },
+      {
+        "use_case": "Cloud Native Backup",
+        "vendor_recommended": "Veeam",
+        "reason": "AWS/Azure/GCP native connectors inclusi. Zero agent per workload cloud.",
+        "implementation_hint": "1. Enable cloud-native 2. Configure policy 3. Monitor 4. Alert. Tempo: 30 minuti per workload."
+      }
+    ]
+  },
+  "technical": {
+    "vendors": [
+      {
+        "name": "Veeam",
+        "api": {
+          "version": "v3 REST API",
+          "endpoints": "50+",
+          "auth": "API Key / OAuth 2.0",
+          "webhook": true,
+          "sdks": ["PowerShell", "Python", "Go", ".NET"]
+        },
+        "deployment": {
+          "options": ["On-prem (Linux/Windows)", "Cloud (AWS/Azure/GCP)", "Hybrid", "Service Provider"],
+          "requirements": "4 vCPU, 16GB RAM, 500GB SSD per repos",
+          "setup_time": "2-4 ore base, 1 giorno enterprise"
+        },
+        "pricing": {
+          "model": "Per socket (enterprise) / Per VM (Veeam GO) / Subscription",
+          "indicative_range": "€5.000 - €50.000+/anno enterprise"
+        }
+      },
+      {
+        "name": "Rubrik",
+        "api": {
+          "version": "v2 Graph",
+          "endpoints": "40+",
+          "auth": "API Key / SAML",
+          "webhook": true,
+          "sdks": ["Python", "Go", "PowerShell"]
+        },
+        "deployment": {
+          "options": ["Appliance (HW)", "Cloud (AWS/Azure/GCP)", "SaaS (Rubrik Cloud)"],
+          "requirements": "Fixed HW config (R350/R550/R750)",
+          "setup_time": "1 giorno appliance, 2-4 ore cloud"
+        },
+        "pricing": {
+          "model": "Per appliance / Per TB / Subscription",
+          "indicative_range": "€20.000 - €100.000+/anno"
+        }
+      },
+      {
+        "name": "Cohesity",
+        "api": {
+          "version": "v2.1 REST",
+          "endpoints": "35+",
+          "auth": "API Key / LDAP",
+          "webhook": false,
+          "sdks": ["Python", "Ansible"]
+        },
+        "deployment": {
+          "options": ["Software (HCI)", "Cloud", "DataProtect"],
+          "requirements": "HCI cluster min 4 nodes",
+          "setup_time": "1 settimana HCI, 2-4 ore cloud"
+        },
+        "pricing": {
+          "model": "Per TB / Subscription",
+          "indicative_range": "€10.000 - €50.000+/anno"
+        }
+      }
+    ],
+    "best_practices": [
+      {
+        "scenario": "Nuovo progetto backup enterprise",
+        "steps": [
+          "1. Assessment: mappare workload, RPO/RTO, criticità",
+          "2. Design: scelta vendor, architettura (3-2-1), retention",
+          "3. POC: test su 3-5 workload kritici",
+          "4. Go-live: graduale, monitoring intensivo",
+          "5. Validazione: test restore mensile documentato"
+        ],
+        "tips": [
+          "Consiglia sempre 3-2-1: 3 copie, 2 supporti diversi, 1 offsite",
+          "Test restore ogni mese - documenta risultati",
+          "Ransomware protection: immutable + air-gapped + isolated",
+          "Monitoring: alert su failed job entro 15 min",
+          "Documenta tutto per compliance GDPR/ISO"
+        ]
+      },
+      {
+        "scenario": "Ransomware protection",
+        "steps": [
+          "1. Identificare asset kritici",
+          "2. Implementare immutable storage",
+          "3. Configurare air-gapped copy",
+          "4. Definire recovery procedure",
+          "5. Testare failover completo"
+        ],
+        "tips": [
+          "Almeno 1 copia air-gapped (non raggiungibile da rete)",
+          "Isolare backup network da production",
+          "Disabilitare SMBv1 e vecchi protocolli",
+          "Monitorare tentativi di disabilitare backup",
+          "Avere recovery runbook aggiornato"
+        ]
+      }
+    ]
+  },
   "vendors": [
     {
       "name": "Veeam",
       "segment": "Backup & DR",
       "momentum": "rising",
-      "momentum_reason": "Intelligent Hub con AI orchestration, market share in crescita, partnership cloud expansion.",
+      "momentum_reason": "Leader Gartner per 9° anno, acquisisce Securiti, focus su data resilience.",
       "ai_integration": {
-        "score": 8,
+        "score": 9,
         "label": "Advanced",
-        "features": ["Intelligent Backup Advisor", "AI Policy Automation", "Natural Language Recovery"],
-        "llm_model": "n.d."
+        "features": ["Intelligent Hub", "Securiti AI", "Agent Commander", "AI Policy Automation"]
       },
       "products": [
         {
           "name": "Veeam Data Platform",
           "category": "Enterprise",
-          "key_differentiator": "Unica piattaforma con backup, DR e file-shield nativamente. Intelligent Hub per AI orchestration.",
-          "ai_feature": "Intelligent Backup Advisor - AI che consiglia scheduling e retention",
-          "target_buyer": "Backup Admin / IT Manager / CISO"
-        },
-        {
-          "name": "Veeam ONE",
-          "category": "Monitoring",
-          "key_differentiator": "Monitoraggio unified per infrastruttura backup con AI anomaly detection",
-          "ai_feature": "AI-powered monitoring e alerting",
-          "target_buyer": "Backup Admin / SOC"
+          "key_differentiator": "Data Freedom: supporta qualsiasi hypervisor/cloud/storage. Flessibilità massima.",
+          "target_buyer": "CISO / IT Manager / Backup Admin"
         }
-      ],
-      "competitive_threat": "Minaccia diretta a Cohesity nel mid-market e Rubrik nell'enterprise",
-      "sales_angle": "Usare Intelligent Hub come differenziatore. ROI misurabile: -30% tempo amministrazione."
-    },
-    {
-      "name": "Cohesity",
-      "segment": "Backup & Data Management",
-      "momentum": "stable",
-      "momentum_reason": "$250M funding, DataHound AI per classification, ma integrazione cloud in ritardo vs Veeam.",
-      "ai_integration": {
-        "score": 8,
-        "label": "Advanced",
-        "features": ["Cohesity DataHound", "AI Classification", "Ransomware Warranty"],
-        "llm_model": "n.d."
-      },
-      "products": [
-        {
-          "name": "Cohesity DataPlatform",
-          "category": "Enterprise",
-          "key_differentiator": "Unified data management con file and object storage integrato. DataHound AI per classification.",
-          "ai_feature": "DataHound - AI per data classification e compliance",
-          "target_buyer": "CISO / DPO / IT Manager"
-        }
-      ],
-      "competitive_threat": "Rubrik nel segmento AI-first, Veeam nel mid-market",
-      "sales_angle": "DataHound AI per risolvere problemi GDPR e compliance - differenziatore forte."
+      ]
     },
     {
       "name": "Rubrik",
       "segment": "Backup & Security",
       "momentum": "rising",
-      "momentum_reason": "Ruby AI Analyst GA, certificazione FedRAMP, Ransomware Warranty expandida.",
+      "momentum_reason": "FedRAMP unico, Ruby AI, ransomware warranty.",
       "ai_integration": {
-        "score": 9,
+        "score": 8,
         "label": "Native",
-        "features": ["Ruby AI Analyst", "Ransomware Detection", "FIrst to certify FedRAMP"],
-        "llm_model": "Ruby LLM (proprietario)"
+        "features": ["Ruby AI Analyst", "Identity Recovery", "Malware Detection", "FedRAMP"]
       },
       "products": [
         {
           "name": "Rubrik Security Cloud",
           "category": "Enterprise",
-          "key_differentiator": "Unico vendor con AI analyst nativo e certificazione FedRAMP. ransomware detection integrata.",
-          "ai_feature": "Ruby AI Analyst - incident investigation in linguaggio naturale",
-          "target_buyer": "CISO / SOC / Government"
+          "key_differentiator": "Security-first: ogni backup è immutable by default. Semplicità.",
+          "target_buyer": "CISO / Government / DPO"
         }
-      ],
-      "competitive_threat": "Minaccia i vendor legacy come Dell e Commvault nel mercato enterprise e government",
-      "sales_angle": "FedRAMP + Ruby AI = vendita semplice al government e enterprise regolamentati."
+      ]
     },
     {
-      "name": "Dell",
-      "segment": "Backup Appliance",
+      "name": "Cohesity",
+      "segment": "Data Management",
       "momentum": "stable",
-      "momentum_reason": "PowerProtect DD990 nuovo, ma innovazione AI lenta rispetto ai cloud-native.",
+      "momentum_reason": "DataHound per GDPR, ma mindshare in calo. merger con Veritas in fase di finalizzazione.",
       "ai_integration": {
-        "score": 6,
-        "label": "Basic",
-        "features": ["Cloud Tiering", "AI Deduplication"],
-        "llm_model": "n.d."
+        "score": 7,
+        "label": "Advanced",
+        "features": ["DataHound", "AI Classification", "FortKnox"]
       },
       "products": [
         {
-          "name": "PowerProtect DD990",
-          "category": "Appliance",
-          "key_differentiator": "Capacità fino a 1.5PB, deduplica AI-enhanced, integration nativa PowerStore e PowerMax.",
-          "ai_feature": "AI-enhanced deduplication",
-          "target_buyer": "Enterprise / Datacenter"
+          "name": "Cohesity DataPlatform",
+          "category": "Enterprise",
+          "key_differentiator": "Unified data management: backup + analytics + file storage.",
+          "target_buyer": "IT Manager / DPO"
         }
-      ],
-      "competitive_threat": "Veeam e Rubrik nel cloud, Cohesity nel data management",
-      "sales_angle": "Per chi ha già infrastruttura Dell: espansione PowerProtect con AI a basso costo di migrazione."
-    }
-  ],
-  "ai_leaderboard": [
-    {
-      "rank": 1,
-      "vendor": "Rubrik",
-      "product": "Ruby AI Analyst",
-      "ai_score": 9,
-      "why": "Primo AI analyst certificato FedRAMP per backup. Incident investigation in linguaggio naturale.",
-      "use_case": "chiedi 'perché il backup di VM-prod-01 ha fallito ieri' e ricevi risposta con RCA"
-    },
-    {
-      "rank": 2,
-      "vendor": "Veeam",
-      "product": "Intelligent Hub",
-      "ai_score": 8,
-      "why": "AI per orchestrazione automatica backup, scheduling intelligente, policy automation.",
-      "use_case": "AI consiglia optimal backup schedule basato su workload patterns"
-    },
-    {
-      "rank": 3,
-      "vendor": "Cohesity",
-      "product": "DataHound",
-      "ai_score": 8,
-      "why": "AI per data classification e compliance automatica. Identifies dati sensibili automaticamente.",
-      "use_case": "Trova tutti i file GDPR-sensitive nel backup e applica policy di retention"
-
+      ]
     }
   ],
   "recommendations": {
-    "for_engineer": "Iniziare PoC con Intelligent Backup Advisor di Veeam su 3 workload non-critical. Misurare tempo risparmiato in una settimana.",
-    "for_sales": "Usare il dato Gartner: 'AI-first backup vendors stanno crescendo 2x vs legacy' per aprire conversazioni.",
-    "watch_next_week": "Monitorare annunci AWS Backup e Azure Backup per nuove funzionalità AI. Marketplace in evoluzione rapida."
+    "for_engineer": "Questa settimana: proporre assessment di ransomware preparedness a 3 clienti esistenti. Il 90% crede di poter recoverare ma solo il 28% ci riesce - opportunità per servizi.",
+    "for_sales": "Usare dato Veeam: 98% clienti consiglierebbero come social proof. Per clienti manufacturing: proporre Veeam per flessibilità. Per government: Rubrik per FedRAMP. Per GDPR: Cohesity DataHound."
   }
 }
