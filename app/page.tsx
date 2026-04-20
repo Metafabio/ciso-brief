@@ -827,8 +827,8 @@ export default function Page() {
       <div style={{ borderBottom: '1px solid var(--border)', padding: '0 32px', display: 'flex', gap: '4px', background: 'var(--bg)' }}>
         {([
           { id: 'backup' as Tab, label: 'Backup & AI' },
-          { id: 'brief' as Tab, label: 'Brief' },
-          { id: 'analysis' as Tab, label: 'Analisi' },
+          { id: 'brief' as Tab, label: 'Executive' },
+          { id: 'analysis' as Tab, label: 'Vendors' },
         ]).map(t => (
           <button key={t.id} onClick={() => setTab(t.id)} className={`tab ${tab === t.id ? 'active' : ''}`} style={{ padding: '14px 24px' }}>
             {t.label}
