@@ -135,16 +135,22 @@ Tutto in italiano. Azioni concrete e specifiche, non generiche.${newsContext}`
 
   for (const [i, job] of jobs.entries()) {
     if (i > 0) await sleep(30000)
-    try {
-      const text = await callGroq(job.prompt)
-      const data = extractJSON(text)
-      if (existsSync(job.file)) {
-        writeFileSync(job.file.replace('.json', `.backup-${DATE}.json`), readFileSync(job.file))
+    let lastErr = ''
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        if (attempt > 1) await sleep(15000)
+        const text = await callGroq(job.prompt)
+        const data = extractJSON(text)
+        if (existsSync(job.file)) {
+          writeFileSync(job.file.replace('.json', `.backup-${DATE}.json`), readFileSync(job.file))
+        }
+        writeFileSync(job.file, JSON.stringify(data, null, 2))
+        results[job.label] = 'ok'
+        break
+      } catch (err) {
+        lastErr = err instanceof Error ? err.message : String(err)
+        if (attempt === 3) results[job.label] = `errore: ${lastErr}`
       }
-      writeFileSync(job.file, JSON.stringify(data, null, 2))
-      results[job.label] = 'ok'
-    } catch (err) {
-      results[job.label] = `errore: ${err instanceof Error ? err.message : String(err)}`
     }
   }
 

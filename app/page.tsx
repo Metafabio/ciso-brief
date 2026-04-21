@@ -90,9 +90,9 @@ interface MarketAnalysis {
   week: number
   generated_at: string
   summary: string
-  brands: Brand[]
-  market_signals: MarketSignal[]
-  ai_llm_leaderboard: LeaderboardEntry[]
+  brands?: Brand[]
+  market_signals?: MarketSignal[]
+  ai_llm_leaderboard?: LeaderboardEntry[]
   recommendation: {
     for_manager: string
     for_sales: string
@@ -196,11 +196,11 @@ interface BackupData {
   summary: BackupSummary | string
   news?: BackupNewsItem[]
   sections?: BriefSection[]
-  vendors: BackupVendor[]
-  ai_leaderboard: BackupLeaderboard[]
-  recommendations: {
-    for_engineer: string
-    for_sales: string
+  vendors?: BackupVendor[]
+  ai_leaderboard?: BackupLeaderboard[]
+  recommendations?: {
+    for_engineer?: string
+    for_sales?: string
     watch_next_week?: string
   }
   sales_data?: SalesData
@@ -557,7 +557,7 @@ function AnalysisView({ data }: { data: MarketAnalysis }) {
           Brand Analysis
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          {data.brands.map((brand, i) => <BrandCard key={brand.name} brand={brand} index={i} />)}
+          {(data.brands ?? []).map((brand, i) => <BrandCard key={brand.name} brand={brand} index={i} />)}
         </div>
       </div>
 
@@ -566,7 +566,7 @@ function AnalysisView({ data }: { data: MarketAnalysis }) {
           Market Signals
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          {data.market_signals.map((s, i) => {
+          {(data.market_signals ?? []).map((s, i) => {
             const typeStyle = SIGNAL_TYPE_STYLE[s.type]
             const impactStyle = IMPACT_STYLE[s.impact]
             return (
@@ -712,11 +712,9 @@ function BackupView({ data }: { data: BackupData }) {
   const summaryText = isObjectSummary ? (summary as BackupSummary).headline : (summary as string)
 
   const recs = [
-    { label: 'Per il Backup Engineer', value: data.recommendations.for_engineer, accent: '#06b6d4' },
-    { label: 'Per il Sales', value: data.recommendations.for_sales, accent: '#10b981' },
-    ...(data.recommendations.watch_next_week
-      ? [{ label: 'Da monitorare', value: data.recommendations.watch_next_week, accent: '#f59e0b' }]
-      : []),
+    ...(data.recommendations?.for_engineer ? [{ label: 'Per il Backup Engineer', value: data.recommendations.for_engineer, accent: '#06b6d4' }] : []),
+    ...(data.recommendations?.for_sales ? [{ label: 'Per il Sales', value: data.recommendations.for_sales, accent: '#10b981' }] : []),
+    ...(data.recommendations?.watch_next_week ? [{ label: 'Da monitorare', value: data.recommendations.watch_next_week, accent: '#f59e0b' }] : []),
   ]
 
   return (
@@ -743,7 +741,7 @@ function BackupView({ data }: { data: BackupData }) {
           AI Leaderboard
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {data.ai_leaderboard.map((entry) => (
+          {(data.ai_leaderboard ?? []).map((entry) => (
             <div key={entry.rank} className="card" style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', padding: '16px 20px' }}>
               <div style={{
                 fontFamily: 'var(--font-dm-mono)', fontSize: '24px', fontWeight: 700,
@@ -808,7 +806,7 @@ function BackupView({ data }: { data: BackupData }) {
           Vendor Analysis
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          {data.vendors.map((vendor, i) => <BackupVendorCard key={vendor.name} vendor={vendor} index={i} />)}
+          {(data.vendors ?? []).map((vendor, i) => <BackupVendorCard key={vendor.name} vendor={vendor} index={i} />)}
         </div>
       </div>
 
