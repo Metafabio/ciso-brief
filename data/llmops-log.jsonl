@@ -1,0 +1,8 @@
+{"timestamp":"2026-04-21T19:19:15.073Z","label":"brief.json","model":"llama-3.3-70b-versatile","week":17,"input_tokens":4476,"output_tokens":1094,"cost_usd":0,"elapsed_s":3.7}
+{"timestamp":"2026-04-21T19:19:36.580Z","label":"brief.json","model":"llama-3.3-70b-versatile","week":17,"input_tokens":1812,"output_tokens":1203,"cost_usd":0,"elapsed_s":3.3}
+{"timestamp":"2026-04-21T19:19:57.674Z","label":"market_analysis.json","model":"llama-3.3-70b-versatile","week":17,"input_tokens":1907,"output_tokens":2812,"cost_usd":0,"elapsed_s":6.1}
+{"timestamp":"2026-04-21T19:20:32.284Z","label":"action_register.json","model":"llama-3.3-70b-versatile","week":17,"input_tokens":1533,"output_tokens":1271,"cost_usd":0,"elapsed_s":4.5}
+{"timestamp":"2026-04-21T19:20:46.619Z","label":"brief.json","model":"llama-3.3-70b-versatile","week":17,"input_tokens":1812,"output_tokens":1364,"cost_usd":0,"elapsed_s":3.4}
+{"timestamp":"2026-04-21T19:21:22.768Z","label":"market_analysis.json","model":"llama-3.3-70b-versatile","week":17,"input_tokens":1907,"output_tokens":3029,"cost_usd":0,"elapsed_s":6.1}
+{"timestamp":"2026-04-21T19:21:56.457Z","label":"backupl.json","model":"llama-3.3-70b-versatile","week":17,"input_tokens":1603,"output_tokens":1496,"cost_usd":0,"elapsed_s":3.7}
+{"timestamp":"2026-04-21T19:22:29.247Z","label":"action_register.json","model":"llama-3.3-70b-versatile","week":17,"input_tokens":1533,"output_tokens":1167,"cost_usd":0,"elapsed_s":2.8}

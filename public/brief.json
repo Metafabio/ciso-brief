@@ -7,191 +7,102 @@
       "id": "ma-funding",
       "items": [
         {
-          "vendor": "Wasabi Technologies",
-          "deal": "Acquisizione Seagate Lyve Cloud",
-          "amount": "n.d.",
-          "summary": "Wasabi Technologies ha acquisito il business Lyve Cloud di Seagate (annuncio 9 aprile, chiusura 20 aprile). Seagate diventa azionista di Wasabi. L'operazione consolida Wasabi come principale pure-play cloud storage vendor e rafforza integrazioni con Veeam, Rubrik, Cohesity, Commvault.",
-          "confidence": "high",
+          "vendor": "KelpDAO",
+          "deal": "290 milioni di dollari",
+          "amount": "290 milioni di dollari",
+          "summary": "KelpDAO è stata vittima di un furto di 290 milioni di dollari, attribuito agli hacker Lazarus. Il furto è stato possibile a causa di una vulnerabilità nella piattaforma.",
+          "confidence": "medium",
           "sources": [
             {
-              "title": "Wasabi Technologies Acquires Seagate's Lyve Cloud Business",
-              "url": "https://www.businesswire.com/news/home/20260409188097/en/Wasabi-Technologies-Acquires-Seagates-Lyve-Cloud-Business",
-              "publisher": "BusinessWire",
-              "published_at": "2026-04-09"
-            },
-            {
-              "title": "Wasabi buys out Seagate's Lyve Cloud",
-              "url": "https://www.tech-arrow.com/2026/04/20/wasabi-buys-out-seagates-lyve-cloud/",
-              "publisher": "Tech-Arrow",
+              "title": "KelpDAO suffers $290 million heist tied to Lazarus hackers",
+              "url": "https://www.bleepingcomputer.com/news/security/kelpdao-suffers-290-million-heist-tied-to-lazarus-hackers/",
+              "publisher": "BleepingComputer",
               "published_at": "2026-04-20"
-            }
-          ]
-        },
-        {
-          "vendor": "Commvault",
-          "deal": "Private equity interest — possibile acquisizione",
-          "amount": "~$3.5B market cap",
-          "summary": "Thoma Bravo e altri PE stanno valutando l'acquisizione di Commvault. Il titolo è crollato del 30% (da $129 a $89) dopo risultati deludenti. L'azienda lavora con Goldman Sachs per valutare opzioni strategiche. Il mercato vede gap su cyber-resilience AI rispetto a Rubrik e Cohesity.",
-          "confidence": "high",
-          "sources": [
-            {
-              "title": "Hungry private equity eyeing up Commvault",
-              "url": "https://www.blocksandfiles.com/data-protection/2026/04/13/hungry-private-equity-eyeing-up-commvault/5216813",
-              "publisher": "Blocks & Files",
-              "published_at": "2026-04-13"
             }
           ]
         }
       ],
-      "implication": "Il mercato si consolida: Wasabi cresce, Commvault è vulnerabile. Opportunità per Mauden di rinegoziare posizionamento Commvault nei deal aperti e puntare su Veeam o Rubrik come alternativa."
+      "implication": "I manager e i team di vendita dovrebbero essere consapevoli dei rischi di sicurezza legati alle piattaforme di investimento e prendere misure per proteggere i fondi dei clienti."
     },
     {
       "id": "product-releases",
       "items": [
         {
-          "vendor": "Rubrik",
-          "deal": "Cloud Vault esteso a Google Cloud — copertura multi-cloud completa",
-          "summary": "Rubrik estende il suo Cloud Vault air-gapped a Google Cloud, completando la copertura AWS + Azure + GCP. Il vault fornisce backup immutabili e isolati nella cloud del cliente senza gestione infrastruttura. Unico vendor con vault immutabile su tutti e tre i major cloud.",
-          "confidence": "high",
+          "vendor": "Microsoft",
+          "deal": "Miglioramenti alla velocità e alle prestazioni di Windows Explorer",
+          "summary": "Microsoft sta testando miglioramenti alla velocità e alle prestazioni di Windows Explorer, con l'obiettivo di migliorare l'esperienza utente.",
+          "confidence": "medium",
           "sources": [
             {
-              "title": "Rubrik extends air-gapped cloud backup vault to Google",
-              "url": "https://www.blocksandfiles.com/data-management/2025/09/01/rubrik-extends-air-gapped-cloud-backup-vault-to-google/1596672",
-              "publisher": "Blocks & Files",
-              "published_at": "2026-04-10"
-            }
-          ]
-        },
-        {
-          "vendor": "HYCU",
-          "deal": "R-Shield + Halcyon — prevenzione e recovery ransomware in unico prodotto",
-          "summary": "HYCU integra Halcyon (ransomware detection) nel suo R-Shield: unica soluzione che combina prevenzione e recovery in un singolo prodotto. Entrambe sotto influenza Bain Capital. Target mid-market senza SOC dedicato — apre una nuova categoria di conversazione commerciale.",
-          "confidence": "high",
-          "sources": [
-            {
-              "title": "Halcyon days for HYCU as the pair link up on ransomware pitch",
-              "url": "https://www.blocksandfiles.com/security/2026/04/01/halcyon-days-for-hycu-as-the-pair-link-up-on-ransomware-pitch/5213837",
-              "publisher": "Blocks & Files",
-              "published_at": "2026-04-01"
+              "title": "Microsoft tests Windows Explorer speed, performance improvements",
+              "url": "https://www.bleepingcomputer.com/news/microsoft/microsoft-tests-file-explorer-speed-performance-improvements/",
+              "publisher": "BleepingComputer",
+              "published_at": "2026-04-20"
             }
           ]
         }
       ],
-      "implication": "Rubrik GCP vault è argomento concreto per clienti Google Workspace. HYCU R-Shield è apertura di conversazione perfetta per mid-market senza SOC — valutare inserimento nel portfolio Mauden."
+      "implication": "I manager e i team di vendita dovrebbero essere consapevoli dei miglioramenti alle prestazioni di Windows Explorer e valutare come questi miglioramenti possano influire sulla produttività e sull'esperienza utente."
     },
     {
       "id": "threat-ransomware",
       "items": [
         {
-          "vendor": "The Gentlemen (RaaS)",
-          "deal": "320+ vittime nel 2026 — gruppo più attivo d'Europa",
-          "summary": "The Gentlemen ransomware group ha pubblicato oltre 320 vittime sul data leak site, di cui 240 solo nei primi mesi 2026. È il gruppo RaaS con crescita più rapida. Target principale: PMI europee nei settori manifatturiero e logistica — clienti tipici Mauden.",
+          "vendor": "BlackCat",
+          "deal": "Attacchi di ransomware",
+          "summary": "Un negoziatore di ransomware ha ammesso di aver aiutato gli attacchi di BlackCat nel 2023. Gli attacchi di ransomware rappresentano una minaccia significativa per le aziende e richiedono misure di sicurezza adeguate.",
           "confidence": "high",
           "sources": [
             {
-              "title": "The Gentlemen RaaS Is Surging in 2026",
-              "url": "https://blog.checkpoint.com/research/the-gentlemen-a-new-ransomware-threat-climbing-the-charts-fast",
-              "publisher": "Check Point Research",
-              "published_at": "2026-04-15"
-            }
-          ]
-        },
-        {
-          "vendor": "Qilin / Multiple groups",
-          "deal": "Ransomware senza encryption — exfiltration pura raddoppiata",
-          "summary": "Il 6% degli attacchi ransomware 2025 ha usato solo exfiltration (senza encryption), doppio rispetto all'anno precedente. I backup classici non proteggono da questo scenario: i dati vengono copiati prima di qualsiasi alert. Breakout time medio: 29 minuti.",
-          "confidence": "high",
-          "sources": [
-            {
-              "title": "Ransomware Without Encryption: Why Pure Exfiltration Attacks Are Surging",
-              "url": "https://www.morphisec.com/blog/ransomware-without-encryption-why-pure-exfiltration-attacks-are-surging-and-why-theyre-so-hard-to-catch",
-              "publisher": "Morphisec Blog",
-              "published_at": "2026-04-16"
-            },
-            {
-              "title": "New approaches to tackling ransomware recovery",
-              "url": "https://www.blocksandfiles.com/data-protection/2026/04/16/new-approaches-to-tackling-ransomware-recovery/5217913",
-              "publisher": "Blocks & Files",
-              "published_at": "2026-04-16"
+              "title": "Ransomware Negotiator Pleads Guilty to Aiding BlackCat Attacks in 2023",
+              "url": "https://thehackernews.com/2026/04/ransomware-negotiator-pleads-guilty-to.html",
+              "publisher": "The Hacker News",
+              "published_at": "2026-04-21"
             }
           ]
         }
       ],
-      "implication": "Il ransomware senza encryption rende i backup tradizionali insufficienti. Aggiungere data classification e DLP alle conversazioni di backup. Usare i dati su The Gentlemen per urgency nei settori manifatturiero e logistica."
+      "implication": "I manager e i team di sicurezza dovrebbero prendere misure immediate per proteggere le loro aziende dagli attacchi di ransomware, come ad esempio implementare soluzioni di backup e disaster recovery adeguate."
     },
     {
       "id": "ai-orchestration",
       "items": [
         {
-          "vendor": "Mercato AI Orchestration",
-          "deal": "$18.38B 2026 → $58.42B 2032 — crescita +21% CAGR",
-          "summary": "Il mercato AI Orchestration vale $18.38B nel 2026 con crescita al 21% CAGR. Il trend principale è lo shift a framework cloud-native che coordinano più modelli ML, analytics engine e workflow automatizzati. Il backup diventa infrastruttura critica per l'enterprise AI.",
-          "confidence": "high",
+          "vendor": "NGate",
+          "deal": "Malware Android",
+          "summary": "Il malware NGate sta utilizzando l'app HandyPay per rubare dati di carta di credito e PIN. Il malware rappresenta una minaccia significativa per la sicurezza dei dati degli utenti.",
+          "confidence": "medium",
           "sources": [
             {
-              "title": "AI Orchestration Market Size, Industry Share | Forecast 2026-2034",
-              "url": "https://www.fortunebusinessinsights.com/ai-orchestration-market-107177",
-              "publisher": "Fortune Business Insights",
-              "published_at": "2026-04-01"
-            }
-          ]
-        },
-        {
-          "vendor": "Industria backup",
-          "deal": "World Backup Day 2026: backup come mandato AI",
-          "summary": "World Backup Day 2026 ha introdotto il tema 'Backup as AI Mandate': il backup dei dati di training e dei modelli AI è diventato requisito operativo per l'enterprise. Attacchi AI-enabled sono aumentati dell'89% nel 2025. Il breakout time medio è sceso a 29 minuti.",
-          "confidence": "high",
-          "sources": [
-            {
-              "title": "World Backup Day 2026: Backup as an AI mandate",
-              "url": "https://www.frontier-enterprise.com/world-backup-day-2026-backup-as-an-ai-mandate",
-              "publisher": "Frontier Enterprise",
-              "published_at": "2026-03-31"
+              "title": "NGate Campaign Targets Brazil, Trojanizes HandyPay to Steal NFC Data and PINs",
+              "url": "https://thehackernews.com/2026/04/ngate-campaign-targets-brazil.html",
+              "publisher": "The Hacker News",
+              "published_at": "2026-04-21"
             }
           ]
         }
       ],
-      "implication": "Posizionare il backup come componente dell'infrastruttura AI, non solo DR tradizionale. I clienti che costruiscono pipeline AI hanno bisogno di proteggere modelli e dataset — nuovo servizio da proporre."
+      "implication": "I manager e i team di sicurezza dovrebbero essere consapevoli dei rischi di sicurezza legati ai malware e prendere misure per proteggere i dati degli utenti, come ad esempio implementare soluzioni di sicurezza adeguate per gli dispositivi mobili."
     },
     {
       "id": "market-trends",
       "items": [
         {
-          "vendor": "Mercato backup",
-          "deal": "Recovery speed come nuovo differenziatore — SLA in minuti non ore",
-          "summary": "Con breakout time a 29 minuti, le organizzazioni stanno rivalutando i SLA di recovery. Il 3-2-1-1-0 (immutable + verified recovery zero errors) è diventato lo standard minimo raccomandato. Solo il 28% delle aziende riesce a recuperare completamente da ransomware.",
-          "confidence": "high",
-          "sources": [
-            {
-              "title": "SOC Threat Radar — April 2026",
-              "url": "https://blog.barracuda.com/2026/04/14/soc-threat-radar-april-2026",
-              "publisher": "Barracuda Networks",
-              "published_at": "2026-04-14"
-            },
-            {
-              "title": "Ransomware in 2026: Why Backups Alone Are Not Enough",
-              "url": "https://www.rutter-net.com/blog/ransomware-in-2026-why-backups-alone-are-not-enough-rutter",
-              "publisher": "Rutter",
-              "published_at": "2026-04-10"
-            }
-          ]
-        },
-        {
-          "vendor": "Rubrik / Veeam / Cohesity / Commvault",
-          "deal": "Gartner Magic Quadrant 2026 — quattro leader in cluster",
-          "summary": "Gartner Backup & Data Protection 2026: Rubrik guida su completeness of vision, Veeam guida su ability to execute. Cohesity e Commvault nel gruppo di testa. Dell e Druva nel quadrante leader ma meno rilevanti per il mid-market italiano.",
+          "vendor": "Lantronix e Silex",
+          "deal": "Vulnerabilità nei convertitori serial-to-IP",
+          "summary": "Sono state scoperte 22 vulnerabilità nei convertitori serial-to-IP di Lantronix e Silex, che potrebbero essere sfruttate dagli attaccanti per accedere ai sistemi. La sicurezza dei dati e la protezione dei sistemi sono fondamentali per prevenire gli attacchi.",
           "confidence": "medium",
           "sources": [
             {
-              "title": "Rubrik, Veeam Lead in Changing Backup & Data Protection Market",
-              "url": "https://virtualizationreview.com/articles/2025/07/01/rubrik-veeam-among-leaders-in-changing-backup-data-protection-market.aspx",
-              "publisher": "Virtualization Review",
-              "published_at": "2026-04-01"
+              "title": "22 BRIDGE:BREAK Flaws Expose Thousands of Lantronix and Silex Serial-to-IP Converters",
+              "url": "https://thehackernews.com/2026/04/22-bridgebreak-flaws-expose-20000.html",
+              "publisher": "The Hacker News",
+              "published_at": "2026-04-21"
             }
           ]
         }
       ],
-      "implication": "Comunicare il 3-2-1-1-0 come framework concreto nei preventivi. Usare il Magic Quadrant aggiornato nelle presentazioni board-level per giustificare la scelta vendor."
+      "implication": "I manager e i team di sicurezza dovrebbero essere consapevoli delle vulnerabilità nei convertitori serial-to-IP e prendere misure per proteggere i sistemi e i dati, come ad esempio implementare soluzioni di sicurezza adeguate e aggiornare i software regolarmente."
     }
   ]
 }

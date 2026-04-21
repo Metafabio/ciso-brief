@@ -4,14 +4,31 @@
  *
  * Usage:
  *   node generate-brief.mjs --validate   Validate public/*.json dashboard data
- *   node generate-brief.mjs --generate   Call Claude API to regenerate all JSON files
+ *   node generate-brief.mjs --generate   Fetch RSS news + call Groq to regenerate all JSON files
  *   node generate-brief.mjs --prompt     Print the manual prompts (debug)
  *   node generate-brief.mjs              Same as --validate
+ *
+ * Requires: GROQ_API_KEY in .env.local or environment
  */
 
 import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
+
+// Carica .env.local se presente
+try {
+  const envPath = resolve(dirname(fileURLToPath(import.meta.url)), '.env.local')
+  if (existsSync(envPath)) {
+    const lines = readFileSync(envPath, 'utf8').split('\n')
+    for (const line of lines) {
+      const [key, ...val] = line.split('=')
+      if (key && val.length && !process.env[key.trim()]) {
+        process.env[key.trim()] = val.join('=').trim()
+      }
+    }
+  }
+} catch {}
+
 
 const __dir = dirname(fileURLToPath(import.meta.url))
 const BRIEF_FILE = resolve(__dir, 'public/brief.json')
@@ -337,8 +354,47 @@ Regole:
 
 // ─── GENERATION ─────────────────────────────────────────────────────────────
 
+// Feed RSS gratuiti per notizie backup/ransomware/security
+const RSS_FEEDS = [
+  'https://www.bleepingcomputer.com/feed/',
+  'https://feeds.feedburner.com/TheHackersNews',
+  'https://www.darkreading.com/rss.xml',
+  'https://www.veeam.com/blog/rss.xml',
+]
+
+async function fetchRSSNews() {
+  const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000
+  const items = []
+
+  for (const url of RSS_FEEDS) {
+    try {
+      const res = await fetch(url, { signal: AbortSignal.timeout(8000) })
+      const xml = await res.text()
+
+      // Estrae titoli, link e date dal RSS con regex semplice
+      const entries = xml.matchAll(/<item>([\s\S]*?)<\/item>/g)
+      for (const [, entry] of entries) {
+        const title = entry.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/)?.[1]?.trim()
+        const link = entry.match(/<link>(.*?)<\/link>/)?.[1]?.trim()
+        const pubDate = entry.match(/<pubDate>(.*?)<\/pubDate>/)?.[1]?.trim()
+        const desc = entry.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/)?.[1]
+          ?.replace(/<[^>]+>/g, '').trim().slice(0, 200)
+
+        if (!title) continue
+        const date = pubDate ? new Date(pubDate) : null
+        if (date && date.getTime() < sevenDaysAgo) continue
+
+        items.push({ title, link, date: date?.toISOString().split('T')[0] ?? DATE, desc })
+      }
+    } catch {
+      // Feed non raggiungibile, continua con gli altri
+    }
+  }
+
+  return items.slice(0, 40) // max 40 notizie come contesto
+}
+
 function extractJSON(text) {
-  // Estrae il primo blocco JSON valido dalla risposta
   const match = text.match(/\{[\s\S]*\}/)
   if (!match) throw new Error('Nessun JSON trovato nella risposta')
   return JSON.parse(match[0])
@@ -350,68 +406,87 @@ function logLLMOps(entry) {
   appendFileSync(LLMOPS_LOG, JSON.stringify(entry) + '\n')
 }
 
-async function callClaude(prompt, label) {
-  const { default: Anthropic } = await import('@anthropic-ai/sdk')
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-
-  console.log(`\n[generate] ${label} — chiamata a Claude API...`)
+async function callGroq(prompt, label) {
+  console.log(`\n[generate] ${label} — chiamata a Groq API...`)
   const start = Date.now()
 
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 4096,
-    tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-    messages: [{ role: 'user', content: prompt }],
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'llama-3.3-70b-versatile',
+      max_tokens: 4096,
+      temperature: 0.3,
+      messages: [{ role: 'user', content: prompt }],
+    }),
   })
 
+  if (!res.ok) {
+    const err = await res.text()
+    throw new Error(`Groq API error ${res.status}: ${err}`)
+  }
+
+  const data = await res.json()
   const elapsed = ((Date.now() - start) / 1000).toFixed(1)
+  const text = data.choices?.[0]?.message?.content ?? ''
+  const usage = data.usage ?? {}
 
-  // Estrae il testo dalla risposta (può includere tool_use blocks)
-  const textBlocks = response.content.filter(b => b.type === 'text')
-  const fullText = textBlocks.map(b => b.text).join('')
-
-  // Calcolo costo approssimativo (claude-sonnet-4-6: $3/1M input, $15/1M output)
-  const inputTokens = response.usage?.input_tokens ?? 0
-  const outputTokens = response.usage?.output_tokens ?? 0
-  const costUsd = (inputTokens * 3 + outputTokens * 15) / 1_000_000
-
-  console.log(`[generate] ${label} — ${elapsed}s | tokens: ${inputTokens}in/${outputTokens}out | costo: $${costUsd.toFixed(4)}`)
+  // Groq è gratuito — costo $0
+  console.log(`[generate] ${label} — ${elapsed}s | tokens: ${usage.prompt_tokens ?? 0}in/${usage.completion_tokens ?? 0}out | costo: $0.00 (Groq free)`)
 
   logLLMOps({
     timestamp: new Date().toISOString(),
     label,
-    model: 'claude-sonnet-4-6',
+    model: 'llama-3.3-70b-versatile',
     week: WEEK,
-    input_tokens: inputTokens,
-    output_tokens: outputTokens,
-    cost_usd: costUsd,
+    input_tokens: usage.prompt_tokens ?? 0,
+    output_tokens: usage.completion_tokens ?? 0,
+    cost_usd: 0,
     elapsed_s: parseFloat(elapsed),
   })
 
-  return fullText
+  return text
 }
 
 async function generateAll() {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.error('Errore: ANTHROPIC_API_KEY non impostata.')
-    console.error('Esegui: export ANTHROPIC_API_KEY=sk-ant-...')
+  if (!process.env.GROQ_API_KEY) {
+    console.error('Errore: GROQ_API_KEY non impostata.')
+    console.error('Aggiungila in .env.local oppure: export GROQ_API_KEY=gsk_...')
     process.exit(1)
   }
 
   console.log(`\n=== CISO Brief Generator — Week ${WEEK} (${DATE}) ===`)
 
+  // Fetch notizie recenti dai feed RSS
+  console.log('\n[generate] Fetching notizie RSS degli ultimi 7 giorni...')
+  const newsItems = await fetchRSSNews()
+  console.log(`[generate] ${newsItems.length} notizie trovate dai feed RSS`)
+
+  // Limita a 20 notizie e solo titolo+link per stare nel rate limit Groq (12k TPM free)
+  const newsContext = newsItems.length > 0
+    ? '\n\nNOTIZIE REALI DEGLI ULTIMI 7 GIORNI (usa queste come fonti primarie):\n' +
+      newsItems.slice(0, 20).map(n => `- [${n.date}] ${n.title} | ${n.link ?? ''}`).join('\n')
+    : '\n\n(Nessuna notizia RSS disponibile — usa la tua knowledge base aggiornata)'
+
   const jobs = [
-    { label: 'brief.json',           prompt: BRIEF_JSON_PROMPT,          file: BRIEF_FILE },
-    { label: 'market_analysis.json', prompt: MARKET_ANALYSIS_JSON_PROMPT, file: ANALYSIS_FILE },
-    { label: 'backupl.json',         prompt: BACKUP_JSON_PROMPT,          file: BACKUP_FILE },
-    { label: 'action_register.json', prompt: ACTIONS_JSON_PROMPT,         file: ACTIONS_FILE },
+    { label: 'brief.json',           prompt: BRIEF_JSON_PROMPT + newsContext,          file: BRIEF_FILE },
+    { label: 'market_analysis.json', prompt: MARKET_ANALYSIS_JSON_PROMPT + newsContext, file: ANALYSIS_FILE },
+    { label: 'backupl.json',         prompt: BACKUP_JSON_PROMPT + newsContext,          file: BACKUP_FILE },
+    { label: 'action_register.json', prompt: ACTIONS_JSON_PROMPT + newsContext,         file: ACTIONS_FILE },
   ]
 
-  let totalCost = 0
-
-  for (const job of jobs) {
+  for (const [i, job] of jobs.entries()) {
+    // Attendi tra le chiamate per rispettare il rate limit Groq free (12k TPM)
+    if (i > 0) {
+      const wait = 30000
+      console.log(`[generate] Attendo ${wait/1000}s per rate limit...`)
+      await new Promise(r => setTimeout(r, wait))
+    }
     try {
-      const text = await callClaude(job.prompt, job.label)
+      const text = await callGroq(job.prompt, job.label)
       const data = extractJSON(text)
 
       // Salva backup del file precedente
@@ -421,22 +496,15 @@ async function generateAll() {
       }
 
       writeFileSync(job.file, JSON.stringify(data, null, 2))
-      console.log(`[generate] ${job.label} — scritto in ${job.file}`)
-
-      // Leggi il costo dall'ultimo log
-      const lines = existsSync(LLMOPS_LOG) ? readFileSync(LLMOPS_LOG, 'utf8').trim().split('\n') : []
-      if (lines.length) {
-        const last = JSON.parse(lines[lines.length - 1])
-        totalCost += last.cost_usd ?? 0
-      }
+      console.log(`[generate] ${job.label} — scritto ✓`)
     } catch (err) {
       console.error(`[generate] ${job.label} — ERRORE: ${err.message}`)
       console.error('[generate] Il file esistente NON è stato sovrascritto.')
     }
   }
 
-  console.log(`\n=== Generazione completata — costo totale stimato: $${totalCost.toFixed(4)} ===`)
-  console.log(`Log LLMOps salvato in: ${LLMOPS_LOG}`)
+  console.log(`\n=== Generazione completata — costo: $0.00 (Groq free tier) ===`)
+  console.log(`Log LLMOps: ${LLMOPS_LOG}`)
   console.log('\nEsegui ora: node generate-brief.mjs --validate')
 }
 
