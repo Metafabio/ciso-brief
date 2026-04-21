@@ -248,22 +248,6 @@ interface UseCasesData {
   }[]
 }
 
-interface TechnicalData {
-  api_integrations: {
-    vendor: string
-    api_type: string
-    endpoints: number
-    authentication: string
-    webhook_support: boolean
-    sdk_languages: string[]
-  }[]
-  orchestration: {
-    vendor: string
-    tools: string[]
-    automation_level: 'basic' | 'advanced' | 'ai-powered'
-  }[]
-}
-
 // ─── Types — Action Register ──────────────────────────────────────────────────
 
 interface ActionItem {

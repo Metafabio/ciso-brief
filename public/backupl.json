@@ -1,83 +1,99 @@
 {
   "version": "1.0",
-  "generated_at": "2026-04-20",
-  "week": 16,
+  "generated_at": "2026-04-21",
+  "week": 17,
   "summary": {
-    "headline": "Veeam consolida leadership con Gartner Customers' Choice. Il 90% delle aziende crede di poter recuperare da ransomware, ma solo il 28% riesce davvero. Il gap tra fiducia e capacità reali è l'opportunità per i System Integrator.",
+    "headline": "Consolidamento accelera: Wasabi acquisisce Lyve Cloud, Commvault nel mirino del private equity. The Gentlemen RaaS supera 320 vittime in Europa. Il backup senza exfiltration protection non è più sufficiente.",
     "key_points": [
-      "Veeam Leader Gartner per 9° anno consecutivo",
-      "Solo 28% recovery reale post-ransomware",
-      "AI orchestration diventa requisito minimo",
-      "Budget cybersecurity +49% YoY per chi ha avuto attacchi"
+      "Wasabi acquisisce Seagate Lyve Cloud — cloud storage si consolida",
+      "Commvault -30% in borsa, Thoma Bravo valuta acquisizione",
+      "The Gentlemen RaaS: 320 vittime, target PMI manifatturiero/logistica",
+      "Ransomware senza encryption in crescita (+100%) — backup classico non basta"
     ],
     "trend": "rising"
   },
   "ai_leaderboard": [
     {
       "rank": 1,
-      "vendor": "Veeam",
-      "product": "Intelligent Hub",
+      "vendor": "Rubrik",
+      "product": "Ruby AI + Cloud Vault Multi-Cloud",
       "ai_score": 9,
-      "key_feature": "AI orchestration automatica + Securiti AI",
-      "why": "Leader Gartner, 4.8/5 stelle, 98% consiglierebbero. Securiti aggiunge data governance."
+      "key_feature": "Vault air-gapped su AWS+Azure+GCP, unico multi-cloud completo",
+      "why": "Copertura multi-cloud completata con GCP. FedRAMP certificato. AI nativa con Ruby AI. Momentum in crescita vs Veeam sul cloud-native."
     },
     {
       "rank": 2,
-      "vendor": "Rubrik",
-      "product": "Ruby AI + Security Cloud",
+      "vendor": "Veeam",
+      "product": "Intelligent Hub v12.3",
       "ai_score": 8,
-      "key_feature": "Agentic Recovery in linguaggio naturale",
-      "why": "Primo AI analyst FedRAMP, recovery automatica per AD/Entra ID. Posizione forte in government."
+      "key_feature": "AI orchestration automatica, ecosistema partner più ampio",
+      "why": "Leader Gartner ability to execute. Il più diffuso nel mid-market italiano. Upgrade v12.3 porta AI orchestration anche ai clienti esistenti."
     },
     {
       "rank": 3,
       "vendor": "Cohesity",
       "product": "DataHound + DataPlatform",
+      "ai_score": 8,
+      "key_feature": "AI data classification GDPR + ransomware exfiltration detection",
+      "why": "Con l'exfiltration senza encryption in crescita, DataHound diventa critico: identifica cosa è stato rubato. Unico nel mercato backup."
+    },
+    {
+      "rank": 4,
+      "vendor": "HYCU",
+      "product": "R-Shield + Halcyon",
       "ai_score": 7,
-      "key_feature": "AI data classification per GDPR",
-      "why": "DataHound semplifica compliance. Mindshare in calo (1.9%) ma prodotto solido."
+      "key_feature": "Prevenzione + recovery ransomware in singolo prodotto",
+      "why": "Nuova categoria: first vendor che unisce detection (Halcyon) e recovery (HYCU). Ideale mid-market senza SOC."
+    },
+    {
+      "rank": 5,
+      "vendor": "Commvault",
+      "product": "Metallic AI",
+      "ai_score": 5,
+      "key_feature": "Enterprise legacy + AI insights base",
+      "why": "In calo per incertezza M&A. AI meno avanzata dei competitor. Ancora rilevante per large enterprise con base installata."
     }
   ],
   "news": [
     {
       "section": "market",
-      "title": "Veeam Gartner Customers' Choice 2026",
-      "vendor": "Veeam",
-      "amount": "n.c.",
-      "description": "Veeam ottiene Gartner Peer Insights Customers' Choice con 4.8/5 basato su 124 recensioni. 98% clienti consiglierebbero.",
-      "implication": "Usare come social proof nelle proposte. Dato verificabile attira deal."
+      "title": "Wasabi acquisisce Seagate Lyve Cloud",
+      "vendor": "Wasabi Technologies",
+      "amount": "n.d.",
+      "description": "Wasabi Technologies acquisisce il business Lyve Cloud da Seagate (9 aprile). Seagate diventa azionista. Le integrazioni con Veeam, Rubrik, Cohesity, Commvault vengono mantenute e potenziate.",
+      "implication": "I clienti con backup su Lyve Cloud devono verificare impatto migrazione. Posizionare Mauden come partner di supporto nella transizione."
     },
     {
       "section": "market",
-      "title": "90% fiducia recovery ma solo 28% recovera davvero",
-      "vendor": "Veeam",
-      "amount": "Report",
-      "description": "Veeam Data Trust Report 2026 rivela gap critico: 90% confidenti di recoverare, solo 28% riesce davvero post-ransomware.",
-      "implication": "Opportunità per servizi di assessments e validation. Proporre DR test come servizio aggiuntivo."
-    },
-    {
-      "section": "release",
-      "title": "Veeam acquisisce Securiti",
-      "vendor": "Veeam",
-      "amount": "$350M stimato",
-      "description": "Veeam acquisisce Securiti per data governance e privacy. Passa da backup a production data resilience.",
-      "implication": "Veeam si posiziona come piattaforma completa. Differenziazione forte vs competitor."
-    },
-    {
-      "section": "release",
-      "title": "Rubrik Identity Recovery GA",
-      "vendor": "Rubrik",
-      "amount": "n.c.",
-      "description": "Rubrik introduce Active Directory e Microsoft Entra ID recovery. Prima della categoria.",
-      "implication": "Vendere Rubrik per clienti con problemi AD frequenti. Differenziatore forte."
+      "title": "Commvault nel mirino del private equity — titolo -30%",
+      "vendor": "Commvault",
+      "amount": "~$3.5B market cap",
+      "description": "Thoma Bravo e altri PE valutano acquisizione Commvault dopo crollo del titolo. Goldman Sachs ingaggiato per valutare opzioni strategiche. Incertezza su roadmap e supporto.",
+      "implication": "Contattare subito i clienti Commvault per proporre assessment alternativo. L'incertezza M&A è un rischio reale per la continuità operativa."
     },
     {
       "section": "threat",
-      "title": "Ransomware colpisce 51% organizzazioni",
+      "title": "The Gentlemen RaaS — 320 vittime in Europa nel 2026",
+      "vendor": "The Gentlemen",
+      "amount": "320+ vittime",
+      "description": "The Gentlemen è il gruppo RaaS con crescita più rapida in Europa. 240 vittime solo nei primi mesi 2026. Target principale: PMI manifatturiero e logistica.",
+      "implication": "Usare dati The Gentlemen per urgency nelle conversazioni con clienti manifatturiero e logistica. Proporre Ransomware Restore Test come risposta immediata."
+    },
+    {
+      "section": "threat",
+      "title": "Ransomware senza encryption — exfiltration pura raddoppiata",
       "vendor": "Industry",
-      "amount": "Report",
-      "description": "51% ransomware victims US nel Q1 2026. Healthcare e manufacturing target principali.",
-      "implication": "Proporre always-on immutability come minimum. Ransomware warranty come argomento di vendita."
+      "amount": "6% attacchi 2026",
+      "description": "Il 6% degli attacchi ransomware 2026 usa solo exfiltration senza encryption — doppio rispetto al 2025. I backup tradizionali non rilevano né bloccano. Breakout time medio: 29 minuti.",
+      "implication": "Aggiungere data classification e DLP alle conversazioni backup. I backup da soli non bastano più: serve sapere cosa è uscito."
+    },
+    {
+      "section": "release",
+      "title": "Rubrik Cloud Vault — copertura AWS+Azure+GCP completa",
+      "vendor": "Rubrik",
+      "amount": "n.c.",
+      "description": "Rubrik estende il Cloud Vault air-gapped a Google Cloud. Unico vendor con vault immutabile su tutti e tre i major cloud provider.",
+      "implication": "Per clienti con ambienti Google Cloud: Rubrik è ora l'unica scelta con protezione immutabile multi-cloud completa."
     }
   ],
   "selection_guide": {
@@ -327,7 +343,7 @@
     }
   ],
   "recommendations": {
-    "for_engineer": "Questa settimana: proporre assessment di ransomware preparedness a 3 clienti esistenti. Il 90% crede di poter recoverare ma solo il 28% ci riesce - opportunità per servizi.",
-    "for_sales": "Usare dato Veeam: 98% clienti consiglierebbero come social proof. Per clienti manufacturing: proporre Veeam per flessibilità. Per government: Rubrik per FedRAMP. Per GDPR: Cohesity DataHound."
+    "for_engineer": "Questa settimana: contattare i clienti con Commvault attivo e proporre assessment alternativo (Veeam/Rubrik). L'incertezza M&A è un trigger tecnico e commerciale legittimo.",
+    "for_sales": "Due argomenti di urgency immediata: (1) The Gentlemen RaaS — 320 vittime, target manifatturiero/logistica. (2) Ransomware senza encryption — i backup tradizionali non bastano più. Entrambi aprono conversazioni su Ransomware Restore Test."
   }
 }

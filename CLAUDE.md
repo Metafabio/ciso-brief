@@ -19,7 +19,10 @@ A detailed JSON project map is available at `.promptops/project-context.json` â€
 app/
   ... (4 more files)
 archive/
+  ... (2 more files)
 data/
+  ... (1 more files)
+docs/
   ... (1 more files)
 public/
   ... (9 more files)
