@@ -1530,6 +1530,8 @@ export default function Page() {
   const [actionRegister, setActionRegister] = useState<ActionRegisterData | null>(null)
   const [clientName, setClientName] = useState('')
   const [showClientInput, setShowClientInput] = useState(false)
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [generateMsg, setGenerateMsg] = useState('')
 
   useEffect(() => {
     Promise.all([
@@ -1559,6 +1561,26 @@ export default function Page() {
     setTimeout(() => {
       window.location.reload()
     }, 1500)
+  }, [])
+
+  const handleGenerate = useCallback(async () => {
+    setIsGenerating(true)
+    setGenerateMsg('Fetching notizie RSS...')
+    try {
+      const res = await fetch('/api/generate', { method: 'POST' })
+      const data = await res.json()
+      if (data.success) {
+        setGenerateMsg('Generato! Ricarico...')
+        setTimeout(() => window.location.reload(), 1500)
+      } else {
+        const errors = Object.entries(data.results ?? {}).filter(([, v]) => v !== 'ok').map(([k, v]) => `${k}: ${v}`).join(', ')
+        setGenerateMsg(`Errori: ${errors || 'sconosciuto'}`)
+        setTimeout(() => { setIsGenerating(false); setGenerateMsg('') }, 4000)
+      }
+    } catch {
+      setGenerateMsg('Errore di rete')
+      setTimeout(() => { setIsGenerating(false); setGenerateMsg('') }, 3000)
+    }
   }, [])
 
   const handleExportPDF = useCallback(() => {
@@ -1647,6 +1669,12 @@ export default function Page() {
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button onClick={handleGenerate} disabled={isGenerating} className="btn" title="Rigenera brief con AI + notizie live" style={{ color: isGenerating ? 'var(--accent)' : undefined, borderColor: isGenerating ? 'var(--accent)' : undefined }}>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7, animation: isGenerating ? 'spin 1s linear infinite' : 'none' }}>
+              <path d="M7 1l1.5 3h3L9 6l1 3.5L7 8l-3 1.5L5 6 2.5 4h3z" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            {generateMsg || (isGenerating ? 'Generando...' : 'Rigenera')}
+          </button>
           <button onClick={handleRefresh} disabled={isRefreshing} className="btn" title="Refresh data">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7, animation: isRefreshing ? 'spin 1s linear infinite' : 'none' }}>
               <path d="M12 7a5 5 0 11-8.5-3.5M12 3v4H8M12 3L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
