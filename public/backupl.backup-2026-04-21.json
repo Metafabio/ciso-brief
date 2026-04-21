@@ -1,0 +1,83 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-04-21",
+  "week": 17,
+  "summary": {
+    "headline": "Aumento degli attacchi di ransomware e malware",
+    "key_points": [
+      "Aumento degli attacchi di ransomware",
+      "Utilizzo di SystemBC per attacchi bot-powered",
+      "Exploit di vulnerabilità in SD-WAN e Apache ActiveMQ",
+      "Utilizzo di malware per rubare dati di pagamento"
+    ],
+    "trend": "rising"
+  },
+  "ai_leaderboard": [
+    {
+      "rank": 1,
+      "vendor": "Rubrik",
+      "product": "Rubrik Cloud Data Management",
+      "ai_score": 9,
+      "key_feature": "Protezione dei dati avanzata",
+      "why": "Offre una protezione dei dati completa e scalabile, con funzionalità di backup e ripristino avanzate."
+    },
+    {
+      "rank": 2,
+      "vendor": "Veeam",
+      "product": "Veeam Backup & Replication",
+      "ai_score": 8,
+      "key_feature": "Integrazione con hypervisor",
+      "why": "Offre una soluzione di backup e ripristino completa, con integrazione con hypervisor come VMware e Hyper-V."
+    },
+    {
+      "rank": 3,
+      "vendor": "Cohesity",
+      "product": "Cohesity DataPlatform",
+      "ai_score": 8,
+      "key_feature": "Protezione dei dati ibrida",
+      "why": "Offre una soluzione di protezione dei dati ibrida, con supporto per ambienti cloud e on-premise."
+    },
+    {
+      "rank": 4,
+      "vendor": "HYCU",
+      "product": "HYCU Protégé",
+      "ai_score": 7,
+      "key_feature": "Protezione dei dati per ambiente multi-cloud",
+      "why": "Offre una soluzione di protezione dei dati per ambienti multi-cloud, con supporto per AWS, Azure e Google Cloud."
+    },
+    {
+      "rank": 5,
+      "vendor": "Commvault",
+      "product": "Commvault Complete Backup & Recovery",
+      "ai_score": 5,
+      "key_feature": "Protezione dei dati completa",
+      "why": "Offre una soluzione di protezione dei dati completa, ma con una curva di apprendimento più ripida rispetto ad altre opzioni."
+    }
+  ],
+  "news": [
+    {
+      "section": "market",
+      "title": "KelpDAO subisce un attacco da 290 milioni di dollari",
+      "vendor": "KelpDAO",
+      "amount": "290 milioni di dollari",
+      "description": "KelpDAO, una piattaforma di finanziamento decentralizzata, è stata vittima di un attacco da 290 milioni di dollari. L'attacco è stato attribuito al gruppo di hacker noto come Lazarus.",
+      "implication": "Le aziende devono essere consapevoli dei rischi di attacchi di questo tipo e adottare misure di sicurezza avanzate per proteggere i propri dati e asset."
+    },
+    {
+      "section": "threat",
+      "title": "New Lotus data wiper utilizzato contro aziende venezuelane",
+      "vendor": "New Lotus",
+      "amount": "n.d.",
+      "description": "Un nuovo malware denominato New Lotus data wiper è stato utilizzato in attacchi contro aziende venezuelane del settore energetico e delle utility. Il malware è in grado di cancellare i dati delle vittime e richiedere un riscatto.",
+      "implication": "Le aziende devono essere consapevoli dei rischi di attacchi di questo tipo e adottare misure di sicurezza avanzate per proteggere i propri dati e asset."
+    },
+    {
+      "section": "product",
+      "title": "Microsoft tests Windows Explorer speed e performance improvements",
+      "vendor": "Microsoft",
+      "amount": "n.d.",
+      "description": "Microsoft sta testando miglioramenti alla velocità e alle prestazioni di Windows Explorer. I miglioramenti sono destinati a migliorare l'esperienza dell'utente e a ridurre i tempi di caricamento dei file.",
+      "implication": "Le aziende devono essere consapevoli dei miglioramenti apportati a Windows Explorer e valutare se sono necessarie modifiche alle proprie procedure di sicurezza per proteggere i propri dati e asset."
+    }
+  ]
+}

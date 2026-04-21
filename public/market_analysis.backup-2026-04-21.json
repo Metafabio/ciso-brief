@@ -1,0 +1,245 @@
+{
+  "week": 17,
+  "generated_at": "2026-04-21",
+  "summary": "Questa settimana è stata caratterizzata da una serie di attacchi informatici e violazioni dei dati, con particolare attenzione ai ransomware e alle minacce di sicurezza. Le aziende come Microsoft e Apple sono state coinvolte in queste vicende, con attacchi ai loro sistemi e prodotti. La settimana si è chiusa con una serie di arresti e condanne per attacchi informatici, tra cui il caso di un negoziatore di ransomware che ha confessato di aver aiutato gli attacchi di BlackCat.",
+  "brands": [
+    {
+      "name": "Microsoft",
+      "segment": "SIEM / Identity",
+      "momentum": "stable",
+      "momentum_reason": "La compagnia ha continuato a lavorare sulla sicurezza dei suoi prodotti, ma è stata anche coinvolta in alcuni attacchi informatici.",
+      "ai_integration": {
+        "score": 6,
+        "label": "Advanced",
+        "features": [
+          "analisi dei log",
+          "rilevamento delle minacce"
+        ],
+        "llm_model": "n.d."
+      },
+      "products_in_focus": [
+        {
+          "name": "Microsoft Teams",
+          "category": "Collaboration",
+          "key_differentiator": "La piattaforma di collaborazione è stata utilizzata anche per attacchi di phishing",
+          "ai_feature": "n.d.",
+          "target_buyer": "IT Manager"
+        }
+      ],
+      "competitive_threat": "Le aziende come Google e Amazon potrebbero rappresentare una minaccia per Microsoft nel settore della sicurezza informatica.",
+      "sales_angle": "La sicurezza informatica è una priorità per le aziende, quindi è importante offrire soluzioni complete e avanzate come quelle di Microsoft."
+    },
+    {
+      "name": "Apple",
+      "segment": "Backup & DR",
+      "momentum": "declining",
+      "momentum_reason": "La compagnia ha avuto problemi con la sicurezza dei suoi sistemi e prodotti, in particolare con l'infiltrazione di app maliziose nell'App Store cinese.",
+      "ai_integration": {
+        "score": 4,
+        "label": "Basic",
+        "features": [
+          "backup automatico"
+        ],
+        "llm_model": "n.d."
+      },
+      "products_in_focus": [
+        {
+          "name": "Apple App Store",
+          "category": "Store di app",
+          "key_differentiator": "La piattaforma di distribuzione di app è stata infiltrata da app maliziose",
+          "ai_feature": "n.d.",
+          "target_buyer": "SMB"
+        }
+      ],
+      "competitive_threat": "Le aziende come Google e Amazon potrebbero rappresentare una minaccia per Apple nel settore della sicurezza informatica.",
+      "sales_angle": "La sicurezza informatica è una priorità per le aziende, quindi è importante offrire soluzioni complete e avanzate come quelle di Apple."
+    },
+    {
+      "name": "Lantronix",
+      "segment": "CNAPP",
+      "momentum": "declining",
+      "momentum_reason": "La compagnia ha avuto problemi con la sicurezza dei suoi sistemi e prodotti, in particolare con la scoperta di 22 vulnerabilità nel suo sistema di conversione seriale-IP.",
+      "ai_integration": {
+        "score": 2,
+        "label": "None",
+        "features": [
+          "n.d."
+        ],
+        "llm_model": "n.d."
+      },
+      "products_in_focus": [
+        {
+          "name": "Lantronix Serial-to-IP Converter",
+          "category": "Conversione seriale-IP",
+          "key_differentiator": "Il sistema di conversione seriale-IP ha vulnerabilità di sicurezza",
+          "ai_feature": "n.d.",
+          "target_buyer": "IT Manager"
+        }
+      ],
+      "competitive_threat": "Le aziende come Cisco e Juniper potrebbero rappresentare una minaccia per Lantronix nel settore della sicurezza informatica.",
+      "sales_angle": "La sicurezza informatica è una priorità per le aziende, quindi è importante offrire soluzioni complete e avanzate come quelle di Lantronix."
+    },
+    {
+      "name": "BlackCat",
+      "segment": "Ransomware",
+      "momentum": "rising",
+      "momentum_reason": "Il gruppo di attaccanti ha continuato a essere attivo e ha coinvolto un negoziatore di ransomware che ha confessato di aver aiutato gli attacchi.",
+      "ai_integration": {
+        "score": 0,
+        "label": "None",
+        "features": [
+          "n.d."
+        ],
+        "llm_model": "n.d."
+      },
+      "products_in_focus": [
+        {
+          "name": "BlackCat Ransomware",
+          "category": "Ransomware",
+          "key_differentiator": "Il ransomware è stato utilizzato in una serie di attacchi informatici",
+          "ai_feature": "n.d.",
+          "target_buyer": "n.d."
+        }
+      ],
+      "competitive_threat": "Le aziende come Microsoft e Apple potrebbero rappresentare una minaccia per BlackCat nel settore della sicurezza informatica.",
+      "sales_angle": "La sicurezza informatica è una priorità per le aziende, quindi è importante offrire soluzioni complete e avanzate per proteggersi da attacchi come quelli di BlackCat."
+    },
+    {
+      "name": "CISA",
+      "segment": "SIEM",
+      "momentum": "stable",
+      "momentum_reason": "L'agenzia ha continuato a lavorare sulla sicurezza informatica e ha segnalato una serie di vulnerabilità e minacce.",
+      "ai_integration": {
+        "score": 5,
+        "label": "Basic",
+        "features": [
+          "analisi dei log"
+        ],
+        "llm_model": "n.d."
+      },
+      "products_in_focus": [
+        {
+          "name": "CISA Alerts",
+          "category": "Sicurezza informatica",
+          "key_differentiator": "L'agenzia ha segnalato una serie di vulnerabilità e minacce",
+          "ai_feature": "n.d.",
+          "target_buyer": "IT Manager"
+        }
+      ],
+      "competitive_threat": "Le aziende come Microsoft e Apple potrebbero rappresentare una minaccia per CISA nel settore della sicurezza informatica.",
+      "sales_angle": "La sicurezza informatica è una priorità per le aziende, quindi è importante offrire soluzioni complete e avanzate come quelle di CISA."
+    }
+  ],
+  "market_signals": [
+    {
+      "signal": "Aumento degli attacchi di ransomware",
+      "type": "disruption",
+      "impact": "high",
+      "description": "Gli attacchi di ransomware sono in aumento e stanno diventando sempre più sofisticati. Le aziende devono essere preparate a proteggersi da questi attacchi.",
+      "who_wins": "Le aziende che offrono soluzioni di sicurezza informatica",
+      "who_loses": "Le aziende che non sono preparate a proteggersi da attacchi di ransomware",
+      "confidence": "high",
+      "sources": [
+        {
+          "title": "New Lotus data wiper used against Venezuelan energy, utility firms",
+          "url": "https://www.bleepingcomputer.com/news/security/new-lotus-data-wiper-used-against-venezuelan-energy-utility-firms/",
+          "publisher": "BleepingComputer",
+          "published_at": "2026-04-21"
+        }
+      ]
+    },
+    {
+      "signal": "Infiltrazione di app maliziose nell'App Store cinese",
+      "type": "disruption",
+      "impact": "medium",
+      "description": "L'App Store cinese è stata infiltrata da app maliziose che possono rubare dati sensibili degli utenti. Le aziende devono essere preparate a proteggersi da queste minacce.",
+      "who_wins": "Le aziende che offrono soluzioni di sicurezza informatica",
+      "who_loses": "Le aziende che non sono preparate a proteggersi da app maliziose",
+      "confidence": "medium",
+      "sources": [
+        {
+          "title": "China's Apple App Store infiltrated by crypto-stealing wallet apps",
+          "url": "https://www.bleepingcomputer.com/news/security/chinas-apple-app-store-infiltrated-by-crypto-stealing-wallet-apps/",
+          "publisher": "BleepingComputer",
+          "published_at": "2026-04-20"
+        }
+      ]
+    },
+    {
+      "signal": "Aumento degli attacchi di phishing",
+      "type": "disruption",
+      "impact": "high",
+      "description": "Gli attacchi di phishing sono in aumento e stanno diventando sempre più sofisticati. Le aziende devono essere preparate a proteggersi da questi attacchi.",
+      "who_wins": "Le aziende che offrono soluzioni di sicurezza informatica",
+      "who_loses": "Le aziende che non sono preparate a proteggersi da attacchi di phishing",
+      "confidence": "high",
+      "sources": [
+        {
+          "title": "Microsoft: Teams increasingly abused in helpdesk impersonation attacks",
+          "url": "https://www.bleepingcomputer.com/news/security/microsoft-teams-increasingly-abused-in-helpdesk-impersonation-attacks/",
+          "publisher": "BleepingComputer",
+          "published_at": "2026-04-20"
+        }
+      ]
+    },
+    {
+      "signal": "Scoperta di vulnerabilità nel sistema di conversione seriale-IP di Lantronix",
+      "type": "disruption",
+      "impact": "medium",
+      "description": "Sono state scoperte 22 vulnerabilità nel sistema di conversione seriale-IP di Lantronix. Le aziende devono essere preparate a proteggersi da queste minacce.",
+      "who_wins": "Le aziende che offrono soluzioni di sicurezza informatica",
+      "who_loses": "Le aziende che non sono preparate a proteggersi da vulnerabilità nel sistema di conversione seriale-IP",
+      "confidence": "medium",
+      "sources": [
+        {
+          "title": "22 BRIDGE:BREAK Flaws Expose Thousands of Lantronix and Silex Serial-to-IP Converters",
+          "url": "https://thehackernews.com/2026/04/22-bridgebreak-flaws-expose-20000.html",
+          "publisher": "The Hacker News",
+          "published_at": "2026-04-21"
+        }
+      ]
+    }
+  ],
+  "ai_llm_leaderboard": [
+    {
+      "rank": 1,
+      "brand": "Microsoft",
+      "product": "Microsoft Azure",
+      "why": "La compagnia ha continuato a lavorare sulla sicurezza informatica e ha integrato l'intelligenza artificiale nelle sue soluzioni.",
+      "integration_type": "RAG su log SIEM"
+    },
+    {
+      "rank": 2,
+      "brand": "Google",
+      "product": "Google Cloud",
+      "why": "La compagnia ha continuato a lavorare sulla sicurezza informatica e ha integrato l'intelligenza artificiale nelle sue soluzioni.",
+      "integration_type": "Analisi dei log"
+    },
+    {
+      "rank": 3,
+      "brand": "Amazon",
+      "product": "Amazon Web Services",
+      "why": "La compagnia ha continuato a lavorare sulla sicurezza informatica e ha integrato l'intelligenza artificiale nelle sue soluzioni.",
+      "integration_type": "Rilevamento delle minacce"
+    },
+    {
+      "rank": 4,
+      "brand": "CISA",
+      "product": "CISA Alerts",
+      "why": "L'agenzia ha continuato a lavorare sulla sicurezza informatica e ha integrato l'intelligenza artificiale nelle sue soluzioni.",
+      "integration_type": "Analisi dei log"
+    },
+    {
+      "rank": 5,
+      "brand": "Lantronix",
+      "product": "Lantronix Serial-to-IP Converter",
+      "why": "La compagnia ha continuato a lavorare sulla sicurezza informatica, ma ha avuto problemi con la sicurezza dei suoi sistemi e prodotti.",
+      "integration_type": "n.d."
+    }
+  ],
+  "recommendation": {
+    "for_manager": "È importante investire nella sicurezza informatica e nell'intelligenza artificiale per proteggersi da attacchi e minacce.",
+    "for_sales": "È importante offrire soluzioni complete e avanzate di sicurezza informatica e intelligenza artificiale per aiutare le aziende a proteggersi da attacchi e minacce.",
+    "watch_next_week": "È importante monitorare le aziende come Microsoft, Google e Amazon, che stanno lavorando sulla sicurezza informatica e sull'intelligenza artificiale."
+  }
+}

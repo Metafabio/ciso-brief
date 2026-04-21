@@ -3,105 +3,81 @@
   "generated_at": "2026-04-21",
   "week": 17,
   "summary": {
-    "headline": "Aumento degli attacchi di ransomware e malware, con un focus sulla sicurezza dei dati",
+    "headline": "Minacce informatiche in aumento",
     "key_points": [
       "Aumento degli attacchi di ransomware",
-      "Malware che utilizza app NFC per rubare dati",
-      "Importanza della sicurezza dei dati",
-      "Nuove vulnerabilità scoperte in software e hardware"
+      "Utilizzo di malware per rubare dati",
+      "Vulnerabilità nei sistemi di sicurezza",
+      "Importanza della cyber resilience"
     ],
     "trend": "rising"
   },
   "ai_leaderboard": [
     {
       "rank": 1,
-      "vendor": "Veeam",
-      "product": "Veeam Backup & Replication",
+      "vendor": "Rubrik",
+      "product": "Rubrik Cloud Data Management",
       "ai_score": 9,
-      "key_feature": "Integrazione con AI per la rilevazione di anomalie e la protezione dei dati",
-      "why": "Veeam è in prima posizione grazie alla sua capacità di integrare l'intelligenza artificiale per migliorare la sicurezza dei dati e la rilevazione di anomalie. La sua soluzione di backup e ripristino è considerata una delle migliori sul mercato."
+      "key_feature": "Gestione dei dati cloud avanzata",
+      "why": "Rubrik offre una piattaforma di gestione dei dati cloud completa e sicura, con funzionalità avanzate di backup e ripristino."
     },
     {
       "rank": 2,
-      "vendor": "Rubrik",
-      "product": "Rubrik Cloud Data Management",
+      "vendor": "Veeam",
+      "product": "Veeam Backup & Replication",
       "ai_score": 8,
-      "key_feature": "Gestione dei dati cloud con funzionalità di sicurezza avanzate",
-      "why": "Rubrik è in seconda posizione grazie alla sua soluzione di gestione dei dati cloud, che offre funzionalità di sicurezza avanzate e una gestione efficiente dei dati."
+      "key_feature": "Backup e ripristino dei dati",
+      "why": "Veeam offre una soluzione di backup e ripristino dei dati affidabile e scalabile, con funzionalità avanzate di gestione dei dati."
     },
     {
       "rank": 3,
       "vendor": "Cohesity",
       "product": "Cohesity DataPlatform",
       "ai_score": 8,
-      "key_feature": "Piattaforma di gestione dei dati con funzionalità di sicurezza e backup",
-      "why": "Cohesity è in terza posizione grazie alla sua piattaforma di gestione dei dati, che offre funzionalità di sicurezza e backup avanzate."
+      "key_feature": "Piattaforma di gestione dei dati unificata",
+      "why": "Cohesity offre una piattaforma di gestione dei dati unificata e scalabile, con funzionalità avanzate di backup, ripristino e gestione dei dati."
     },
     {
       "rank": 4,
       "vendor": "HYCU",
       "product": "HYCU Protégé",
       "ai_score": 7,
-      "key_feature": "Soluzione di backup e ripristino con funzionalità di sicurezza",
-      "why": "HYCU è in quarta posizione grazie alla sua soluzione di backup e ripristino, che offre funzionalità di sicurezza e una gestione efficiente dei dati."
+      "key_feature": "Gestione dei dati cloud e on-premises",
+      "why": "HYCU offre una soluzione di gestione dei dati cloud e on-premises completa e sicura, con funzionalità avanzate di backup e ripristino."
     },
     {
       "rank": 5,
       "vendor": "Commvault",
       "product": "Commvault Complete Backup & Recovery",
-      "ai_score": 6,
-      "key_feature": "Soluzione di backup e ripristino con funzionalità di sicurezza",
-      "why": "Commvault è in quinta posizione grazie alla sua soluzione di backup e ripristino, che offre funzionalità di sicurezza e una gestione efficiente dei dati."
+      "ai_score": 5,
+      "key_feature": "Backup e ripristino dei dati",
+      "why": "Commvault offre una soluzione di backup e ripristino dei dati affidabile e scalabile, con funzionalità avanzate di gestione dei dati."
     }
   ],
   "news": [
     {
-      "section": "threat",
-      "title": "Nuovo malware NGate utilizza app NFC per rubare dati",
-      "vendor": "NGate",
-      "amount": "n.d.",
-      "description": "Il nuovo malware NGate utilizza app NFC per rubare dati e PIN. Questo malware è stato scoperto in Brasile e rappresenta una nuova minaccia per la sicurezza dei dati.",
-      "implication": "È importante aggiornare i sistemi di sicurezza per proteggere i dati da questo nuovo tipo di malware."
-    },
-    {
       "section": "market",
-      "title": "KelpDAO subisce attacco di ransomware e perde 290 milioni di dollari",
+      "title": "KelpDAO subisce un attacco di furto di 290 milioni di dollari",
       "vendor": "KelpDAO",
       "amount": "290 milioni di dollari",
-      "description": "KelpDAO ha subito un attacco di ransomware e ha perso 290 milioni di dollari. Questo attacco rappresenta una delle più grandi perdite di denaro a causa di un attacco di ransomware.",
-      "implication": "È importante implementare soluzioni di sicurezza avanzate per proteggere i dati e prevenire attacchi di ransomware."
+      "description": "KelpDAO, una piattaforma di finanziamento decentralizzata, è stata vittima di un attacco di furto di 290 milioni di dollari. L'attacco è stato attribuito al gruppo di hacker Lazarus.",
+      "implication": "Le aziende devono aumentare la sicurezza dei loro sistemi di finanziamento decentralizzati per prevenire attacchi simili."
+    },
+    {
+      "section": "threat",
+      "title": "New Lotus data wiper utilizzato contro aziende venezuelane",
+      "vendor": "New Lotus",
+      "amount": "n.d.",
+      "description": "Il malware New Lotus data wiper è stato utilizzato in attacchi contro aziende venezuelane del settore energetico e delle utility. Il malware è in grado di cancellare i dati dei sistemi infettati.",
+      "implication": "Le aziende devono essere consapevoli della minaccia rappresentata dal malware New Lotus data wiper e adottare misure di sicurezza per prevenirne l'infezione."
     },
     {
       "section": "product",
-      "title": "Veeam lancia nuova versione di Veeam Backup & Replication",
-      "vendor": "Veeam",
-      "amount": "n.d.",
-      "description": "Veeam ha lanciato una nuova versione di Veeam Backup & Replication, che offre funzionalità di sicurezza avanzate e una gestione efficiente dei dati.",
-      "implication": "È importante aggiornare i sistemi di backup e ripristino per proteggere i dati e garantire la continuità operativa."
-    },
-    {
-      "section": "regulation",
-      "title": "Regolamentazione sulla sicurezza dei dati in Europa",
-      "vendor": "Unione Europea",
-      "amount": "n.d.",
-      "description": "L'Unione Europea ha introdotto nuove regolamentazioni sulla sicurezza dei dati, che richiedono alle aziende di implementare soluzioni di sicurezza avanzate per proteggere i dati.",
-      "implication": "È importante aggiornare i sistemi di sicurezza per garantire la conformità alle nuove regolamentazioni e proteggere i dati."
-    },
-    {
-      "section": "threat",
-      "title": "Attacco di ransomware contro azienda di energia e utility in Venezuela",
-      "vendor": "Lotus",
-      "amount": "n.d.",
-      "description": "Un attacco di ransomware ha colpito un'azienda di energia e utility in Venezuela, utilizzando il malware Lotus. Questo attacco rappresenta una nuova minaccia per la sicurezza dei dati.",
-      "implication": "È importante aggiornare i sistemi di sicurezza per proteggere i dati da questo nuovo tipo di malware."
-    },
-    {
-      "section": "market",
-      "title": "Microsoft lancia nuova versione di Microsoft Teams",
+      "title": "Microsoft tests Windows Explorer speed e performance improvements",
       "vendor": "Microsoft",
       "amount": "n.d.",
-      "description": "Microsoft ha lanciato una nuova versione di Microsoft Teams, che offre funzionalità di sicurezza avanzate e una gestione efficiente dei dati.",
-      "implication": "È importante aggiornare i sistemi di comunicazione per proteggere i dati e garantire la continuità operativa."
+      "description": "Microsoft sta testando miglioramenti alla velocità e alle prestazioni di Windows Explorer. I miglioramenti sono destinati a migliorare l'esperienza dell'utente e a ridurre i tempi di caricamento dei file.",
+      "implication": "Le aziende possono beneficiare dei miglioramenti alla velocità e alle prestazioni di Windows Explorer per aumentare la produttività e l'efficienza dei loro sistemi."
     }
   ]
 }

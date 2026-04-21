@@ -13,19 +13,23 @@ A detailed JSON project map is available at `.promptops/project-context.json` �
 - **Name**: ciso-brief
 - **Framework**: nextjs (typescript)
 - **Version**: 16.2.4
+- **CI/CD**: github-actions
+- **Domains**: api
 
 ## Directory Structure
 ```
 app/
+  api/
+    generate/
+      ... (1 more files)
   ... (4 more files)
 archive/
-  ... (2 more files)
 data/
-  ... (1 more files)
+  ... (2 more files)
 docs/
   ... (1 more files)
 public/
-  ... (9 more files)
+  ... (13 more files)
 CLAUDE.md
 eslint.config.mjs
 next.config.ts
@@ -36,19 +40,20 @@ tsconfig.json
 ```
 
 ## Key Entry Points
-- `app/` — App router pages (4 files)
+- `app/` — App router pages (5 files)
 
 ## Recently Changed Files
 These files were modified in recent commits — likely relevant to current work:
-- `.claude/shared-context.md`
+- `.github/workflows/generate-brief.yml`
 - `AGENTS.md`
 - `CLAUDE.md`
-- `app/globals.css`
-- `app/layout.tsx`
+- `app/api/generate/route.ts`
 - `app/page.tsx`
-- `data/backupl.json`
+- `data/llmops-log.jsonl`
 - `generate-brief.mjs`
-- `prompt-generate-intel.md`
+- `package-lock.json`
+- `package.json`
+- `public/action_register.json`
 - `public/backupl.json`
 - `public/brief.json`
 - `public/market_analysis.json`

@@ -1,0 +1,66 @@
+{
+  "week": 17,
+  "generated_at": "2026-04-21",
+  "actions": [
+    {
+      "id": "act-001",
+      "source_signal": "Attacchi ransomware in aumento, come ad esempio il caso di The Gentlemen ransomware che utilizza SystemBC per attacchi bot-powered",
+      "risk": "Il cliente potrebbe essere vulnerabile a questo tipo di attacchi e perdere dati importanti. La mancanza di una strategia di backup e disaster recovery efficace potrebbe portare a conseguenze gravi",
+      "action": "Proporre un'offerta di Ransomware Restore Test per valutare la resilienza del cliente agli attacchi ransomware e fornire una strategia di backup e disaster recovery personalizzata",
+      "owner": "Sales",
+      "priority": "high",
+      "mauden_service": "Ransomware Restore Test",
+      "service_price": "€6k–€20k",
+      "status": "open",
+      "deadline": "2026-04-28"
+    },
+    {
+      "id": "act-002",
+      "source_signal": "La vulnerabilità di Apache ActiveMQ sta influenzando oltre 6.400 server",
+      "risk": "Il cliente potrebbe avere server vulnerabili e non essere a conoscenza del rischio. La mancanza di una valutazione e correzione della vulnerabilità potrebbe portare a conseguenze gravi",
+      "action": "Offrire un servizio di Backup Architecture Modernization per valutare e correggere la vulnerabilità di Apache ActiveMQ e fornire una soluzione di backup e disaster recovery aggiornata",
+      "owner": "Pre-Sales",
+      "priority": "high",
+      "mauden_service": "Backup Architecture Modernization",
+      "service_price": "€15k–€80k",
+      "status": "open",
+      "deadline": "2026-05-01"
+    },
+    {
+      "id": "act-003",
+      "source_signal": "Il caso di KelpDAO che ha subito un furto di 290 milioni di dollari legato agli hacker Lazarus",
+      "risk": "Il cliente potrebbe essere vulnerabile a questo tipo di attacchi e perdere dati importanti. La mancanza di una strategia di sicurezza e disaster recovery efficace potrebbe portare a conseguenze gravi",
+      "action": "Proporre un'offerta di Cyber Recovery Assessment per valutare la resilienza del cliente agli attacchi e fornire una strategia di sicurezza e disaster recovery personalizzata",
+      "owner": "Sales / Pre-Sales",
+      "priority": "medium",
+      "mauden_service": "Cyber Recovery Assessment",
+      "service_price": "€4k–€12k",
+      "status": "open",
+      "deadline": "2026-05-05"
+    },
+    {
+      "id": "act-004",
+      "source_signal": "La notizia di SystemBC C2 Server che rivela oltre 1.570 vittime nell'operazione di ransomware The Gentlemen",
+      "risk": "Il cliente potrebbe essere uno dei bersagli di questo tipo di attacchi e non essere a conoscenza del rischio. La mancanza di una strategia di backup e disaster recovery efficace potrebbe portare a conseguenze gravi",
+      "action": "Fornire un servizio di consulenza tecnica per aiutare il cliente a valutare e migliorare la sua strategia di backup e disaster recovery",
+      "owner": "Technical",
+      "priority": "medium",
+      "mauden_service": "Consulenza tecnica",
+      "service_price": "€2k–€5k",
+      "status": "open",
+      "deadline": "2026-05-05"
+    },
+    {
+      "id": "act-005",
+      "source_signal": "La notizia di NGate Android malware che utilizza HandyPay NFC app per rubare dati di carta e PIN",
+      "risk": "Il cliente potrebbe essere vulnerabile a questo tipo di attacchi e perdere dati importanti. La mancanza di una strategia di sicurezza e disaster recovery efficace potrebbe portare a conseguenze gravi",
+      "action": "Proporre un'offerta di servizio di sicurezza per aiutare il cliente a valutare e migliorare la sua strategia di sicurezza e disaster recovery",
+      "owner": "Sales",
+      "priority": "low",
+      "mauden_service": "Servizio di sicurezza",
+      "service_price": "€1k–€3k",
+      "status": "open",
+      "deadline": "2026-05-05"
+    }
+  ]
+}
