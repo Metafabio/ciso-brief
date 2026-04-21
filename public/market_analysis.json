@@ -11,7 +11,11 @@
       "ai_integration": {
         "score": 8,
         "label": "Advanced",
-        "features": ["Intelligent Backup Advisor", "AI Policy Automation", "Natural Language Recovery"],
+        "features": [
+          "Intelligent Backup Advisor",
+          "AI Policy Automation",
+          "Natural Language Recovery"
+        ],
         "llm_model": "n.d."
       },
       "products_in_focus": [
@@ -34,7 +38,11 @@
       "ai_integration": {
         "score": 9,
         "label": "Native",
-        "features": ["Ruby AI Analyst", "Ransomware Detection", "FedRAMP"],
+        "features": [
+          "Ruby AI Analyst",
+          "Ransomware Detection",
+          "FedRAMP"
+        ],
         "llm_model": "Ruby LLM"
       },
       "products_in_focus": [
@@ -57,7 +65,11 @@
       "ai_integration": {
         "score": 8,
         "label": "Advanced",
-        "features": ["DataHound", "AI Classification", "Ransomware Warranty"],
+        "features": [
+          "DataHound",
+          "AI Classification",
+          "Ransomware Warranty"
+        ],
         "llm_model": "n.d."
       },
       "products_in_focus": [
@@ -80,7 +92,10 @@
       "ai_integration": {
         "score": 6,
         "label": "Basic",
-        "features": ["Cloud Tiering", "AI Deduplication"],
+        "features": [
+          "Cloud Tiering",
+          "AI Deduplication"
+        ],
         "llm_model": "n.d."
       },
       "products_in_focus": [
@@ -103,7 +118,16 @@
       "impact": "high",
       "description": "Funding conferma crescita mercato backup AI-driven. Valutazione $7.3B.",
       "who_wins": "Cohesity, vendor AI-first",
-      "who_loses": "Vendor legacy senza AI"
+      "who_loses": "Vendor legacy senza AI",
+      "confidence": "low",
+      "sources": [
+        {
+          "title": "Elemento da verificare prima della pubblicazione commerciale",
+          "url": "https://www.cohesity.com/blogs/cohesity-raises-150m-to-scale-data-management-and-security/",
+          "publisher": "Cohesity Blog",
+          "published_at": "2024-06-18"
+        }
+      ]
     },
     {
       "signal": "Veeam Intelligent Hub GA",
@@ -111,7 +135,16 @@
       "impact": "high",
       "description": "AI orchestration automatica per backup. Nuovo standard di mercato.",
       "who_wins": "Veeam, Backup Engineer",
-      "who_loses": "Vendor senza AI automation"
+      "who_loses": "Vendor senza AI automation",
+      "confidence": "medium",
+      "sources": [
+        {
+          "title": "Veeam Data Trust and Resilience Report 2026",
+          "url": "https://www.veeam.com/company/press-release/veeam-report-reveals-a-market-wide-shift-from-recovery-confidence-to-proven-data-resilience-amid-ransomware-threats-and-ai-adoption.html",
+          "publisher": "Veeam",
+          "published_at": "2026-04-14"
+        }
+      ]
     },
     {
       "signal": "Rubrik Ruby AI Analyst GA",
@@ -119,7 +152,16 @@
       "impact": "high",
       "description": "Primo AI analyst certificato FedRAMP. Incident investigation in linguaggio naturale.",
       "who_wins": "Rubrik, Government",
-      "who_loses": "Vendor non FedRAMP"
+      "who_loses": "Vendor non FedRAMP",
+      "confidence": "low",
+      "sources": [
+        {
+          "title": "Elemento da verificare prima della pubblicazione commerciale",
+          "url": "https://www.rubrik.com/blog/company/24/5/rubrik-unveils-new-ai-powered-cyber-recovery-capabilities",
+          "publisher": "Rubrik Blog",
+          "published_at": "2024-05-22"
+        }
+      ]
     },
     {
       "signal": "Interlock ransomware + ClickFix",
@@ -127,7 +169,16 @@
       "impact": "medium",
       "description": "Nuovo vettore di attacco. Verificare immutability backup.",
       "who_wins": "Vendor con ransomware warranty",
-      "who_loses": "Backup senza immutability"
+      "who_loses": "Backup senza immutability",
+      "confidence": "low",
+      "sources": [
+        {
+          "title": "Elemento da verificare prima della pubblicazione commerciale",
+          "url": "https://www.bleepingcomputer.com/news/security/interlock-ransomware-gang-deploys-clickfix-in-attacks-on-it-teams/",
+          "publisher": "BleepingComputer",
+          "published_at": "2025-01-15"
+        }
+      ]
     },
     {
       "signal": "Cloud backup 60% mercato 2030",
@@ -135,7 +186,16 @@
       "impact": "medium",
       "description": "IDC forecast: $15.2B mercato backup software. CAGR 12.3%.",
       "who_wins": "Vendor cloud-native",
-      "who_loses": "Vendor appliance-only"
+      "who_loses": "Vendor appliance-only",
+      "confidence": "low",
+      "sources": [
+        {
+          "title": "Elemento da verificare prima della pubblicazione commerciale",
+          "url": "https://www.idc.com/getdoc.jsp?containerId=US50471823",
+          "publisher": "IDC",
+          "published_at": "2024-06-01"
+        }
+      ]
     }
   ],
   "ai_llm_leaderboard": [

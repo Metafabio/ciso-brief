@@ -19,9 +19,10 @@ A detailed JSON project map is available at `.promptops/project-context.json` â€
 app/
   ... (4 more files)
 archive/
+data/
   ... (1 more files)
 public/
-  ... (7 more files)
+  ... (9 more files)
 CLAUDE.md
 eslint.config.mjs
 next.config.ts
@@ -36,16 +37,17 @@ tsconfig.json
 
 ## Recently Changed Files
 These files were modified in recent commits â€” likely relevant to current work:
-- `.gitignore`
+- `.claude/shared-context.md`
 - `AGENTS.md`
 - `CLAUDE.md`
-- `README.md`
 - `app/globals.css`
+- `app/layout.tsx`
 - `app/page.tsx`
+- `data/backupl.json`
 - `generate-brief.mjs`
-- `package-lock.json`
-- `package.json`
+- `prompt-generate-intel.md`
+- `public/backupl.json`
+- `public/brief.json`
 - `public/market_analysis.json`
-- `weekly-cybersecurity-intel.json`
 
 <!-- /PROMPTOPS:CONTEXT -->

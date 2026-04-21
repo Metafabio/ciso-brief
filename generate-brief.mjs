@@ -19,11 +19,12 @@ const __dir = dirname(fileURLToPath(import.meta.url))
 const BRIEF_FILE = resolve(__dir, 'public/brief.json')
 const ANALYSIS_FILE = resolve(__dir, 'public/market_analysis.json')
 
-const SECTION_IDS = ['ma-funding', 'ai-releases', 'threat-landscape', 'market-moves', 'backup-dr-ai']
+const SECTION_IDS = ['ma-funding', 'product-releases', 'threat-ransomware', 'ai-orchestration', 'market-trends']
 const MOMENTUM_VALUES = ['rising', 'stable', 'declining']
 const AI_LABELS = ['None', 'Basic', 'Advanced', 'Native']
 const SIGNAL_TYPES = ['consolidation', 'disruption', 'regulation', 'adoption', 'investment']
 const IMPACT_VALUES = ['high', 'medium', 'low']
+const CONFIDENCE_VALUES = ['high', 'medium', 'low']
 
 function getISOWeek(d) {
   const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
@@ -43,6 +44,37 @@ function readJSON(file) {
 
 function isPlainObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+
+function validateSources(path, value, errors, warnings) {
+  if (!Array.isArray(value) || value.length === 0) {
+    errors.push(`${path}.sources deve contenere almeno una fonte`)
+    return
+  }
+
+  for (const [index, source] of value.entries()) {
+    const sourcePath = `${path}.sources[${index}]`
+    if (!isPlainObject(source)) {
+      errors.push(`${sourcePath} deve essere un oggetto`)
+      continue
+    }
+    if (typeof source.title !== 'string' || !source.title) errors.push(`${sourcePath}.title mancante`)
+    if (typeof source.publisher !== 'string' || !source.publisher) errors.push(`${sourcePath}.publisher mancante`)
+    if (typeof source.published_at !== 'string' || !source.published_at) errors.push(`${sourcePath}.published_at mancante`)
+    if (typeof source.url !== 'string') {
+      errors.push(`${sourcePath}.url deve essere una stringa`)
+    } else if (source.url && !/^https?:\/\//.test(source.url)) {
+      errors.push(`${sourcePath}.url deve iniziare con http:// o https://`)
+    } else if (!source.url) {
+      warnings.push(`${sourcePath}.url vuoto: fonte non verificabile via web`)
+    }
+  }
+}
+
+function validateConfidence(path, value, errors) {
+  if (!CONFIDENCE_VALUES.includes(value)) {
+    errors.push(`${path}.confidence non valido: ${value}`)
+  }
 }
 
 function validateBrief(brief, errors, warnings) {
@@ -71,6 +103,8 @@ function validateBrief(brief, errors, warnings) {
       if (typeof item.vendor !== 'string' || !item.vendor) errors.push(`${section.id}.items[${index}].vendor mancante`)
       if (typeof item.deal !== 'string' || !item.deal) errors.push(`${section.id}.items[${index}].deal mancante`)
       if (typeof item.summary !== 'string' || !item.summary) errors.push(`${section.id}.items[${index}].summary mancante`)
+      validateConfidence(`${section.id}.items[${index}]`, item.confidence, errors)
+      validateSources(`${section.id}.items[${index}]`, item.sources, errors, warnings)
     }
   }
 }
@@ -108,6 +142,8 @@ function validateAnalysis(analysis, brief, errors, warnings) {
   for (const [index, signal] of (analysis.market_signals || []).entries()) {
     if (!SIGNAL_TYPES.includes(signal.type)) errors.push(`market_signals[${index}].type non valido: ${signal.type}`)
     if (!IMPACT_VALUES.includes(signal.impact)) errors.push(`market_signals[${index}].impact non valido: ${signal.impact}`)
+    validateConfidence(`market_signals[${index}]`, signal.confidence, errors)
+    validateSources(`market_signals[${index}]`, signal.sources, errors, warnings)
   }
 }
 
@@ -149,32 +185,32 @@ Esegui ricerche web aggiornate sulle notizie degli ULTIMI 7 GIORNI e produci un 
   "sections": [
     {
       "id": "ma-funding",
-      "items": [{"vendor": "...", "deal": "...", "amount": "...", "summary": "2-3 frasi."}],
+      "items": [{"vendor": "...", "deal": "...", "amount": "...", "summary": "2-3 frasi.", "confidence": "high | medium | low", "sources": [{"title": "...", "url": "https://...", "publisher": "...", "published_at": "YYYY-MM-DD"}]}],
       "implication": "Una sola azione concreta per manager o sales."
     },
     {
-      "id": "ai-releases",
-      "items": [{"vendor": "...", "deal": "...", "summary": "2-3 frasi."}],
+      "id": "product-releases",
+      "items": [{"vendor": "...", "deal": "...", "summary": "2-3 frasi.", "confidence": "high | medium | low", "sources": [{"title": "...", "url": "https://...", "publisher": "...", "published_at": "YYYY-MM-DD"}]}],
       "implication": "Una sola azione concreta per manager o sales."
     },
     {
-      "id": "threat-landscape",
-      "items": [{"vendor": "...", "deal": "...", "summary": "2-3 frasi."}],
+      "id": "threat-ransomware",
+      "items": [{"vendor": "...", "deal": "...", "summary": "2-3 frasi.", "confidence": "high | medium | low", "sources": [{"title": "...", "url": "https://...", "publisher": "...", "published_at": "YYYY-MM-DD"}]}],
       "implication": "Una sola azione concreta prioritaria."
     },
     {
-      "id": "market-moves",
-      "items": [{"vendor": "...", "deal": "...", "summary": "2-3 frasi."}],
+      "id": "ai-orchestration",
+      "items": [{"vendor": "...", "deal": "...", "summary": "2-3 frasi.", "confidence": "high | medium | low", "sources": [{"title": "...", "url": "https://...", "publisher": "...", "published_at": "YYYY-MM-DD"}]}],
       "implication": "Una sola azione concreta per manager o sales."
     },
     {
-      "id": "backup-dr-ai",
-      "items": [{"vendor": "...", "deal": "...", "summary": "2-3 frasi su backup/DR/AI."}],
+      "id": "market-trends",
+      "items": [{"vendor": "...", "deal": "...", "summary": "2-3 frasi su backup/DR/AI.", "confidence": "high | medium | low", "sources": [{"title": "...", "url": "https://...", "publisher": "...", "published_at": "YYYY-MM-DD"}]}],
       "implication": "Una sola azione concreta nel settore backup/DR."
     }
   ]
 }
-Regole: Massimo 5 item per sezione. ogni item deve avere vendor, deal, summary; amount opzionale, usa "n.d." se non noto.`
+Regole: Massimo 5 item per sezione. Ogni item deve avere vendor, deal, summary, confidence e almeno una source. amount opzionale, usa "n.d." se non noto. Usa confidence "high" solo se la fonte primaria conferma direttamente il claim; usa "low" se il claim richiede verifica editoriale.`
 
 const MARKET_ANALYSIS_JSON_PROMPT = `Sei un analista di market intelligence specializzato in cybersecurity, data protection e AI integration.
 La data di oggi è ${DATE}.
@@ -216,7 +252,9 @@ Esegui ricerche web aggiornate sulle notizie degli ULTIMI 7 GIORNI e produci un 
       "impact": "high | medium | low",
       "description": "2 frasi: cosa sta succedendo e dove va il mercato.",
       "who_wins": "Brand o categoria che ne beneficia di più.",
-      "who_loses": "Brand o categoria che rischia di più."
+      "who_loses": "Brand o categoria che rischia di più.",
+      "confidence": "high | medium | low",
+      "sources": [{"title": "...", "url": "https://...", "publisher": "...", "published_at": "YYYY-MM-DD"}]
     }
   ],
   "ai_llm_leaderboard": [

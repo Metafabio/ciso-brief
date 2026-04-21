@@ -1,0 +1,78 @@
+{
+  "week": 16,
+  "generated_at": "2026-04-20",
+  "actions": [
+    {
+      "id": "act-001",
+      "source_signal": "Veeam Data Trust Report 2024",
+      "risk": "Solo il 28% delle aziende riesce a recuperare completamente i dati dopo un attacco ransomware. Il restante 72% ha gap critici non documentati.",
+      "action": "Proporre Ransomware Restore Test su 3 workload critici (VM production, SQL Server, file server) entro 30 giorni",
+      "owner": "Sales / Pre-Sales",
+      "priority": "high",
+      "mauden_service": "Ransomware Restore Test",
+      "service_price": "€6k–€20k",
+      "status": "open",
+      "deadline": "2026-04-27"
+    },
+    {
+      "id": "act-002",
+      "source_signal": "Rubrik Ruby AI — certificazione FedRAMP",
+      "risk": "Clienti nei settori PA, Finance e Healthcare non hanno ancora valutato soluzioni FedRAMP-ready e rischiano non-conformità normativa.",
+      "action": "Contattare i clienti PA/Finance/Healthcare per demo Rubrik Security Cloud con Ruby AI — unica piattaforma AI+FedRAMP nel segmento",
+      "owner": "Sales",
+      "priority": "high",
+      "mauden_service": "Cyber Recovery Assessment",
+      "service_price": "€4k–€12k",
+      "status": "open",
+      "deadline": "2026-04-30"
+    },
+    {
+      "id": "act-003",
+      "source_signal": "Veeam Intelligent Hub — rilascio AI orchestration v12.3",
+      "risk": "Clienti con Veeam <v12 non hanno accesso all'AI orchestration e all'automazione backup avanzata. Gap di sicurezza operativa crescente.",
+      "action": "Analizzare versioni Veeam nel parco clienti, identificare chi è sotto v12 e presentare upgrade assessment con roadmap",
+      "owner": "Technical / Pre-Sales",
+      "priority": "medium",
+      "mauden_service": "Backup Architecture Modernization",
+      "service_price": "€15k–€80k",
+      "status": "open",
+      "deadline": "2026-05-07"
+    },
+    {
+      "id": "act-004",
+      "source_signal": "Cohesity DataHound AI — GDPR compliance automation",
+      "risk": "Clienti con obblighi GDPR gestiscono ancora la data discovery manualmente. Rischio sanzioni e tempi di risposta DSARs non conformi.",
+      "action": "Proporre demo Cohesity DataHound ai clienti Finance, HR e Healthcare con esposizione GDPR elevata",
+      "owner": "Sales",
+      "priority": "medium",
+      "mauden_service": "Cyber Recovery Assessment",
+      "service_price": "€4k–€12k",
+      "status": "open",
+      "deadline": "2026-05-07"
+    },
+    {
+      "id": "act-005",
+      "source_signal": "Ransomware trend Q1 2026 — settore manifatturiero",
+      "risk": "Aziende manifatturiere hanno tempi di recovery medi di 21 giorni senza piano DR testato. Impatto diretto su produzione e supply chain.",
+      "action": "Presentare Monthly Resilience Brief a 3 clienti manufacturing come apertura conversazione DR assessment",
+      "owner": "Account Manager",
+      "priority": "medium",
+      "mauden_service": "Monthly Resilience Brief",
+      "service_price": "€1.5k–€5k/mese",
+      "status": "open",
+      "deadline": "2026-05-14"
+    },
+    {
+      "id": "act-006",
+      "source_signal": "Dell PowerProtect Data Manager — integrazione Azure/AWS aggiornata",
+      "risk": "Clienti Dell con workload cloud ibrido non sfruttano il tiering automatico offsite. Costi storage eccessivi e RPO non ottimali.",
+      "action": "Mappare clienti Dell con presenza cloud e proporre architettura backup modernizzata con tiering automatico",
+      "owner": "Pre-Sales / Architect",
+      "priority": "low",
+      "mauden_service": "Backup Architecture Modernization",
+      "service_price": "€15k–€80k",
+      "status": "open",
+      "deadline": "2026-05-21"
+    }
+  ]
+}

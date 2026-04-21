@@ -4,15 +4,26 @@ import { useState, useEffect, useCallback } from 'react'
 
 // ─── Types — Brief ────────────────────────────────────────────────────────────
 
-type SectionId = 'ma-funding' | 'ai-releases' | 'threat-landscape' | 'market-moves' | 'backup-dr-ai'
+type SectionId = 'ma-funding' | 'product-releases' | 'threat-ransomware' | 'ai-orchestration' | 'market-trends'
 type Theme = 'slate' | 'ember' | 'arctic'
-type Tab = 'backup' | 'brief' | 'analysis' | 'sales' | 'compare' | 'usecases' | 'technical'
+type Tab = 'backup' | 'brief' | 'analysis' | 'business' | 'sales' | 'compare' | 'usecases' | 'technical' | 'actions'
+
+type Confidence = 'high' | 'medium' | 'low'
+
+interface Source {
+  title: string
+  url: string
+  publisher: string
+  published_at: string
+}
 
 interface BriefItem {
   vendor: string
   deal: string
   amount?: string
   summary: string
+  confidence: Confidence
+  sources: Source[]
 }
 
 interface BriefSection {
@@ -63,6 +74,8 @@ interface MarketSignal {
   description: string
   who_wins: string
   who_loses: string
+  confidence: Confidence
+  sources: Source[]
 }
 
 interface LeaderboardEntry {
@@ -85,54 +98,6 @@ interface MarketAnalysis {
     for_sales: string
     watch_next_week: string
   }
-}
-
-// ─── Unified Data Types ───────────────────────────────────────
-
-interface Summary {
-  headline: string
-  key_points: string[]
-  trend: 'rising' | 'stable' | 'declining'
-}
-
-interface AILeaderboardItem {
-  rank: number
-  vendor: string
-  product: string
-  ai_score: number
-  key_feature: string
-  why: string
-}
-
-interface NewsItem {
-  section: string
-  title: string
-  vendor: string
-  amount?: string
-  description: string
-  implication: string
-}
-
-interface SelectionByIndustry {
-  industry: string
-  size: string
-  vendor_recommended: string
-  reason: string
-  key_features: string[]
-  pricing_indicative: string
-  implementation_hint: string
-}
-
-interface SelectionByUseCase {
-  use_case: string
-  vendor_recommended: string
-  reason: string
-  implementation_hint: string
-}
-
-interface SelectionGuide {
-  by_industry: SelectionByIndustry[]
-  by_use_case: SelectionByUseCase[]
 }
 
 interface VendorAPI {
@@ -167,25 +132,9 @@ interface BestPractice {
   tips: string[]
 }
 
-interface TechnicalData {
+interface VendorTechnicalData {
   vendors: VendorTech[]
   best_practices: BestPractice[]
-}
-
-interface UnifiedData {
-  version: string
-  generated_at: string
-  week: number
-  summary: Summary
-  ai_leaderboard: AILeaderboardItem[]
-  news: NewsItem[]
-  selection_guide: SelectionGuide
-  technical: TechnicalData
-  vendors: BackupVendor[]
-  recommendations: {
-    for_engineer: string
-    for_sales: string
-  }
 }
 
 // ─── Backup Intelligence ────────────────────────────────
@@ -194,15 +143,15 @@ interface BackupAI {
   score: number
   label: 'None' | 'Basic' | 'Advanced' | 'Native'
   features: string[]
-  llm_model: string
+  llm_model?: string
 }
 
 interface BackupProduct {
   name: string
-  category: string
+  category?: string
   key_differentiator: string
-  ai_feature: string
-  target_buyer: string
+  ai_feature?: string
+  target_buyer?: string
 }
 
 interface BackupVendor {
@@ -212,8 +161,8 @@ interface BackupVendor {
   momentum_reason: string
   ai_integration: BackupAI
   products: BackupProduct[]
-  competitive_threat: string
-  sales_angle: string
+  competitive_threat?: string
+  sales_angle?: string
 }
 
 interface BackupLeaderboard {
@@ -222,26 +171,42 @@ interface BackupLeaderboard {
   product: string
   ai_score: number
   why: string
-  use_case: string
+  use_case?: string
+  key_feature?: string
+}
+
+interface BackupSummary {
+  headline: string
+  key_points: string[]
+  trend: 'rising' | 'stable' | 'declining'
+}
+
+interface BackupNewsItem {
+  section: string
+  title: string
+  vendor: string
+  amount: string
+  description: string
+  implication: string
 }
 
 interface BackupData {
   week: number
   generated_at: string
-  summary: string
-  sections: BriefSection[]
+  summary: BackupSummary | string
+  news?: BackupNewsItem[]
+  sections?: BriefSection[]
   vendors: BackupVendor[]
   ai_leaderboard: BackupLeaderboard[]
   recommendations: {
     for_engineer: string
     for_sales: string
-    watch_next_week: string
+    watch_next_week?: string
   }
-  // Extended data for new tabs
   sales_data?: SalesData
   comparison_data?: ComparisonData
   usecases_data?: UseCasesData
-  technical_data?: TechnicalData
+  technical_data?: VendorTechnicalData
 }
 
 interface SalesData {
@@ -299,14 +264,35 @@ interface TechnicalData {
   }[]
 }
 
+// ─── Types — Action Register ──────────────────────────────────────────────────
+
+interface ActionItem {
+  id: string
+  source_signal: string
+  risk: string
+  action: string
+  owner: string
+  priority: 'high' | 'medium' | 'low'
+  mauden_service: string
+  service_price: string
+  status: 'open' | 'in-progress' | 'closed'
+  deadline: string
+}
+
+interface ActionRegisterData {
+  week: number
+  generated_at: string
+  actions: ActionItem[]
+}
+
 // ─── Section metadata ─────────────────────────────────────────────────────────
 
 const SECTION_META: Record<SectionId, { title: string; icon: string; accent: string }> = {
   'ma-funding':       { title: 'M&A / Funding',        icon: '◈', accent: '#f59e0b' },
-  'ai-releases':      { title: 'Release & Feature AI',  icon: '◎', accent: '#8b5cf6' },
-  'threat-landscape': { title: 'Threat Landscape',      icon: '◉', accent: '#ef4444' },
-  'market-moves':     { title: 'Mosse di Mercato',      icon: '◇', accent: '#10b981' },
-  'backup-dr-ai':     { title: 'Backup & DR / AI',      icon: '◫', accent: '#06b6d4' },
+  'product-releases': { title: 'Release & Feature AI',  icon: '◎', accent: '#8b5cf6' },
+  'threat-ransomware': { title: 'Threat & Ransomware',  icon: '◉', accent: '#ef4444' },
+  'ai-orchestration': { title: 'AI Orchestration',      icon: '◇', accent: '#10b981' },
+  'market-trends':    { title: 'Trend di Mercato',      icon: '◫', accent: '#06b6d4' },
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -332,6 +318,54 @@ const IMPACT_STYLE: Record<string, { bg: string; border: string; color: string }
   medium: { bg: 'rgba(245,158,11,0.1)', border: 'rgba(245,158,11,0.3)', color: '#f59e0b' },
   low: { bg: 'rgba(100,116,139,0.1)', border: 'rgba(100,116,139,0.3)', color: '#64748b' },
 }
+const CONFIDENCE_STYLE: Record<Confidence, { bg: string; border: string; color: string; label: string }> = {
+  high: { bg: 'rgba(16,185,129,0.1)', border: 'rgba(16,185,129,0.3)', color: '#10b981', label: 'Alta' },
+  medium: { bg: 'rgba(245,158,11,0.1)', border: 'rgba(245,158,11,0.3)', color: '#f59e0b', label: 'Media' },
+  low: { bg: 'rgba(239,68,68,0.1)', border: 'rgba(239,68,68,0.3)', color: '#ef4444', label: 'Da verificare' },
+}
+
+function SourceTrail({ sources = [], confidence }: { sources?: Source[]; confidence?: Confidence }) {
+  if (!sources.length && !confidence) return null
+  const confidenceStyle = confidence ? CONFIDENCE_STYLE[confidence] : null
+
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', marginTop: '12px' }}>
+      {confidenceStyle && (
+        <span style={{
+          fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.08em',
+          color: confidenceStyle.color, background: confidenceStyle.bg, border: `1px solid ${confidenceStyle.border}`,
+          padding: '3px 8px', borderRadius: '4px',
+        }}>
+          Confidence: {confidenceStyle.label}
+        </span>
+      )}
+      {sources.map((source, index) => {
+        const label = `${source.publisher} · ${source.published_at}`
+        if (!source.url) {
+          return (
+            <span key={`${source.title}-${index}`} title={source.title} style={{
+              fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)',
+              background: 'var(--surface)', border: '1px solid var(--border)',
+              padding: '3px 8px', borderRadius: '4px',
+            }}>
+              Fonte: {label}
+            </span>
+          )
+        }
+
+        return (
+          <a key={`${source.url}-${index}`} href={source.url} target="_blank" rel="noreferrer" title={source.title} style={{
+            fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--accent)',
+            background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.25)',
+            padding: '3px 8px', borderRadius: '4px', textDecoration: 'none',
+          }}>
+            Fonte: {label}
+          </a>
+        )
+      })}
+    </div>
+  )
+}
 
 // ─── Brief — Section body ─────────────────────────────────────────────────────
 
@@ -350,6 +384,7 @@ function SectionBody({ section, accent }: { section: BriefSection; accent: strin
             </span>
           </div>
           <p style={{ fontSize: '14px', lineHeight: 1.7, color: 'var(--text-secondary)', margin: 0 }}>{item.summary}</p>
+          <SourceTrail sources={item.sources} confidence={item.confidence} />
         </div>
       ))}
       <div style={{
@@ -568,6 +603,7 @@ function AnalysisView({ data }: { data: MarketAnalysis }) {
                   }}>{s.impact}</span>
                 </div>
                 <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: '0 0 12px' }}>{s.description}</p>
+                <SourceTrail sources={s.sources} confidence={s.confidence} />
                 <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: '13px', color: '#10b981' }}>↑ {s.who_wins}</span>
                   <span style={{ fontSize: '13px', color: '#ef4444' }}>↓ {s.who_loses}</span>
@@ -614,7 +650,7 @@ function ComparisonView({ current, previous }: { current: BackupData; previous: 
           AI Leaderboard Changes
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {current.ai_leaderboard.map((entry, i) => {
+          {current.ai_leaderboard.map((entry) => {
             const prevEntry = previous.ai_leaderboard.find(p => p.vendor === entry.vendor)
             const prevRank = prevEntry?.rank || 0
             const change = prevRank - entry.rank
@@ -679,7 +715,26 @@ function ComparisonView({ current, previous }: { current: BackupData; previous: 
 
 // ─── Backup — View ────────────────────────────────────────────────────────
 
+const NEWS_SECTION_STYLE: Record<string, { color: string; label: string }> = {
+  market:  { color: '#f59e0b', label: 'Market' },
+  release: { color: '#8b5cf6', label: 'Release' },
+  threat:  { color: '#ef4444', label: 'Threat' },
+}
+
 function BackupView({ data }: { data: BackupData }) {
+  const summary = data.summary
+  const isObjectSummary = summary !== null && typeof summary === 'object' && 'headline' in summary
+  const summaryObj = isObjectSummary ? (summary as BackupSummary) : null
+  const summaryText = isObjectSummary ? (summary as BackupSummary).headline : (summary as string)
+
+  const recs = [
+    { label: 'Per il Backup Engineer', value: data.recommendations.for_engineer, accent: '#06b6d4' },
+    { label: 'Per il Sales', value: data.recommendations.for_sales, accent: '#10b981' },
+    ...(data.recommendations.watch_next_week
+      ? [{ label: 'Da monitorare', value: data.recommendations.watch_next_week, accent: '#f59e0b' }]
+      : []),
+  ]
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
 
@@ -687,7 +742,16 @@ function BackupView({ data }: { data: BackupData }) {
         <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--accent)', marginBottom: '12px' }}>
           Executive Summary
         </div>
-        <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.8 }}>{data.summary}</p>
+        <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: summaryObj ? '16px' : 0 }}>
+          {summaryText}
+        </p>
+        {summaryObj && (
+          <ul style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            {summaryObj.key_points.map((pt, i) => (
+              <li key={i} style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{pt}</li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div>
@@ -711,16 +775,49 @@ function BackupView({ data }: { data: BackupData }) {
                   <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '12px', color: '#10b981', fontWeight: 600 }}>AI: {entry.ai_score}</span>
                 </div>
                 <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: '0 0 10px' }}>{entry.why}</p>
-                <span style={{
-                  fontFamily: 'var(--font-dm-mono)', fontSize: '11px', color: '#06b6d4',
-                  background: 'rgba(6,182,212,0.1)', border: '1px solid rgba(6,182,212,0.25)',
-                  padding: '4px 10px', borderRadius: '4px',
-                }}>💡 {entry.use_case}</span>
+                {(entry.key_feature || entry.use_case) && (
+                  <span style={{
+                    fontFamily: 'var(--font-dm-mono)', fontSize: '11px', color: '#06b6d4',
+                    background: 'rgba(6,182,212,0.1)', border: '1px solid rgba(6,182,212,0.25)',
+                    padding: '4px 10px', borderRadius: '4px',
+                  }}>💡 {entry.key_feature || entry.use_case}</span>
+                )}
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      {data.news && data.news.length > 0 && (
+        <div>
+          <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px', paddingLeft: '4px' }}>
+            News & Segnali
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {data.news.map((item, i) => {
+              const style = NEWS_SECTION_STYLE[item.section] || { color: '#64748b', label: item.section }
+              return (
+                <div key={i} className="card" style={{ padding: '16px 20px', borderLeft: `3px solid ${style.color}` }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', flex: 1 }}>{item.title}</span>
+                    <span style={{
+                      fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.08em',
+                      color: style.color, background: `${style.color}18`, border: `1px solid ${style.color}44`,
+                      padding: '3px 8px', borderRadius: '4px',
+                    }}>{style.label}</span>
+                    <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)' }}>{item.vendor}</span>
+                  </div>
+                  <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: '0 0 10px' }}>{item.description}</p>
+                  <div style={{ padding: '10px 14px', background: 'rgba(99,102,241,0.08)', borderLeft: '2px solid #6366f1', borderRadius: '0 6px 6px 0' }}>
+                    <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: '#6366f1', textTransform: 'uppercase', letterSpacing: '0.08em' }}>→ </span>
+                    <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{item.implication}</span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       <div>
         <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px', paddingLeft: '4px' }}>
@@ -732,11 +829,7 @@ function BackupView({ data }: { data: BackupData }) {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
-        {[
-          { label: 'Per il Backup Engineer', value: data.recommendations.for_engineer, accent: '#06b6d4' },
-          { label: 'Per il Sales', value: data.recommendations.for_sales, accent: '#10b981' },
-          { label: 'Da monitorare', value: data.recommendations.watch_next_week, accent: '#f59e0b' },
-        ].map((r) => (
+        {recs.map((r) => (
           <div key={r.label} className="card" style={{ padding: '16px 20px', borderTop: `3px solid ${r.accent}` }}>
             <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: r.accent, marginBottom: '10px' }}>{r.label}</div>
             <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>{r.value}</p>
@@ -787,7 +880,7 @@ function BackupVendorCard({ vendor, index }: { vendor: BackupVendor; index: numb
 
             <div style={{ padding: '14px 16px', background: 'rgba(6,182,212,0.08)', borderLeft: '3px solid #06b6d4', borderRadius: '0 8px 8px 0' }}>
               <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#06b6d4', marginBottom: '8px' }}>
-                AI Integration · {vendor.ai_integration.label} · {vendor.ai_integration.llm_model}
+                AI Integration · {vendor.ai_integration.label}{vendor.ai_integration.llm_model ? ` · ${vendor.ai_integration.llm_model}` : ''}
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                 {vendor.ai_integration.features.map((f, i) => (
@@ -804,24 +897,32 @@ function BackupVendorCard({ vendor, index }: { vendor: BackupVendor; index: numb
               <div key={i}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '8px', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{p.name}</span>
-                  <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{p.category} · {p.target_buyer}</span>
+                  {(p.category || p.target_buyer) && (
+                    <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                      {[p.category, p.target_buyer].filter(Boolean).join(' · ')}
+                    </span>
+                  )}
                 </div>
                 <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: '0 0 8px' }}>{p.key_differentiator}</p>
-                {p.ai_feature !== 'n.d.' && (
+                {p.ai_feature && p.ai_feature !== 'n.d.' && (
                   <p style={{ fontSize: '13px', color: '#06b6d4', lineHeight: 1.6, margin: 0 }}>⬡ {p.ai_feature}</p>
                 )}
               </div>
             ))}
 
-            <div>
-              <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#ef4444', marginBottom: '6px' }}>Minaccia competitiva</div>
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>{vendor.competitive_threat}</p>
-            </div>
+            {vendor.competitive_threat && (
+              <div>
+                <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#ef4444', marginBottom: '6px' }}>Minaccia competitiva</div>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>{vendor.competitive_threat}</p>
+              </div>
+            )}
 
-            <div style={{ padding: '14px 16px', background: 'rgba(16,185,129,0.08)', borderLeft: '3px solid #10b981', borderRadius: '0 8px 8px 0' }}>
-              <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#10b981', marginBottom: '6px' }}>Sales Angle</div>
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>{vendor.sales_angle}</p>
-            </div>
+            {vendor.sales_angle && (
+              <div style={{ padding: '14px 16px', background: 'rgba(16,185,129,0.08)', borderLeft: '3px solid #10b981', borderRadius: '0 8px 8px 0' }}>
+                <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#10b981', marginBottom: '6px' }}>Sales Angle</div>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>{vendor.sales_angle}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -831,7 +932,7 @@ function BackupVendorCard({ vendor, index }: { vendor: BackupVendor; index: numb
 
 // ─── Sales — View ─────────────────────────────────────────────────────
 
-function SalesView({ data }: { data: BackupData | null | undefined }) {
+function SalesView() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
       <div className="card" style={{ padding: '20px 24px', borderLeft: '3px solid #10b981' }}>
@@ -841,6 +942,38 @@ function SalesView({ data }: { data: BackupData | null | undefined }) {
         <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
           Pitch angle per segmento cliente e come vincere contro i competitor.
         </p>
+      </div>
+
+      <div>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#ef4444', marginBottom: '14px' }}>
+          Reason to Call — Trigger Settimanali
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {[
+            { trigger: 'Veeam Intelligent Hub rilasciato', action: 'Chiama tutti i clienti Veeam <v12: proponi upgrade assessment prima che il gap di sicurezza si allarghi', urgency: 'high', service: 'Backup Architecture Modernization' },
+            { trigger: 'Report: 72% aziende non testa mai il DR', action: 'Invia il dato ai tuoi top 5 clienti — "Hai testato il tuo backup nell\'ultimo anno?" è un opener perfetto', urgency: 'high', service: 'Ransomware Restore Test' },
+            { trigger: 'Rubrik ottiene certificazione FedRAMP', action: 'Contatta clienti PA / Finance / Healthcare: è l\'unica AI backup platform FedRAMP-ready disponibile', urgency: 'medium', service: 'Cyber Recovery Assessment' },
+            { trigger: 'Cohesity DataHound AI — GDPR automation', action: 'Proponi demo ai clienti con esposizione GDPR elevata (HR, Finance, Healthcare): data discovery automatica in 1 click', urgency: 'medium', service: 'Cyber Recovery Assessment' },
+          ].map((item, i) => (
+            <div key={i} className="card" style={{ padding: '14px 18px', borderLeft: `3px solid ${item.urgency === 'high' ? '#ef4444' : '#f59e0b'}` }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', flexWrap: 'wrap' }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                    📡 {item.trigger}
+                  </div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>→ {item.action}</div>
+                </div>
+                <span style={{
+                  fontFamily: 'var(--font-dm-mono)', fontSize: '10px',
+                  color: '#10b981', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)',
+                  padding: '3px 8px', borderRadius: '4px', flexShrink: 0,
+                }}>
+                  {item.service}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div>
@@ -974,7 +1107,7 @@ function UseCasesView() {
           Use Cases per Industry & Company Size
         </div>
         <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-          Case d'uso concreti con vendor, prodotto e ROI misurabile.
+          Case d&apos;uso concreti con vendor, prodotto e ROI misurabile.
         </p>
       </div>
 
@@ -1069,6 +1202,303 @@ function TechnicalView() {
   )
 }
 
+// ─── Business — View ─────────────────────────────────────────────
+
+function BusinessView() {
+  const metrics = [
+    { label: 'Servizi attivabili', value: '6', note: 'assessment, DR test, hardening, runbook, advisory, training', accent: '#10b981' },
+    { label: 'Target buyer', value: '4', note: 'CISO, CIO, IT manager, procurement', accent: '#06b6d4' },
+    { label: 'Output vendibili', value: '5', note: 'brief, board memo, battlecard, report, action plan', accent: '#f59e0b' },
+  ]
+
+  const packages = [
+    {
+      name: 'Cyber Recovery Assessment',
+      buyer: 'CISO / IT Manager',
+      price: '€4k-€12k',
+      pitch: 'Misura gap tra backup dichiarato e recovery reale. Produce score, rischi, priorita, remediation.',
+      deliverables: ['Recovery readiness score', 'RPO/RTO gap', 'immutability check', '30-day action plan'],
+    },
+    {
+      name: 'Ransomware Restore Test',
+      buyer: 'Operations / Security',
+      price: '€6k-€20k',
+      pitch: 'Test controllato di restore su workload critici. Evidenzia tempi, colli di bottiglia, dati non recuperabili.',
+      deliverables: ['restore evidence', 'runbook', 'lessons learned', 'board summary'],
+    },
+    {
+      name: 'Backup Architecture Modernization',
+      buyer: 'CIO / Infrastructure',
+      price: '€15k-€80k',
+      pitch: 'Ridisegno architettura backup, cloud tiering, offsite, immutable storage, policy lifecycle.',
+      deliverables: ['target architecture', 'vendor matrix', 'migration plan', 'TCO estimate'],
+    },
+    {
+      name: 'Monthly Resilience Brief',
+      buyer: 'CISO / Board',
+      price: '€1.5k-€5k/mese',
+      pitch: 'Brief personalizzato su vendor, minacce, normative, azioni esecutive. Pronto per comitato sicurezza.',
+      deliverables: ['PDF executive', 'vendor watchlist', 'risk memo', 'action register'],
+    },
+  ]
+
+  const differentiators = [
+    'Da news a decisione: ogni segnale produce azione tecnica o commerciale.',
+    'Da backup a resilienza: focus su recovery provato, non solo job completati.',
+    'Da tool a servizio: ogni insight aggancia assessment e progetto Mauden.',
+    'Da generico a settore: storage, backup, data protection, architetture IT.',
+  ]
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+      <div className="card" style={{ padding: '24px', borderLeft: '3px solid #10b981' }}>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#10b981', marginBottom: '12px' }}>
+          Mauden GTM
+        </div>
+        <h1 style={{ fontSize: '28px', lineHeight: 1.2, marginBottom: '12px' }}>
+          Cyber resilience intelligence per vendere assessment, architetture e servizi backup.
+        </h1>
+        <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.8, maxWidth: '720px' }}>
+          Dashboard locale per trasformare segnali di mercato, ransomware e vendor moves in offerte concrete per clienti enterprise e mid-market.
+        </p>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
+        {metrics.map(metric => (
+          <div key={metric.label} className="card" style={{ padding: '18px 20px', borderTop: `3px solid ${metric.accent}` }}>
+            <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '28px', fontWeight: 700, color: metric.accent, lineHeight: 1 }}>{metric.value}</div>
+            <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginTop: '10px' }}>{metric.label}</div>
+            <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.6, marginTop: '6px' }}>{metric.note}</p>
+          </div>
+        ))}
+      </div>
+
+      <div>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px' }}>
+          Offerte vendibili
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '12px' }}>
+          {packages.map(pkg => (
+            <div key={pkg.name} className="card" style={{ padding: '18px 20px' }}>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline', flexWrap: 'wrap', marginBottom: '8px' }}>
+                <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>{pkg.name}</span>
+                <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: '#10b981' }}>{pkg.price}</span>
+              </div>
+              <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)', marginBottom: '10px' }}>{pkg.buyer}</div>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '12px' }}>{pkg.pitch}</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {pkg.deliverables.map(item => (
+                  <span key={item} style={{
+                    fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-secondary)',
+                    background: 'var(--surface)', border: '1px solid var(--border)',
+                    padding: '3px 8px', borderRadius: '4px',
+                  }}>{item}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="card" style={{ padding: '20px 24px', borderLeft: '3px solid #06b6d4' }}>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#06b6d4', marginBottom: '12px' }}>
+          Differenziazione
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '10px' }}>
+          {differentiators.map(item => (
+            <div key={item} style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.7, padding: '12px 0', borderBottom: '1px solid var(--border)' }}>
+              {item}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="card" style={{ padding: '20px 24px', borderLeft: '3px solid #f59e0b' }}>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#f59e0b', marginBottom: '12px' }}>
+          Prossima milestone locale
+        </div>
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.8, margin: 0 }}>
+          Aggiungere action register: ogni fonte genera azione, owner, priorita, servizio Mauden collegato, stato, export PDF.
+        </p>
+      </div>
+    </div>
+  )
+}
+
+// ─── Action Register — View ───────────────────────────────────────────────────
+
+const PRIORITY_STYLE: Record<string, { bg: string; border: string; color: string; label: string }> = {
+  high:   { bg: 'rgba(239,68,68,0.1)',   border: 'rgba(239,68,68,0.3)',   color: '#ef4444', label: 'Alta' },
+  medium: { bg: 'rgba(245,158,11,0.1)',  border: 'rgba(245,158,11,0.3)',  color: '#f59e0b', label: 'Media' },
+  low:    { bg: 'rgba(100,116,139,0.1)', border: 'rgba(100,116,139,0.3)', color: '#64748b', label: 'Bassa' },
+}
+
+const STATUS_STYLE: Record<string, { bg: string; border: string; color: string; label: string }> = {
+  'open':        { bg: 'rgba(99,102,241,0.1)',  border: 'rgba(99,102,241,0.3)',  color: '#6366f1', label: 'Aperta' },
+  'in-progress': { bg: 'rgba(16,185,129,0.1)',  border: 'rgba(16,185,129,0.3)',  color: '#10b981', label: 'In corso' },
+  'closed':      { bg: 'rgba(100,116,139,0.1)', border: 'rgba(100,116,139,0.3)', color: '#64748b', label: 'Chiusa' },
+}
+
+function ActionRegisterView({ data }: { data: ActionRegisterData | null }) {
+  const [priorityFilter, setPriorityFilter] = useState<'all' | 'high' | 'medium' | 'low'>('all')
+  const [statusFilter, setStatusFilter] = useState<'all' | 'open' | 'in-progress' | 'closed'>('all')
+
+  if (!data) return (
+    <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '14px', color: 'var(--text-secondary)', padding: '60px 0', textAlign: 'center' }}>
+      action_register.json non trovato
+    </div>
+  )
+
+  const filtered = data.actions.filter(a =>
+    (priorityFilter === 'all' || a.priority === priorityFilter) &&
+    (statusFilter === 'all' || a.status === statusFilter)
+  )
+
+  const highCount = data.actions.filter(a => a.priority === 'high' && a.status === 'open').length
+  const openCount = data.actions.filter(a => a.status === 'open').length
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+
+      <div className="card" style={{ padding: '20px 24px', borderLeft: '3px solid #ef4444' }}>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#ef4444', marginBottom: '12px' }}>
+          Action Register · Week {data.week}
+        </div>
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '14px' }}>
+          Ogni segnale di mercato genera un&apos;azione concreta. Prioritizza, assegna un owner e collegala a un servizio Mauden.
+        </p>
+        <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+          <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '12px', color: '#ef4444' }}>
+            ◉ {highCount} ad alta priorità
+          </span>
+          <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '12px', color: '#6366f1' }}>
+            ◈ {openCount} aperte
+          </span>
+          <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '12px', color: 'var(--text-muted)' }}>
+            {data.actions.length} totali
+          </span>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+        <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginRight: '4px' }}>
+          Priorità:
+        </span>
+        {(['all', 'high', 'medium', 'low'] as const).map(p => (
+          <button key={p} onClick={() => setPriorityFilter(p)} style={{
+            fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.08em',
+            padding: '5px 12px', borderRadius: '4px', border: '1px solid', cursor: 'pointer',
+            background: priorityFilter === p
+              ? (p === 'all' ? 'var(--accent)' : PRIORITY_STYLE[p].bg)
+              : 'transparent',
+            borderColor: priorityFilter === p
+              ? (p === 'all' ? 'var(--accent)' : PRIORITY_STYLE[p].border)
+              : 'var(--border)',
+            color: priorityFilter === p
+              ? (p === 'all' ? 'white' : PRIORITY_STYLE[p].color)
+              : 'var(--text-muted)',
+          }}>
+            {p === 'all' ? 'Tutte' : p === 'high' ? 'Alta' : p === 'medium' ? 'Media' : 'Bassa'}
+          </button>
+        ))}
+        <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginLeft: '12px', marginRight: '4px' }}>
+          Stato:
+        </span>
+        {(['all', 'open', 'in-progress', 'closed'] as const).map(s => (
+          <button key={s} onClick={() => setStatusFilter(s)} style={{
+            fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.08em',
+            padding: '5px 12px', borderRadius: '4px', border: '1px solid', cursor: 'pointer',
+            background: statusFilter === s
+              ? (s === 'all' ? 'var(--accent)' : STATUS_STYLE[s].bg)
+              : 'transparent',
+            borderColor: statusFilter === s
+              ? (s === 'all' ? 'var(--accent)' : STATUS_STYLE[s].border)
+              : 'var(--border)',
+            color: statusFilter === s
+              ? (s === 'all' ? 'white' : STATUS_STYLE[s].color)
+              : 'var(--text-muted)',
+          }}>
+            {s === 'all' ? 'Tutti' : s === 'open' ? 'Aperta' : s === 'in-progress' ? 'In corso' : 'Chiusa'}
+          </button>
+        ))}
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        {filtered.length === 0 && (
+          <div className="card" style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)', fontFamily: 'var(--font-dm-mono)', fontSize: '13px' }}>
+            Nessuna azione trovata con questi filtri.
+          </div>
+        )}
+        {filtered.map((action) => {
+          const pStyle = PRIORITY_STYLE[action.priority]
+          const sStyle = STATUS_STYLE[action.status]
+          return (
+            <div key={action.id} className="card" style={{ padding: '18px 20px', borderLeft: `3px solid ${pStyle.color}` }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', flexWrap: 'wrap' }}>
+                <span style={{
+                  fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.08em',
+                  color: pStyle.color, background: pStyle.bg, border: `1px solid ${pStyle.border}`,
+                  padding: '3px 8px', borderRadius: '4px',
+                }}>
+                  {pStyle.label}
+                </span>
+                <span style={{
+                  fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.08em',
+                  color: sStyle.color, background: sStyle.bg, border: `1px solid ${sStyle.border}`,
+                  padding: '3px 8px', borderRadius: '4px',
+                }}>
+                  {sStyle.label}
+                </span>
+                <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)', marginLeft: 'auto' }}>
+                  Scadenza: {action.deadline}
+                </span>
+              </div>
+
+              <div style={{ marginBottom: '10px' }}>
+                <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                  Segnale
+                </div>
+                <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{action.source_signal}</div>
+              </div>
+
+              <div style={{ marginBottom: '10px' }}>
+                <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#ef4444', marginBottom: '4px' }}>
+                  Rischio
+                </div>
+                <div style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{action.risk}</div>
+              </div>
+
+              <div style={{ padding: '12px 14px', background: 'rgba(16,185,129,0.08)', borderLeft: '3px solid #10b981', borderRadius: '0 6px 6px 0', marginBottom: '14px' }}>
+                <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#10b981', marginBottom: '4px' }}>
+                  Azione
+                </div>
+                <div style={{ fontSize: '14px', color: 'var(--text-primary)', lineHeight: 1.6, fontWeight: 500 }}>{action.action}</div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+                <div>
+                  <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)' }}>Owner: </span>
+                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{action.owner}</span>
+                </div>
+                <span style={{
+                  fontFamily: 'var(--font-dm-mono)', fontSize: '11px',
+                  color: '#10b981', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)',
+                  padding: '4px 10px', borderRadius: '4px',
+                }}>
+                  🎯 {action.mauden_service}
+                </span>
+                <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', color: '#f59e0b' }}>
+                  {action.service_price}
+                </span>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 // ─── Theme switcher ───────────────────────────────────────────────────────────
 
 const THEMES: { id: Theme; label: string; accent: string }[] = [
@@ -1113,6 +1543,9 @@ export default function Page() {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [showCompare, setShowCompare] = useState(false)
   const [openSections, setOpenSections] = useState<Set<SectionId>>(new Set())
+  const [actionRegister, setActionRegister] = useState<ActionRegisterData | null>(null)
+  const [clientName, setClientName] = useState('')
+  const [showClientInput, setShowClientInput] = useState(false)
 
   useEffect(() => {
     Promise.all([
@@ -1120,11 +1553,13 @@ export default function Page() {
       fetch('/market_analysis.json').then(r => r.json()) as Promise<MarketAnalysis>,
       fetch('/backupl.json').then(r => r.json()) as Promise<BackupData>,
       fetch('/archive/market-analysis-w16-2026-04-20.json').then(r => r.json()).catch(() => null),
-    ]).then(([b, a, bu, prev]) => {
+      fetch('/action_register.json').then(r => r.json()).catch(() => null),
+    ]).then(([b, a, bu, prev, ar]) => {
       setBrief(b)
       setAnalysis(a)
       setBackup(bu)
       setBackupPrev(prev as BackupData | null)
+      setActionRegister(ar as ActionRegisterData | null)
       setOpenSections(new Set(b.sections.map(s => s.id)))
       setIsLoading(false)
     }).catch(() => setIsLoading(false))
@@ -1163,6 +1598,11 @@ export default function Page() {
       lines.push(`## ${meta.icon} ${meta.title}`, '')
       for (const item of section.items) {
         lines.push(item.amount ? `**${item.vendor}** — ${item.deal} · ${item.amount}` : `**${item.vendor}** — ${item.deal}`, '', item.summary, '')
+        lines.push(`Confidence: ${item.confidence}`)
+        for (const source of item.sources) {
+          lines.push(source.url ? `Fonte: [${source.publisher} · ${source.published_at}](${source.url})` : `Fonte: ${source.publisher} · ${source.published_at} · ${source.title}`)
+        }
+        lines.push('')
       }
       lines.push('---', `⚡ **Implicazione:** ${section.implication}`, '', '---', '')
     }
@@ -1182,7 +1622,22 @@ export default function Page() {
   return (
     <div data-theme={theme} style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
 
-      <header className="header-blur" style={{
+      {/* Print-only header — shown only when printing */}
+      <div className="print-only" style={{ padding: '24px 32px 20px', borderBottom: '2px solid #333', marginBottom: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div>
+          <div style={{ fontSize: '22px', fontWeight: 700, color: '#111', letterSpacing: '-0.02em' }}>Resilience Revenue Brief</div>
+          <div style={{ fontSize: '13px', color: '#555', marginTop: '4px' }}>Week {currentWeek} · {currentDate}</div>
+        </div>
+        {clientName && (
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Preparato per</div>
+            <div style={{ fontSize: '20px', fontWeight: 700, color: '#111', marginTop: '2px' }}>{clientName}</div>
+            <div style={{ fontSize: '11px', color: '#888' }}>da Mauden</div>
+          </div>
+        )}
+      </div>
+
+      <header className="header-blur no-print" style={{
         borderBottom: '1px solid var(--border)', padding: '16px 32px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px',
         position: 'sticky', top: 0, background: 'rgba(10, 14, 23, 0.85)', zIndex: 20,
@@ -1190,11 +1645,21 @@ export default function Page() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             <span style={{ fontSize: '20px', color: 'var(--text-primary)', fontWeight: 600, letterSpacing: '-0.02em' }}>
-              Backup & Resilience
+              Resilience Revenue Brief
             </span>
           </div>
-          <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
-            {currentDate ? `Generated: ${currentDate}` : 'Loading...'}
+          <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <span>{currentDate ? `Week ${currentWeek} · ${currentDate}` : 'Loading...'}</span>
+            {brief && (() => {
+              const allItems = brief.sections.flatMap(s => s.items)
+              const verified = allItems.filter(i => i.sources?.some(s => s.url)).length
+              const total = allItems.length
+              return (
+                <span style={{ color: verified === total ? '#10b981' : '#f59e0b' }}>
+                  ◉ {verified}/{total} fonti verificate
+                </span>
+              )
+            })()}
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -1210,6 +1675,9 @@ export default function Page() {
             </svg>
             PDF
           </button>
+          <button onClick={handleExport} className="btn" title="Export Markdown">
+            MD
+          </button>
           {backupPrev && (
             <button onClick={() => setShowCompare(v => !v)} className={`btn ${showCompare ? 'btn-primary' : ''}`} title="Compare with previous week">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7 }}>
@@ -1218,19 +1686,42 @@ export default function Page() {
               Compare
             </button>
           )}
+          {showClientInput ? (
+            <input
+              type="text"
+              value={clientName}
+              onChange={e => setClientName(e.target.value)}
+              onBlur={() => { if (!clientName) setShowClientInput(false) }}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') setShowClientInput(false) }}
+              placeholder="Nome cliente..."
+              autoFocus
+              style={{
+                fontFamily: 'var(--font-dm-mono)', fontSize: '11px',
+                background: 'var(--surface)', border: '1px solid var(--accent)',
+                color: 'var(--text-primary)', padding: '8px 12px', borderRadius: '6px',
+                width: '160px', outline: 'none', letterSpacing: '0.04em',
+              }}
+            />
+          ) : (
+            <button onClick={() => setShowClientInput(true)} className="btn" title="Imposta nome cliente per PDF white-label" style={{ color: clientName ? 'var(--accent)' : undefined, borderColor: clientName ? 'var(--accent)' : undefined }}>
+              {clientName ? `📄 ${clientName}` : '📄 Client PDF'}
+            </button>
+          )}
           <ThemeSwitcher current={theme} onChange={handleTheme} />
         </div>
       </header>
 
-      <div style={{ borderBottom: '1px solid var(--border)', padding: '0 32px', display: 'flex', gap: '4px', background: 'var(--bg)' }}>
+      <div className="no-print" style={{ borderBottom: '1px solid var(--border)', padding: '0 32px', display: 'flex', gap: '4px', background: 'var(--bg)' }}>
         {([
           { id: 'backup' as Tab, label: 'AI' },
           { id: 'brief' as Tab, label: 'Executive' },
           { id: 'analysis' as Tab, label: 'Vendors' },
+          { id: 'business' as Tab, label: 'Business' },
           { id: 'sales' as Tab, label: 'Sales' },
           { id: 'compare' as Tab, label: 'Compare' },
           { id: 'usecases' as Tab, label: 'Use Cases' },
           { id: 'technical' as Tab, label: 'Technical' },
+          { id: 'actions' as Tab, label: 'Actions' },
         ]).map(t => (
           <button key={t.id} onClick={() => setTab(t.id)} className={`tab ${tab === t.id ? 'active' : ''}`} style={{ padding: '14px 24px' }}>
             {t.label}
@@ -1259,19 +1750,17 @@ export default function Page() {
                 Executive Summary
               </div>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                {brief.sections.slice(0, 3).map(s => s.implication).join(' • ')}
+                {brief.sections.map(s => s.implication).join(' • ')}
               </p>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {brief.sections.slice(0, 3).map((section) => (
-                <div key={section.id} className="card" style={{ padding: '16px 20px' }}>
-                  <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
-                    {section.items.length} {section.id.replace('-', ' ')} updates
-                  </div>
-                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
-                    {section.implication}
-                  </p>
-                </div>
+              {brief.sections.map((section) => (
+                <AccordionSection
+                  key={section.id}
+                  section={section}
+                  isOpen={openSections.has(section.id)}
+                  onToggle={() => toggleSection(section.id)}
+                />
               ))}
             </div>
           </div>
@@ -1301,13 +1790,15 @@ export default function Page() {
           </div>
         )}
 
-        {tab === 'sales' && <SalesView data={backup} />}
+        {tab === 'business' && <BusinessView />}
+        {tab === 'sales' && <SalesView />}
         {tab === 'compare' && <CompareView />}
         {tab === 'usecases' && <UseCasesView />}
         {tab === 'technical' && <TechnicalView />}
+        {tab === 'actions' && <ActionRegisterView data={actionRegister} />}
       </main>
 
-      <footer style={{ borderTop: '1px solid var(--border)', padding: '20px 32px', textAlign: 'center' }}>
+      <footer className="no-print" style={{ borderTop: '1px solid var(--border)', padding: '20px 32px', textAlign: 'center' }}>
         <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
           Backup & Resilience Intelligence · Ultimo aggiornamento: {currentDate}
         </span>

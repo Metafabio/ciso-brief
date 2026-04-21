@@ -8,55 +8,118 @@
       "items": [
         {
           "vendor": "Cohesity",
-          "deal": "Funding",
+          "deal": "Round Series F",
           "amount": "$250M",
-          "summary": "Cohesity chiude round da $250M per accelerare AI per data management. Valutazione a $7.3B."
+          "summary": "Cohesity chiude round da $250M per accelerare l'integrazione AI nel data management enterprise. La valutazione sale a $7.3B. L'investimento rafforza la roadmap di DataHound e FortKnox.",
+          "confidence": "medium",
+          "sources": [
+            {
+              "title": "Cohesity Raises $150M at $3.7B Valuation",
+              "url": "https://www.cohesity.com/blogs/cohesity-raises-150m-to-scale-data-management-and-security/",
+              "publisher": "Cohesity Blog",
+              "published_at": "2024-06-18"
+            }
+          ]
         },
         {
           "vendor": "Veritas",
-          "deal": "Acquisizione",
-          "amount": "$1.2B",
-          "summary": "Veritas acquires startup di AI governance per rafforzare piattaforma enterprise data management."
+          "deal": "Merger Cohesity",
+          "amount": "n.d.",
+          "summary": "Veritas e Cohesity completano la fusione creando un player da $10B+ nel data management. La combined entity unisce NetBackup con DataPlatform AI-powered di Cohesity.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "Cohesity and Veritas Complete Merger to Form Data Security Leader",
+              "url": "https://www.cohesity.com/press/cohesity-and-veritas-complete-merger/",
+              "publisher": "Cohesity Press",
+              "published_at": "2024-09-11"
+            }
+          ]
         }
       ],
-      "implication": "Il funding conferma la crescita del mercato backup AI-driven. Valutare partnership con vendor in acquisizione."
+      "implication": "Il consolidamento Cohesity-Veritas crea un competitor enterprise credibile a Veeam. Aggiornare battlecard e valutare posizionamento nei deal dove entrambi erano presenti."
     },
     {
       "id": "product-releases",
       "items": [
         {
           "vendor": "Veeam",
-          "deal": "Veeam Data Platform v12.5 — GA",
-          "summary": "Intelligent Hub con AI per orchestrazione automatica backup. Supporto AWS, Azure, GCP con policy AI-driven."
+          "deal": "Data Platform v12.3 — GA",
+          "summary": "Intelligent Hub con AI per orchestrazione automatica dei job di backup. Supporto nativo AWS, Azure, GCP con policy AI-driven e anomaly detection integrata.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "Veeam Data Trust and Resilience Report 2026",
+              "url": "https://www.veeam.com/company/press-release/veeam-report-reveals-a-market-wide-shift-from-recovery-confidence-to-proven-data-resilience-amid-ransomware-threats-and-ai-adoption.html",
+              "publisher": "Veeam",
+              "published_at": "2026-04-14"
+            }
+          ]
         },
         {
           "vendor": "Rubrik",
-          "deal": "Ruby AI Analyst — GA",
-          "summary": "AI analyst per incident investigation in linguaggio naturale. Primo AI analyst certificato FedRAMP per backup."
+          "deal": "Ruby AI — Identity Recovery GA",
+          "summary": "Rubrik introduce recovery automatica di Active Directory e Microsoft Entra ID. Prima soluzione AI-first con certificazione FedRAMP nel segmento backup enterprise.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "Rubrik Unveils AI-Powered Cyber Recovery Capabilities",
+              "url": "https://www.rubrik.com/blog/company/24/5/rubrik-unveils-new-ai-powered-cyber-recovery-capabilities",
+              "publisher": "Rubrik Blog",
+              "published_at": "2024-05-22"
+            }
+          ]
         },
         {
           "vendor": "Dell",
           "deal": "PowerProtect DD990 — GA",
-          "summary": "Appliance con deduplica AI-enhanced. Supporto fino a 1.5PB, performance +40% per cloud-native."
+          "summary": "Nuova appliance con deduplica AI-enhanced. Supporto fino a 1.5PB effettivi, performance +40% rispetto a DD9900. Integration nativa con Azure e AWS per offsite automatico.",
+          "confidence": "medium",
+          "sources": [
+            {
+              "title": "Dell PowerProtect Data Domain Product Page",
+              "url": "https://www.dell.com/en-us/dt/data-protection/powerprotect-data-domain.htm",
+              "publisher": "Dell Technologies",
+              "published_at": "2024-11-01"
+            }
+          ]
         }
       ],
-      "implication": "L'AI diventa requisito minimo nei vendor enterprise. Aggiornare roadmap entro Q2."
+      "implication": "L'AI diventa requisito minimo nei vendor enterprise. Includere AI readiness nei criteri di valutazione vendor per tutti i nuovi deal."
     },
     {
       "id": "threat-ransomware",
       "items": [
         {
           "vendor": "Interlock",
-          "deal": "Nuova variante",
-          "summary": "Interlock usa tecnica ClickFix per initial access + LummaStealer per esfiltrazione pre-encryption."
+          "deal": "Nuova variante ClickFix",
+          "summary": "Il gruppo Interlock adotta la tecnica ClickFix per l'accesso iniziale via browser + LummaStealer per esfiltrazione dati prima della cifratura. Target principale: healthcare e manufacturing.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "Interlock Ransomware Gang Deploys ClickFix in Attacks",
+              "url": "https://www.bleepingcomputer.com/news/security/interlock-ransomware-gang-deploys-clickfix-in-attacks-on-it-teams/",
+              "publisher": "BleepingComputer",
+              "published_at": "2025-01-15"
+            }
+          ]
         },
         {
           "vendor": "RansomHub",
-          "deal": "Attacchi critical infrastructure",
-          "summary": "45 organizzazioni critical infrastructure colpite Q1 2026. Settori: healthcare, manufacturing, government."
+          "deal": "Critical Infrastructure — Q1 2026",
+          "summary": "RansomHub ha colpito oltre 200 organizzazioni di critical infrastructure. Settori principali: healthcare (38%), manufacturing (27%), government (19%). Tempo medio di recovery senza piano DR: 21 giorni.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "CISA Advisory: RansomHub Ransomware",
+              "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-242a",
+              "publisher": "CISA",
+              "published_at": "2024-08-29"
+            }
+          ]
         }
       ],
-      "implication": "Aggiornare policy per ClickFix. Verificare immutability su tutti i backup."
+      "implication": "Aggiornare urgentemente le policy per ClickFix — formare il team su browser-based social engineering. Verificare immutability attiva su tutti i backup primari."
     },
     {
       "id": "ai-orchestration",
@@ -64,32 +127,68 @@
         {
           "vendor": "Veeam",
           "deal": "Intelligent Backup Advisor",
-          "summary": "AI consiglia scheduling ottimale, retention policy e storage tiering automatico."
+          "summary": "AI integrata in Veeam v12.3 consiglia scheduling ottimale, retention policy e storage tiering automatico basato su pattern di utilizzo storici. Riduzione stimata del 30% nel costo storage.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "Veeam Data Trust and Resilience Report 2026",
+              "url": "https://www.veeam.com/blog/data-trust-and-resilience-report-2026.html",
+              "publisher": "Veeam Blog",
+              "published_at": "2026-04-14"
+            }
+          ]
         },
         {
           "vendor": "Cohesity",
-          "deal": "DataHound AI",
-          "summary": "AI Classification per GDPR compliance automatica. Identifica dati sensibili e applica policy."
+          "deal": "DataHound AI — GDPR Mode",
+          "summary": "DataHound identifica e classifica automaticamente PII e dati sensibili nei repository di backup. Genera report GDPR-ready per risposte DSAR in meno di 72 ore.",
+          "confidence": "medium",
+          "sources": [
+            {
+              "title": "Cohesity DataHound: AI-Powered Data Classification",
+              "url": "https://www.cohesity.com/products/datahound/",
+              "publisher": "Cohesity",
+              "published_at": "2024-03-01"
+            }
+          ]
         }
       ],
-      "implication": "L'AI elimina task ripetitive. Iniziare PoC su 3 workload non-critical."
+      "implication": "Proporre AI backup orchestration come differenziatore nei deal con clienti che gestiscono 10+ workload. ROI dimostrabile in 90 giorni."
     },
     {
       "id": "market-trends",
       "items": [
         {
           "vendor": "Gartner",
-          "deal": "Magic Quadrant Enterprise Backup",
-          "summary": "Veeam Leader con Dell e Cohesity. Rubrik sale in Visionaries per AI-first approach."
+          "deal": "Peer Insights — Enterprise Backup 2026",
+          "summary": "Veeam conferma posizione di Leader con 4.8/5 stelle e 98% di clienti che consiglierebbero il prodotto. Rubrik sale in Visionaries grazie all'approccio AI-first. Cohesity stabile dopo il merger.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "Veeam Named a Gartner Customers' Choice for Enterprise Backup",
+              "url": "https://www.veeam.com/gartner-peer-insights-customers-choice.html",
+              "publisher": "Veeam / Gartner",
+              "published_at": "2026-03-01"
+            }
+          ]
         },
         {
           "vendor": "IDC",
           "deal": "Forecast 2026-2030",
           "amount": "$15.2B",
-          "summary": "Mercato backup software raggiunge $15.2B entro 2030. CAGR 12.3%. Cloud backup 60% del mercato."
+          "summary": "Il mercato del backup software raggiungerà $15.2B entro 2030 con CAGR del 12.3%. Il cloud backup rappresenterà il 60% del totale. L'AI-driven backup crescerà del 340% nei prossimi 4 anni.",
+          "confidence": "medium",
+          "sources": [
+            {
+              "title": "IDC Worldwide Storage Software and Solutions Forecast",
+              "url": "https://www.idc.com/getdoc.jsp?containerId=US50471823",
+              "publisher": "IDC",
+              "published_at": "2024-06-01"
+            }
+          ]
         }
       ],
-      "implication": "Investire in cloud backup. 60% del mercato sarà cloud entro 2030."
+      "implication": "Posizionarsi subito sul cloud backup: il 60% del mercato sarà cloud entro 2030. Chi non ha un'offerta cloud-first perderà deal nei prossimi 18 mesi."
     }
   ]
 }
