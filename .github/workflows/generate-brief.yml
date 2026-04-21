@@ -1,0 +1,41 @@
+name: Generate Weekly Brief
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # ogni lunedì alle 06:00 UTC (08:00 ora italiana)
+  workflow_dispatch:        # trigger manuale dal browser GitHub
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate brief JSON files
+        run: node generate-brief.mjs --generate
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Validate generated JSON
+        run: node generate-brief.mjs --validate
+
+      - name: Commit and push updated JSON
+        run: |
+          git config user.name "Brief Bot"
+          git config user.email "bot@ciso-brief.local"
+          git add public/brief.json public/backupl.json public/market_analysis.json public/action_register.json data/llmops-log.jsonl || true
+          git diff --staged --quiet && echo "Nessuna modifica da committare" && exit 0
+          git commit -m "Auto: Week $( date +%V ) brief — $( date +%Y-%m-%d )"
+          git push

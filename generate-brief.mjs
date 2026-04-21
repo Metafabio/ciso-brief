@@ -1,23 +1,24 @@
 #!/usr/bin/env node
 /**
- * Manual CISO brief helper.
- *
- * This project does not call LLM APIs directly. The JSON files are populated
- * manually from a PromptOps session, then this script validates them locally.
+ * CISO Brief generator & validator.
  *
  * Usage:
- *   node generate-brief.mjs --prompt     Print the manual PromptOps prompt
  *   node generate-brief.mjs --validate   Validate public/*.json dashboard data
+ *   node generate-brief.mjs --generate   Call Claude API to regenerate all JSON files
+ *   node generate-brief.mjs --prompt     Print the manual prompts (debug)
  *   node generate-brief.mjs              Same as --validate
  */
 
-import { readFileSync } from 'fs'
+import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 const __dir = dirname(fileURLToPath(import.meta.url))
 const BRIEF_FILE = resolve(__dir, 'public/brief.json')
 const ANALYSIS_FILE = resolve(__dir, 'public/market_analysis.json')
+const BACKUP_FILE = resolve(__dir, 'public/backupl.json')
+const ACTIONS_FILE = resolve(__dir, 'public/action_register.json')
+const LLMOPS_LOG = resolve(__dir, 'data/llmops-log.jsonl')
 
 const SECTION_IDS = ['ma-funding', 'product-releases', 'threat-ransomware', 'ai-orchestration', 'market-trends']
 const MOMENTUM_VALUES = ['rising', 'stable', 'declining']
@@ -51,13 +52,9 @@ function validateSources(path, value, errors, warnings) {
     errors.push(`${path}.sources deve contenere almeno una fonte`)
     return
   }
-
   for (const [index, source] of value.entries()) {
     const sourcePath = `${path}.sources[${index}]`
-    if (!isPlainObject(source)) {
-      errors.push(`${sourcePath} deve essere un oggetto`)
-      continue
-    }
+    if (!isPlainObject(source)) { errors.push(`${sourcePath} deve essere un oggetto`); continue }
     if (typeof source.title !== 'string' || !source.title) errors.push(`${sourcePath}.title mancante`)
     if (typeof source.publisher !== 'string' || !source.publisher) errors.push(`${sourcePath}.publisher mancante`)
     if (typeof source.published_at !== 'string' || !source.published_at) errors.push(`${sourcePath}.published_at mancante`)
@@ -72,9 +69,7 @@ function validateSources(path, value, errors, warnings) {
 }
 
 function validateConfidence(path, value, errors) {
-  if (!CONFIDENCE_VALUES.includes(value)) {
-    errors.push(`${path}.confidence non valido: ${value}`)
-  }
+  if (!CONFIDENCE_VALUES.includes(value)) errors.push(`${path}.confidence non valido: ${value}`)
 }
 
 function validateBrief(brief, errors, warnings) {
@@ -86,19 +81,15 @@ function validateBrief(brief, errors, warnings) {
   if (!Array.isArray(brief.sections)) errors.push('brief.sections deve essere un array')
 
   const sections = Array.isArray(brief.sections) ? brief.sections : []
-  const ids = sections.map(section => section.id)
+  const ids = sections.map(s => s.id)
   for (const id of SECTION_IDS) {
     if (!ids.includes(id)) warnings.push(`brief.sections manca la sezione ${id}`)
   }
-
   for (const section of sections) {
     if (!SECTION_IDS.includes(section.id)) errors.push(`brief.sections contiene id non previsto: ${section.id}`)
     if (!Array.isArray(section.items)) errors.push(`brief.sections.${section.id}.items deve essere un array`)
     if ((section.items || []).length > 5) warnings.push(`brief.sections.${section.id}.items supera il limite di 5`)
-    if (typeof section.implication !== 'string' || !section.implication) {
-      errors.push(`brief.sections.${section.id}.implication mancante`)
-    }
-
+    if (typeof section.implication !== 'string' || !section.implication) errors.push(`brief.sections.${section.id}.implication mancante`)
     for (const [index, item] of (section.items || []).entries()) {
       if (typeof item.vendor !== 'string' || !item.vendor) errors.push(`${section.id}.items[${index}].vendor mancante`)
       if (typeof item.deal !== 'string' || !item.deal) errors.push(`${section.id}.items[${index}].deal mancante`)
@@ -112,22 +103,16 @@ function validateBrief(brief, errors, warnings) {
 function validateAnalysis(analysis, brief, errors, warnings) {
   if (!Number.isInteger(analysis.week)) errors.push('market_analysis.week deve essere un intero')
   if (analysis.week !== brief.week) warnings.push(`week mismatch: brief=${brief.week}, market_analysis=${analysis.week}`)
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(analysis.generated_at || '')) {
-    errors.push('market_analysis.generated_at deve essere YYYY-MM-DD')
-  }
-  if (analysis.generated_at !== brief.generated_at) {
-    warnings.push(`generated_at mismatch: brief=${brief.generated_at}, market_analysis=${analysis.generated_at}`)
-  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(analysis.generated_at || '')) errors.push('market_analysis.generated_at deve essere YYYY-MM-DD')
+  if (analysis.generated_at !== brief.generated_at) warnings.push(`generated_at mismatch`)
   if (typeof analysis.summary !== 'string' || !analysis.summary) errors.push('market_analysis.summary mancante')
   if (!Array.isArray(analysis.brands)) errors.push('market_analysis.brands deve essere un array')
   if (!Array.isArray(analysis.market_signals)) errors.push('market_analysis.market_signals deve essere un array')
   if (!Array.isArray(analysis.ai_llm_leaderboard)) errors.push('market_analysis.ai_llm_leaderboard deve essere un array')
   if (!isPlainObject(analysis.recommendation)) errors.push('market_analysis.recommendation deve essere un oggetto')
-
   if ((analysis.brands || []).length > 5) warnings.push('market_analysis.brands supera il limite di 5')
   if ((analysis.market_signals || []).length > 4) warnings.push('market_analysis.market_signals supera il limite di 4')
   if ((analysis.ai_llm_leaderboard || []).length > 5) warnings.push('market_analysis.ai_llm_leaderboard supera il limite di 5')
-
   for (const [index, brand] of (analysis.brands || []).entries()) {
     if (typeof brand.name !== 'string' || !brand.name) errors.push(`brands[${index}].name mancante`)
     if (!MOMENTUM_VALUES.includes(brand.momentum)) errors.push(`brands[${index}].momentum non valido: ${brand.momentum}`)
@@ -138,7 +123,6 @@ function validateAnalysis(analysis, brief, errors, warnings) {
     if (!Array.isArray(ai.features)) errors.push(`brands[${index}].ai_integration.features deve essere un array`)
     if (!Array.isArray(brand.products_in_focus)) errors.push(`brands[${index}].products_in_focus deve essere un array`)
   }
-
   for (const [index, signal] of (analysis.market_signals || []).entries()) {
     if (!SIGNAL_TYPES.includes(signal.type)) errors.push(`market_signals[${index}].type non valido: ${signal.type}`)
     if (!IMPACT_VALUES.includes(signal.impact)) errors.push(`market_signals[${index}].impact non valido: ${signal.impact}`)
@@ -164,15 +148,15 @@ function validateDashboardJSON() {
     console.log('\nWarnings:')
     for (const warning of warnings) console.log(`- ${warning}`)
   }
-
   if (errors.length) {
     console.error('\nErrors:')
     for (const error of errors) console.error(`- ${error}`)
     process.exit(1)
   }
-
   console.log('\nOK: i JSON sono strutturalmente validi per la dashboard.')
 }
+
+// ─── PROMPTS ────────────────────────────────────────────────────────────────
 
 const BRIEF_JSON_PROMPT = `Sei un analista di market intelligence specializzato in cybersecurity, data protection e AI integration.
 La data di oggi è ${DATE}.
@@ -279,14 +263,197 @@ Ogni summary in italiano, tono professionale ma comprensibile a manager non tecn
 Il JSON deve essere valido e parseable — nessun testo fuori dal JSON
 Se un campo non è disponibile usa "n.d." per amount, mai null`
 
+const BACKUP_JSON_PROMPT = `Sei un analista di market intelligence specializzato in backup, disaster recovery e cyber resilience.
+La data di oggi è ${DATE}.
+La settimana ISO corrente è ${WEEK}.
+Esegui ricerche web aggiornate sulle notizie degli ULTIMI 7 GIORNI e produci un oggetto JSON valido con questa struttura esatta. Non aggiungere testo prima o dopo il JSON.
+{
+  "version": "1.0",
+  "generated_at": "${DATE}",
+  "week": ${WEEK},
+  "summary": {
+    "headline": "Una frase che riassume il tema dominante della settimana nel backup/DR.",
+    "key_points": ["punto 1", "punto 2", "punto 3", "punto 4"],
+    "trend": "rising | stable | declining"
+  },
+  "ai_leaderboard": [
+    {
+      "rank": 1,
+      "vendor": "Nome vendor",
+      "product": "Nome prodotto",
+      "ai_score": 9,
+      "key_feature": "La feature AI/LLM più rilevante di questa settimana.",
+      "why": "2 frasi: perché è in questa posizione ora, cosa è cambiato."
+    }
+  ],
+  "news": [
+    {
+      "section": "market | threat | product | regulation",
+      "title": "Titolo notizia",
+      "vendor": "Nome vendor o gruppo threat",
+      "amount": "Valore economico o n.d.",
+      "description": "2-3 frasi: cosa è successo e perché importa.",
+      "implication": "Una sola azione concreta per Mauden o per i clienti."
+    }
+  ]
+}
+Regole:
+- ai_leaderboard: 5 vendor (Veeam, Rubrik, Cohesity, HYCU, Commvault o variazioni recenti)
+- news: 4-6 notizie, mix di market/threat/product
+- ai_score da 1 a 10
+- trend del summary basato sulle notizie della settimana
+- Tutto in italiano, tono professionale ma diretto
+- Il JSON deve essere valido e parseable — nessun testo fuori dal JSON`
+
+const ACTIONS_JSON_PROMPT = `Sei un consulente commerciale specializzato in backup, DR e cyber resilience per system integrator italiani.
+La data di oggi è ${DATE}.
+La settimana ISO corrente è ${WEEK}.
+Basandoti sulle notizie più recenti degli ULTIMI 7 GIORNI nel mercato backup/ransomware/DR, produci un oggetto JSON con 5-6 azioni commerciali concrete per Mauden. Non aggiungere testo prima o dopo il JSON.
+{
+  "week": ${WEEK},
+  "generated_at": "${DATE}",
+  "actions": [
+    {
+      "id": "act-001",
+      "source_signal": "Il titolo della notizia o segnale di mercato che ha generato questa azione.",
+      "risk": "2 frasi: quale rischio concreto corre il cliente se non agisce.",
+      "action": "L'azione commerciale specifica da eseguire — a chi, con quale proposta, con quale urgenza.",
+      "owner": "Sales | Pre-Sales | Technical | Sales / Pre-Sales",
+      "priority": "high | medium | low",
+      "mauden_service": "Nome del servizio Mauden da proporre (es: Ransomware Restore Test, Backup Architecture Modernization, Cyber Recovery Assessment)",
+      "service_price": "Range indicativo in euro (es: €6k–€20k)",
+      "status": "open",
+      "deadline": "YYYY-MM-DD (entro 7-14 giorni)"
+    }
+  ]
+}
+Regole:
+- 5-6 azioni, almeno 2 con priority high
+- Le azioni devono essere concrete e specifiche, non generiche
+- service_price realistico per il mercato italiano
+- deadline entro 2 settimane dalla data odierna
+- Tutto in italiano
+- Il JSON deve essere valido e parseable — nessun testo fuori dal JSON`
+
+// ─── GENERATION ─────────────────────────────────────────────────────────────
+
+function extractJSON(text) {
+  // Estrae il primo blocco JSON valido dalla risposta
+  const match = text.match(/\{[\s\S]*\}/)
+  if (!match) throw new Error('Nessun JSON trovato nella risposta')
+  return JSON.parse(match[0])
+}
+
+function logLLMOps(entry) {
+  const dataDir = resolve(__dir, 'data')
+  if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true })
+  appendFileSync(LLMOPS_LOG, JSON.stringify(entry) + '\n')
+}
+
+async function callClaude(prompt, label) {
+  const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+
+  console.log(`\n[generate] ${label} — chiamata a Claude API...`)
+  const start = Date.now()
+
+  const response = await client.messages.create({
+    model: 'claude-sonnet-4-6',
+    max_tokens: 4096,
+    tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+    messages: [{ role: 'user', content: prompt }],
+  })
+
+  const elapsed = ((Date.now() - start) / 1000).toFixed(1)
+
+  // Estrae il testo dalla risposta (può includere tool_use blocks)
+  const textBlocks = response.content.filter(b => b.type === 'text')
+  const fullText = textBlocks.map(b => b.text).join('')
+
+  // Calcolo costo approssimativo (claude-sonnet-4-6: $3/1M input, $15/1M output)
+  const inputTokens = response.usage?.input_tokens ?? 0
+  const outputTokens = response.usage?.output_tokens ?? 0
+  const costUsd = (inputTokens * 3 + outputTokens * 15) / 1_000_000
+
+  console.log(`[generate] ${label} — ${elapsed}s | tokens: ${inputTokens}in/${outputTokens}out | costo: $${costUsd.toFixed(4)}`)
+
+  logLLMOps({
+    timestamp: new Date().toISOString(),
+    label,
+    model: 'claude-sonnet-4-6',
+    week: WEEK,
+    input_tokens: inputTokens,
+    output_tokens: outputTokens,
+    cost_usd: costUsd,
+    elapsed_s: parseFloat(elapsed),
+  })
+
+  return fullText
+}
+
+async function generateAll() {
+  if (!process.env.ANTHROPIC_API_KEY) {
+    console.error('Errore: ANTHROPIC_API_KEY non impostata.')
+    console.error('Esegui: export ANTHROPIC_API_KEY=sk-ant-...')
+    process.exit(1)
+  }
+
+  console.log(`\n=== CISO Brief Generator — Week ${WEEK} (${DATE}) ===`)
+
+  const jobs = [
+    { label: 'brief.json',           prompt: BRIEF_JSON_PROMPT,          file: BRIEF_FILE },
+    { label: 'market_analysis.json', prompt: MARKET_ANALYSIS_JSON_PROMPT, file: ANALYSIS_FILE },
+    { label: 'backupl.json',         prompt: BACKUP_JSON_PROMPT,          file: BACKUP_FILE },
+    { label: 'action_register.json', prompt: ACTIONS_JSON_PROMPT,         file: ACTIONS_FILE },
+  ]
+
+  let totalCost = 0
+
+  for (const job of jobs) {
+    try {
+      const text = await callClaude(job.prompt, job.label)
+      const data = extractJSON(text)
+
+      // Salva backup del file precedente
+      if (existsSync(job.file)) {
+        const backup = job.file.replace('.json', `.backup-${DATE}.json`)
+        writeFileSync(backup, readFileSync(job.file))
+      }
+
+      writeFileSync(job.file, JSON.stringify(data, null, 2))
+      console.log(`[generate] ${job.label} — scritto in ${job.file}`)
+
+      // Leggi il costo dall'ultimo log
+      const lines = existsSync(LLMOPS_LOG) ? readFileSync(LLMOPS_LOG, 'utf8').trim().split('\n') : []
+      if (lines.length) {
+        const last = JSON.parse(lines[lines.length - 1])
+        totalCost += last.cost_usd ?? 0
+      }
+    } catch (err) {
+      console.error(`[generate] ${job.label} — ERRORE: ${err.message}`)
+      console.error('[generate] Il file esistente NON è stato sovrascritto.')
+    }
+  }
+
+  console.log(`\n=== Generazione completata — costo totale stimato: $${totalCost.toFixed(4)} ===`)
+  console.log(`Log LLMOps salvato in: ${LLMOPS_LOG}`)
+  console.log('\nEsegui ora: node generate-brief.mjs --validate')
+}
+
+// ─── PROMPTS DEBUG ───────────────────────────────────────────────────────────
+
 function printPrompt() {
   console.log(`=== BRIEF_JSON ===\n${BRIEF_JSON_PROMPT}\n\n=== MARKET_ANALYSIS_JSON ===\n${MARKET_ANALYSIS_JSON_PROMPT}`)
 }
+
+// ─── MAIN ────────────────────────────────────────────────────────────────────
 
 const args = new Set(process.argv.slice(2))
 
 if (args.has('--prompt')) {
   printPrompt()
+} else if (args.has('--generate')) {
+  generateAll().catch(err => { console.error(err); process.exit(1) })
 } else {
   validateDashboardJSON()
 }
