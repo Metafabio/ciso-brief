@@ -53,15 +53,17 @@ async function fetchRSSNews(): Promise<string> {
     : ''
 }
 
-async function callGroq(prompt: string): Promise<string> {
-  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+async function callLLM(prompt: string): Promise<string> {
+  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+      'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
       'Content-Type': 'application/json',
+      'HTTP-Referer': 'https://ciso-brief.vercel.app',
+      'X-Title': 'Resilience Revenue Brief',
     },
     body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
+      model: 'opencode/big-pickle',
       max_tokens: 4096,
       temperature: 0.3,
       messages: [{ role: 'user', content: prompt }],
@@ -70,7 +72,7 @@ async function callGroq(prompt: string): Promise<string> {
 
   if (!res.ok) {
     const err = await res.text()
-    throw new Error(`Groq error ${res.status}: ${err}`)
+    throw new Error(`OpenRouter error ${res.status}: ${err}`)
   }
 
   const data = await res.json()
@@ -88,8 +90,8 @@ function sleep(ms: number) {
 }
 
 export async function POST() {
-  if (!process.env.GROQ_API_KEY) {
-    return NextResponse.json({ error: 'GROQ_API_KEY non configurata in .env.local' }, { status: 500 })
+  if (!process.env.OPENROUTER_API_KEY) {
+    return NextResponse.json({ error: 'OPENROUTER_API_KEY non configurata in .env.local' }, { status: 500 })
   }
 
   const now = new Date()
@@ -139,7 +141,7 @@ Tutto in italiano. Azioni concrete e specifiche, non generiche.${newsContext}`
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
         if (attempt > 1) await sleep(15000)
-        const text = await callGroq(job.prompt)
+        const text = await callLLM(job.prompt)
         const data = extractJSON(text)
         if (existsSync(job.file)) {
           writeFileSync(job.file.replace('.json', `.backup-${DATE}.json`), readFileSync(job.file))

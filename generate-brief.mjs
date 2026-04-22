@@ -406,18 +406,20 @@ function logLLMOps(entry) {
   appendFileSync(LLMOPS_LOG, JSON.stringify(entry) + '\n')
 }
 
-async function callGroq(prompt, label) {
-  console.log(`\n[generate] ${label} — chiamata a Groq API...`)
+async function callLLM(prompt, label) {
+  console.log(`\n[generate] ${label} — chiamata a OpenRouter (opencode/big-pickle)...`)
   const start = Date.now()
 
-  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+      'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
       'Content-Type': 'application/json',
+      'HTTP-Referer': 'https://ciso-brief.vercel.app',
+      'X-Title': 'Resilience Revenue Brief',
     },
     body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
+      model: 'opencode/big-pickle',
       max_tokens: 4096,
       temperature: 0.3,
       messages: [{ role: 'user', content: prompt }],
@@ -426,25 +428,25 @@ async function callGroq(prompt, label) {
 
   if (!res.ok) {
     const err = await res.text()
-    throw new Error(`Groq API error ${res.status}: ${err}`)
+    throw new Error(`OpenRouter error ${res.status}: ${err}`)
   }
 
   const data = await res.json()
   const elapsed = ((Date.now() - start) / 1000).toFixed(1)
   const text = data.choices?.[0]?.message?.content ?? ''
   const usage = data.usage ?? {}
+  const cost = ((usage.prompt_tokens ?? 0) * 0.000001 + (usage.completion_tokens ?? 0) * 0.000005).toFixed(4)
 
-  // Groq è gratuito — costo $0
-  console.log(`[generate] ${label} — ${elapsed}s | tokens: ${usage.prompt_tokens ?? 0}in/${usage.completion_tokens ?? 0}out | costo: $0.00 (Groq free)`)
+  console.log(`[generate] ${label} — ${elapsed}s | tokens: ${usage.prompt_tokens ?? 0}in/${usage.completion_tokens ?? 0}out | costo: ~$${cost}`)
 
   logLLMOps({
     timestamp: new Date().toISOString(),
     label,
-    model: 'llama-3.3-70b-versatile',
+    model: 'opencode/big-pickle',
     week: WEEK,
     input_tokens: usage.prompt_tokens ?? 0,
     output_tokens: usage.completion_tokens ?? 0,
-    cost_usd: 0,
+    cost_usd: parseFloat(cost),
     elapsed_s: parseFloat(elapsed),
   })
 
@@ -452,9 +454,9 @@ async function callGroq(prompt, label) {
 }
 
 async function generateAll() {
-  if (!process.env.GROQ_API_KEY) {
-    console.error('Errore: GROQ_API_KEY non impostata.')
-    console.error('Aggiungila in .env.local oppure: export GROQ_API_KEY=gsk_...')
+  if (!process.env.OPENROUTER_API_KEY) {
+    console.error('Errore: OPENROUTER_API_KEY non impostata.')
+    console.error('Aggiungila in .env.local oppure: export OPENROUTER_API_KEY=sk-or-...')
     process.exit(1)
   }
 
@@ -486,7 +488,7 @@ async function generateAll() {
       await new Promise(r => setTimeout(r, wait))
     }
     try {
-      const text = await callGroq(job.prompt, job.label)
+      const text = await callLLM(job.prompt, job.label)
       const data = extractJSON(text)
 
       // Salva backup del file precedente
