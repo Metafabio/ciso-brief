@@ -11,7 +11,7 @@ const FILES = {
   actions: resolve(ROOT, 'public/action_register.json'),
 }
 
-const MODEL = 'perplexity/sonar-pro'
+const MODEL = 'gemini-2.0-flash'
 
 function getISOWeek(d: Date) {
   const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
@@ -21,39 +21,39 @@ function getISOWeek(d: Date) {
 }
 
 async function callLLM(prompt: string): Promise<string> {
-  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      'Content-Type': 'application/json',
-      'HTTP-Referer': 'https://ciso-brief.vercel.app',
-      'X-Title': 'Resilience Revenue Brief',
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: 4096,
-      temperature: 0.3,
-      messages: [{ role: 'user', content: prompt }],
-    }),
-  })
+  const apiKey = process.env.GEMINI_API_KEY
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        tools: [{ google_search: {} }],
+        generationConfig: { maxOutputTokens: 8192, temperature: 0.3 },
+      }),
+    }
+  )
   if (!res.ok) {
     const err = await res.text()
-    throw new Error(`OpenRouter error ${res.status}: ${err}`)
+    throw new Error(`Gemini error ${res.status}: ${err}`)
   }
   const data = await res.json()
-  return data.choices?.[0]?.message?.content ?? ''
+  return data.candidates?.[0]?.content?.parts?.[0]?.text ?? ''
 }
 
 function extractJSON(text: string): unknown {
-  const match = text.match(/\{[\s\S]*\}/)
+  // strip markdown code fences if present
+  const cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '')
+  const match = cleaned.match(/\{[\s\S]*\}/)
   if (!match) throw new Error('Nessun JSON nella risposta')
   return JSON.parse(match[0])
 }
 
 export async function POST() {
-  if (!process.env.OPENROUTER_API_KEY) {
+  if (!process.env.GEMINI_API_KEY) {
     return new Response(
-      JSON.stringify({ type: 'error', msg: 'OPENROUTER_API_KEY non configurata in .env.local' }) + '\n',
+      JSON.stringify({ type: 'error', msg: 'GEMINI_API_KEY non configurata in .env.local' }) + '\n',
       { status: 500, headers: { 'Content-Type': 'application/x-ndjson' } }
     )
   }
@@ -63,21 +63,22 @@ export async function POST() {
   const DATE = now.toISOString().split('T')[0]
   const WEEK = getISOWeek(now)
   const DATE_IT = now.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })
+  const SEVEN_DAYS_AGO = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
 
   const stream = new ReadableStream({
     async start(controller) {
       const push = (obj: object) => controller.enqueue(enc.encode(JSON.stringify(obj) + '\n'))
 
-      push({ type: 'rss_start', msg: `Perplexity online — ricerca web integrata, nessun RSS necessario` })
+      push({ type: 'rss_start', msg: `Gemini 2.0 Flash + Google Search — ricerca web gratuita` })
       push({ type: 'rss_done', msg: `Modello: ${MODEL}`, headlines: [] })
 
-      const SEARCH_INSTRUCTION = `Cerca online le notizie più recenti degli ultimi 7 giorni (da ${new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0]} a ${DATE}) su backup, ransomware, Veeam, Rubrik, Cohesity, HYCU, Commvault, cyber resilience, data protection. Usa le notizie trovate come base per il JSON.`
+      const SEARCH_INSTRUCTION = `Usa Google Search per trovare notizie reali degli ultimi 7 giorni (${SEVEN_DAYS_AGO} – ${DATE}) su: backup enterprise, ransomware, Veeam, Rubrik, Cohesity, HYCU, Commvault, cyber resilience, data protection. Cita solo fonti trovate realmente.`
 
       const BRIEF_PROMPT = `Sei un analista di market intelligence specializzato in cybersecurity, data protection e AI. ${SEARCH_INSTRUCTION}
 La data di oggi è ${DATE}. La settimana ISO corrente è ${WEEK}.
 Produci SOLO un oggetto JSON valido con questa struttura esatta, nessun testo prima o dopo:
 {"week":${WEEK},"date":"${DATE_IT}","generated_at":"${DATE}","sections":[{"id":"ma-funding","items":[{"vendor":"...","deal":"...","amount":"...","summary":"2-3 frasi su notizia reale trovata online.","confidence":"high","sources":[{"title":"titolo articolo reale","url":"https://url-reale.com","publisher":"publisher reale","published_at":"${DATE}"}]}],"implication":"Azione concreta per system integrator."},{"id":"product-releases","items":[{"vendor":"...","deal":"...","summary":"2-3 frasi.","confidence":"high","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"implication":"Azione concreta."},{"id":"threat-ransomware","items":[{"vendor":"...","deal":"...","summary":"2-3 frasi.","confidence":"high","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"implication":"Azione concreta."},{"id":"ai-orchestration","items":[{"vendor":"...","deal":"...","summary":"2-3 frasi.","confidence":"medium","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"implication":"Azione concreta."},{"id":"market-trends","items":[{"vendor":"...","deal":"...","summary":"2-3 frasi.","confidence":"medium","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"implication":"Azione concreta."}]}
-Max 3 item per sezione. Tutto in italiano. Usa solo notizie reali trovate con la ricerca web.`
+Max 3 item per sezione. Tutto in italiano. Usa solo notizie reali trovate con Google Search.`
 
       const MARKET_PROMPT = `Sei un analista di market intelligence specializzato in backup, DR e cybersecurity. ${SEARCH_INSTRUCTION}
 La data di oggi è ${DATE}. La settimana ISO corrente è ${WEEK}.
@@ -89,12 +90,12 @@ Produci SOLO un oggetto JSON valido, nessun testo prima o dopo:
 La data di oggi è ${DATE}. La settimana ISO corrente è ${WEEK}.
 Produci SOLO un oggetto JSON valido, nessun testo prima o dopo:
 {"version":"1.0","generated_at":"${DATE}","week":${WEEK},"summary":{"headline":"Tema dominante settimana basato su notizie reali.","key_points":["punto 1","punto 2","punto 3","punto 4"],"trend":"rising"},"ai_leaderboard":[{"rank":1,"vendor":"Rubrik","product":"...","ai_score":9,"key_feature":"...","why":"2 frasi."},{"rank":2,"vendor":"Veeam","product":"...","ai_score":8,"key_feature":"...","why":"2 frasi."},{"rank":3,"vendor":"Cohesity","product":"...","ai_score":8,"key_feature":"...","why":"2 frasi."},{"rank":4,"vendor":"HYCU","product":"...","ai_score":7,"key_feature":"...","why":"2 frasi."},{"rank":5,"vendor":"Commvault","product":"...","ai_score":5,"key_feature":"...","why":"2 frasi."}],"news":[{"section":"market","title":"...","vendor":"...","amount":"n.d.","description":"2-3 frasi su notizia reale.","implication":"Azione concreta."},{"section":"threat","title":"...","vendor":"...","amount":"n.d.","description":"2-3 frasi.","implication":"Azione concreta."},{"section":"product","title":"...","vendor":"...","amount":"n.d.","description":"2-3 frasi.","implication":"Azione concreta."}]}
-Tutto in italiano. Solo notizie reali trovate online.`
+Tutto in italiano. Solo notizie reali trovate con Google Search.`
 
       const ACTIONS_PROMPT = `Sei un consulente commerciale per system integrator italiani specializzati in backup e DR. ${SEARCH_INSTRUCTION}
 La data di oggi è ${DATE}. La settimana ISO corrente è ${WEEK}.
-Basandoti sulle notizie reali trovate online, produci SOLO un oggetto JSON valido con 5 azioni commerciali concrete per Mauden, nessun testo prima o dopo:
-{"week":${WEEK},"generated_at":"${DATE}","actions":[{"id":"act-001","source_signal":"notizia reale trovata online","risk":"2 frasi rischio cliente basate su notizia reale.","action":"Azione specifica con chi contattare e come.","owner":"Sales","priority":"high","mauden_service":"Ransomware Restore Test","service_price":"€6k–€20k","status":"open","deadline":"${new Date(Date.now() + 7*24*60*60*1000).toISOString().split('T')[0]}"},{"id":"act-002","source_signal":"...","risk":"...","action":"...","owner":"Pre-Sales","priority":"high","mauden_service":"Backup Architecture Modernization","service_price":"€15k–€80k","status":"open","deadline":"${new Date(Date.now() + 10*24*60*60*1000).toISOString().split('T')[0]}"},{"id":"act-003","source_signal":"...","risk":"...","action":"...","owner":"Sales / Pre-Sales","priority":"medium","mauden_service":"Cyber Recovery Assessment","service_price":"€4k–€12k","status":"open","deadline":"${new Date(Date.now() + 14*24*60*60*1000).toISOString().split('T')[0]}"},{"id":"act-004","source_signal":"...","risk":"...","action":"...","owner":"Technical","priority":"medium","mauden_service":"...","service_price":"...","status":"open","deadline":"${new Date(Date.now() + 14*24*60*60*1000).toISOString().split('T')[0]}"},{"id":"act-005","source_signal":"...","risk":"...","action":"...","owner":"Sales","priority":"low","mauden_service":"...","service_price":"...","status":"open","deadline":"${new Date(Date.now() + 14*24*60*60*1000).toISOString().split('T')[0]}"}]}
+Basandoti sulle notizie reali trovate con Google Search, produci SOLO un oggetto JSON valido con 5 azioni commerciali concrete per Mauden, nessun testo prima o dopo:
+{"week":${WEEK},"generated_at":"${DATE}","actions":[{"id":"act-001","source_signal":"notizia reale trovata online","risk":"2 frasi rischio cliente basate su notizia reale.","action":"Azione specifica con chi contattare e come.","owner":"Sales","priority":"high","mauden_service":"Ransomware Restore Test","service_price":"€6k–€20k","status":"open","deadline":"${new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"},{"id":"act-002","source_signal":"...","risk":"...","action":"...","owner":"Pre-Sales","priority":"high","mauden_service":"Backup Architecture Modernization","service_price":"€15k–€80k","status":"open","deadline":"${new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"},{"id":"act-003","source_signal":"...","risk":"...","action":"...","owner":"Sales / Pre-Sales","priority":"medium","mauden_service":"Cyber Recovery Assessment","service_price":"€4k–€12k","status":"open","deadline":"${new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"},{"id":"act-004","source_signal":"...","risk":"...","action":"...","owner":"Technical","priority":"medium","mauden_service":"...","service_price":"...","status":"open","deadline":"${new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"},{"id":"act-005","source_signal":"...","risk":"...","action":"...","owner":"Sales","priority":"low","mauden_service":"...","service_price":"...","status":"open","deadline":"${new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"}]}
 Tutto in italiano. Azioni concrete basate su notizie reali di questa settimana.`
 
       const jobs = [
@@ -107,7 +108,7 @@ Tutto in italiano. Azioni concrete basate su notizie reali di questa settimana.`
       const results: Record<string, string> = {}
 
       for (const job of jobs) {
-        push({ type: 'llm_start', label: job.label, msg: `LLM in corso...` })
+        push({ type: 'llm_start', label: job.label, msg: `Gemini in corso...` })
         const t = Date.now()
         let lastErr = ''
         let ok = false
@@ -130,7 +131,7 @@ Tutto in italiano. Azioni concrete basate su notizie reali di questa settimana.`
         push({
           type: ok ? 'llm_done' : 'llm_error',
           label: job.label,
-          msg: ok ? `✓ ${((Date.now() - t) / 1000).toFixed(1)}s` : `✗ ${lastErr.slice(0, 80)}`,
+          msg: ok ? `✓ ${((Date.now() - t) / 1000).toFixed(1)}s` : `✗ ${lastErr.slice(0, 120)}`,
         })
       }
 
