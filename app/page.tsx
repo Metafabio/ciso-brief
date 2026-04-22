@@ -1419,6 +1419,7 @@ export default function Page() {
   const [showClientInput, setShowClientInput] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
   const [generateMsg, setGenerateMsg] = useState('')
+  const [generateLog, setGenerateLog] = useState<{ type: string; label?: string; msg: string; headlines?: string[] }[]>([])
 
   useEffect(() => {
     Promise.all([
@@ -1454,21 +1455,50 @@ export default function Page() {
 
   const handleGenerate = useCallback(async () => {
     setIsGenerating(true)
-    setGenerateMsg('Fetching notizie RSS...')
+    setGenerateLog([])
+    setGenerateMsg('Avvio...')
     try {
       const res = await fetch('/api/generate', { method: 'POST' })
-      const data = await res.json()
-      if (data.success) {
-        setGenerateMsg('Generato! Ricarico...')
-        setTimeout(() => window.location.reload(), 1500)
-      } else {
-        const errors = Object.entries(data.results ?? {}).filter(([, v]) => v !== 'ok').map(([k, v]) => `${k}: ${v}`).join(', ')
-        setGenerateMsg(`Errori: ${errors || 'sconosciuto'}`)
-        setTimeout(() => { setIsGenerating(false); setGenerateMsg('') }, 4000)
+      if (!res.body) throw new Error('No stream')
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ''
+      let success = false
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buffer += decoder.decode(value, { stream: true })
+        const lines = buffer.split('\n')
+        buffer = lines.pop() ?? ''
+        for (const line of lines) {
+          if (!line.trim()) continue
+          try {
+            const event = JSON.parse(line)
+            if (event.type === 'rss_start') {
+              setGenerateMsg('RSS...')
+              setGenerateLog(l => [...l, { type: 'rss', msg: event.msg }])
+            } else if (event.type === 'rss_done') {
+              setGenerateLog(l => [...l, { type: 'rss_done', msg: event.msg, headlines: event.headlines }])
+            } else if (event.type === 'llm_start') {
+              setGenerateMsg(event.label)
+              setGenerateLog(l => [...l, { type: 'llm_start', label: event.label, msg: event.msg }])
+            } else if (event.type === 'llm_done') {
+              setGenerateLog(l => l.map(e => e.label === event.label && e.type === 'llm_start' ? { ...e, type: 'llm_done', msg: event.msg } : e))
+            } else if (event.type === 'llm_error') {
+              setGenerateLog(l => l.map(e => e.label === event.label && e.type === 'llm_start' ? { ...e, type: 'llm_error', msg: event.msg } : e))
+            } else if (event.type === 'complete') {
+              success = event.success
+              setGenerateMsg(success ? 'Completato!' : 'Completato con errori')
+            }
+          } catch { /* linea non JSON */ }
+        }
       }
+      if (success) setTimeout(() => window.location.reload(), 2000)
+      else setTimeout(() => { setIsGenerating(false); setGenerateMsg('') }, 6000)
     } catch {
       setGenerateMsg('Errore di rete')
-      setTimeout(() => { setIsGenerating(false); setGenerateMsg('') }, 3000)
+      setGenerateLog(l => [...l, { type: 'error', msg: 'Connessione interrotta' }])
+      setTimeout(() => { setIsGenerating(false); setGenerateMsg(''); setGenerateLog([]) }, 4000)
     }
   }, [])
 
@@ -1611,6 +1641,30 @@ export default function Page() {
           <ThemeSwitcher current={theme} onChange={handleTheme} />
         </div>
       </header>
+
+      {generateLog.length > 0 && (
+        <div className="no-print" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)', padding: '12px 32px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          {generateLog.map((entry, i) => {
+            const color = entry.type === 'llm_done' ? '#10b981' : entry.type === 'llm_error' ? '#ef4444' : entry.type === 'rss_done' ? '#06b6d4' : 'var(--text-muted)'
+            const prefix = entry.type === 'llm_done' ? '✓' : entry.type === 'llm_error' ? '✗' : entry.type === 'llm_start' ? '◌' : '→'
+            return (
+              <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', color, display: 'flex', gap: '8px' }}>
+                  <span style={{ opacity: 0.5 }}>{prefix}</span>
+                  <span>{entry.label ? `[${entry.label}] ` : ''}{entry.msg}</span>
+                </div>
+                {entry.headlines && entry.headlines.length > 0 && (
+                  <div style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                    {entry.headlines.map((h, j) => (
+                      <div key={j} style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)', lineHeight: 1.4 }}>{h}</div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
 
       <div className="no-print" style={{ borderBottom: '1px solid var(--border)', padding: '0 32px', display: 'flex', gap: '4px', background: 'var(--bg)' }}>
         {([
