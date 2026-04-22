@@ -1,78 +1,78 @@
 {
   "week": 17,
-  "generated_at": "2026-04-21",
+  "generated_at": "2026-04-22",
   "actions": [
     {
       "id": "act-001",
-      "source_signal": "The Gentlemen RaaS — 320 vittime, target PMI manifatturiero/logistica",
-      "risk": "The Gentlemen è il gruppo ransomware con crescita più rapida in Europa nel 2026. Target principale: PMI nei settori manifatturiero e logistica con backup non testati.",
-      "action": "Contattare i clienti nei settori manifatturiero e logistica con proposta Ransomware Restore Test — usare dati The Gentlemen come trigger di urgency",
+      "source_signal": "Veeam Data Trust and Resilience Report 2026: solo il 28% recupera completamente dopo ransomware",
+      "risk": "I clienti che non hanno mai eseguito un Ransomware Restore Test reale si trovano nella fascia del 72% che non recupera completamente. In caso di attacco, la perdita di dati e il downtime prolungato hanno impatto diretto su fatturato e compliance DORA/NIS2.",
+      "action": "Inviare questa settimana una comunicazione personalizzata ai top 10 clienti IT Manager / CISO con il dato del 28% recovery completo (fonte Veeam). Proporre una sessione di Ransomware Restore Test di mezza giornata con report di esito. Focus su clienti healthcare, education e manifatturiero — i settori più colpiti da Storm-1175/Medusa.",
       "owner": "Sales",
       "priority": "high",
       "mauden_service": "Ransomware Restore Test",
       "service_price": "€6k–€20k",
       "status": "open",
-      "deadline": "2026-04-28"
+      "deadline": "2026-04-29"
     },
     {
       "id": "act-002",
-      "source_signal": "Commvault private equity — titolo -30%, acquisizione in valutazione",
-      "risk": "I clienti con Commvault sono in una fase di incertezza strategica. L'acquisizione da parte di PE potrebbe portare cambi di pricing, supporto e roadmap. Rischio lock-in per chi non valuta alternative ora.",
-      "action": "Identificare i clienti Mauden con Commvault attivo e proporre Backup Architecture Assessment — posizionare Veeam o Rubrik come alternativa con confronto TCO",
+      "source_signal": "Commvault nel mirino del private equity — Thoma Bravo potenziale acquirente",
+      "risk": "I clienti Commvault con contratti pluriennali potrebbero subire cambi di supporto, pricing e roadmap in caso di acquisizione PE. La finestra per rinegoziare o migrare si chiude con il consolidamento dell'operazione — tipicamente 6-12 mesi dopo l'annuncio ufficiale.",
+      "action": "Mappare entro 5 giorni tutti i clienti Commvault con contratti in scadenza nel 2026. Contattare il referente IT Manager con una nota tecnica sull'impatto della possibile acquisizione PE e proporre una valutazione comparativa Veeam Data Platform vs Commvault Cloud. Obiettivo: avviare almeno 3 proof of concept prima di fine maggio.",
       "owner": "Sales / Pre-Sales",
       "priority": "high",
       "mauden_service": "Backup Architecture Modernization",
       "service_price": "€15k–€80k",
       "status": "open",
-      "deadline": "2026-05-05"
+      "deadline": "2026-04-27"
     },
     {
       "id": "act-003",
-      "source_signal": "Ransomware senza encryption — exfiltration pura +100% YoY",
-      "risk": "Il 6% degli attacchi ransomware 2026 usa solo exfiltration senza encryption. I backup tradizionali non rilevano né bloccano questo scenario. I dati escono prima di qualsiasi alert.",
-      "action": "Aggiungere data classification e data visibility assessment all'offerta standard di backup review. Presentare Cohesity DataHound ai clienti con alta esposizione GDPR/PII",
-      "owner": "Pre-Sales / Technical",
+      "source_signal": "Storm-1175 / Medusa: campagne ransomware ad alto volume su asset web esposti — healthcare ed education colpiti",
+      "risk": "I clienti con asset web esposti (portali, VPN, applicazioni legacy) sono bersagli attivi di Storm-1175. Il backup non isolato non è sufficiente: l'attacco cifra simultaneamente produzione e backup se non c'è air gap verificabile.",
+      "action": "Contattare i clienti healthcare ed education per un audit urgente degli asset web esposti e della configurazione del backup. Proporre un Cyber Recovery Assessment con verifica dell'isolamento backup, test di recovery da snapshot immutabile e raccomandazioni di hardening. Includere nella proposta la referenza al bollettino Microsoft Security su Storm-1175.",
+      "owner": "Pre-Sales",
       "priority": "high",
       "mauden_service": "Cyber Recovery Assessment",
       "service_price": "€4k–€12k",
       "status": "open",
-      "deadline": "2026-05-07"
+      "deadline": "2026-05-02"
     },
     {
       "id": "act-004",
-      "source_signal": "Rubrik Cloud Vault — copertura AWS+Azure+GCP completa",
-      "risk": "I clienti con ambienti multi-cloud (AWS + Azure + GCP) non hanno un vault immutabile unificato. Ogni cloud ha soluzioni separate con gestione frammentata e gap di sicurezza.",
-      "action": "Identificare clienti con ambienti Google Cloud e proporre demo Rubrik Cloud Vault multi-cloud — unica soluzione con vault air-gapped su tutti e tre i major cloud",
-      "owner": "Sales / Pre-Sales",
+      "source_signal": "Esfiltrazione pura in crescita: ShinyHunters colpisce Booking.com e Rockstar Games via misconfiguration Salesforce",
+      "risk": "I clienti che usano Salesforce, Microsoft 365 o altre applicazioni SaaS senza backup dedicato sono esposti alla perdita di dati per esfiltrazione pura — scenario non coperto dai classici Restore Test e spesso non incluso nei contratti di backup tradizionali.",
+      "action": "Proporre ai clienti con forte adozione SaaS (Salesforce, Microsoft 365, Google Workspace) una verifica della copertura backup SaaS con HYCU R-Cloud. Preparare una demo di 1 ora che mostri il gap di copertura rispetto al backup tradizionale e il rischio esfiltrazione. Target: clienti con fatturato > €50M e team commerciale/CRM strutturato.",
+      "owner": "Technical",
       "priority": "medium",
-      "mauden_service": "Cyber Recovery Assessment",
-      "service_price": "€4k–€12k",
+      "mauden_service": "SaaS Backup Assessment (HYCU)",
+      "service_price": "€3k–€8k",
       "status": "open",
-      "deadline": "2026-05-12"
+      "deadline": "2026-05-06"
     },
     {
       "id": "act-005",
-      "source_signal": "HYCU R-Shield + Halcyon — prevenzione + recovery in un prodotto",
-      "risk": "I clienti mid-market senza SOC dedicato non hanno una soluzione integrata che copra sia la prevenzione ransomware che il recovery. Gap di sicurezza operativa documentato.",
-      "action": "Presentare HYCU R-Shield ai clienti mid-market (100-500 dipendenti) senza SOC come soluzione all-in-one per ransomware. Valutare inserimento nel portfolio Mauden.",
+      "source_signal": "Cohesity rilancia la strategia post-Veritas — clienti Veritas NetBackup in transizione",
+      "risk": "I clienti con legacy Veritas NetBackup sono in una fase di transizione non ancora definita. Se non vengono approcciati da Mauden prima, Cohesity o Rubrik potrebbero chiudere contratti diretti, escludendo il system integrator dalla relazione.",
+      "action": "Identificare i clienti con installazioni Veritas NetBackup nella base installata Mauden. Contattare il referente IT proponendo un assessment di migrazione Cohesity DataProtect — posizionare Mauden come partner di continuità che conosce l'ambiente e può gestire la transizione senza discontinuità operativa.",
       "owner": "Sales",
       "priority": "medium",
-      "mauden_service": "Ransomware Restore Test",
-      "service_price": "€6k–€20k",
+      "mauden_service": "Backup Architecture Modernization",
+      "service_price": "€15k–€60k",
       "status": "open",
-      "deadline": "2026-05-15"
+      "deadline": "2026-05-06"
     },
     {
       "id": "act-006",
-      "source_signal": "Wasabi acquisisce Lyve Cloud — cloud storage consolidamento",
-      "risk": "I clienti con backup su cloud Seagate Lyve Cloud devono verificare l'impatto della migrazione a Wasabi. Possibili cambi di configurazione e contratto.",
-      "action": "Contattare i clienti che usano Lyve Cloud come backup target per aggiornamento tecnico sull'acquisizione Wasabi — posizionare Mauden come partner di supporto nella transizione",
-      "owner": "Technical / Account Manager",
+      "source_signal": "AI adoption outpaces data protection: il 43% delle organizzazioni non protegge adeguatamente i dati AI",
+      "risk": "I clienti che stanno adottando workload AI (Microsoft Copilot, modelli LLM interni, pipeline dati) non hanno ancora una strategia di backup per i dati di training e i modelli. In caso di incident, la perdita di dati AI equivale a perdere mesi di investimento.",
+      "action": "Preparare una proposta verticale 'AI Data Protection' basata su Rubrik Security Cloud per i clienti con progetti AI attivi. Focalizzarsi su data sovereignty (58% considera la residency il fattore principale) e immutability nativa. Target: clienti financial services e healthcare con progetti AI in corso nel 2026.",
+      "owner": "Pre-Sales",
       "priority": "low",
-      "mauden_service": "Backup Architecture Modernization",
-      "service_price": "€15k–€80k",
+      "mauden_service": "AI Data Protection Assessment (Rubrik)",
+      "service_price": "€8k–€25k",
       "status": "open",
-      "deadline": "2026-05-20"
+      "deadline": "2026-05-06"
     }
   ]
 }
