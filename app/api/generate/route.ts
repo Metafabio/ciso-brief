@@ -11,8 +11,9 @@ const FILES = {
   actions: resolve(ROOT, 'public/action_register.json'),
 }
 
-// Free model on OpenRouter — no credits needed
-const MODEL = 'google/gemma-3-27b-it:free'
+// Free model on OpenRouter — Using the latest verified free model ID for April 2026
+const MODEL = 'google/gemma-4-31b-it:free'
+const FALLBACK_MODEL = 'meta-llama/llama-3.3-70b-instruct:free'
 
 const RSS_FEEDS = [
   'https://www.bleepingcomputer.com/feed/',
@@ -23,6 +24,8 @@ const RSS_FEEDS = [
 
 const KEYWORDS = ['backup', 'ransomware', 'veeam', 'rubrik', 'cohesity', 'hycu', 'commvault',
   'cyber', 'data protection', 'wasabi', 'restore', 'recovery', 'encryption', 'exfiltration']
+
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
 
 function getISOWeek(d: Date) {
   const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
@@ -71,7 +74,7 @@ async function fetchNews(): Promise<{ headlines: string; items: RSSItem[] }> {
   return { headlines, items: relevant }
 }
 
-async function callLLM(prompt: string): Promise<string> {
+async function callLLM(prompt: string, modelId: string = MODEL): Promise<string> {
   const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -81,7 +84,7 @@ async function callLLM(prompt: string): Promise<string> {
       'X-Title': 'CISO Brief',
     },
     body: JSON.stringify({
-      model: MODEL,
+      model: modelId,
       max_tokens: 4096,
       temperature: 0.2,
       messages: [{ role: 'user', content: prompt }],
@@ -89,6 +92,12 @@ async function callLLM(prompt: string): Promise<string> {
   })
   if (!res.ok) {
     const err = await res.text()
+    if (res.status === 429) {
+      throw new Error(`Rate limit exceeded (429). Too many requests to the free provider.`)
+    }
+    if (res.status === 404) {
+      throw new Error(`Model not found (404). ID ${modelId} might be incorrect or discontinued.`)
+    }
     throw new Error(`OpenRouter error ${res.status}: ${err.slice(0, 200)}`)
   }
   const data = await res.json()
@@ -124,7 +133,7 @@ export async function POST() {
       const { headlines, items } = await fetchNews()
       push({
         type: 'rss_done',
-        msg: `${items.length} notizie rilevanti trovate · Modello: ${MODEL}`,
+        msg: `${items.length} notizie rilevanti trovate.`,
         headlines: items.map(i => i.title),
       })
 
@@ -159,22 +168,30 @@ Produci SOLO un oggetto JSON valido con 5 azioni commerciali concrete per Mauden
 Tutto in italiano.`
 
       const jobs = [
-        { label: 'brief.json',           prompt: BRIEF_PROMPT,   file: FILES.brief },
-        { label: 'market_analysis.json', prompt: MARKET_PROMPT,  file: FILES.market },
-        { label: 'backupl.json',         prompt: BACKUP_PROMPT,  file: FILES.backup },
-        { label: 'action_register.json', prompt: ACTIONS_PROMPT, file: FILES.actions },
+        { label: 'brief.json',           prompt: BRIEF_PROMPT,   file: FILES.brief,   model: 'google/gemma-4-31b-it:free' },
+        { label: 'market_analysis.json', prompt: MARKET_PROMPT,  file: FILES.market,  model: 'meta-llama/llama-3.3-70b-instruct:free' },
+        { label: 'backupl.json',         prompt: BACKUP_PROMPT,  file: FILES.backup,  model: 'qwen/qwen3.6-plus-preview:free' },
+        { label: 'action_register.json', prompt: ACTIONS_PROMPT, file: FILES.actions, model: 'nvidia/nemotron-3-super-120b-a12b:free' },
       ]
 
       const results: Record<string, string> = {}
 
-      for (const job of jobs) {
-        push({ type: 'llm_start', label: job.label, msg: 'LLM in corso...' })
+      for (const [idx, job] of jobs.entries()) {
+        // Delay più lungo tra modelli diversi per essere conservativi (5 secondi)
+        if (idx > 0) {
+          push({ type: 'llm_start', label: job.label, msg: 'Attesa raffreddamento provider (5s)...' })
+          await delay(5000)
+        }
+
+        push({ type: 'llm_start', label: job.label, msg: `LLM in corso (${job.model.split('/')[0]})...` })
         const t = Date.now()
         let lastErr = ''
         let ok = false
-        for (let attempt = 1; attempt <= 2; attempt++) {
+        
+        // Per ogni job, proviamo il suo modello specifico con 3 tentativi e backoff
+        for (let attempt = 1; attempt <= 3; attempt++) {
           try {
-            const text = await callLLM(job.prompt)
+            const text = await callLLM(job.prompt, job.model)
             const data = extractJSON(text)
             if (existsSync(job.file)) {
               writeFileSync(job.file.replace('.json', `.backup-${DATE}.json`), readFileSync(job.file))
@@ -185,8 +202,15 @@ Tutto in italiano.`
             break
           } catch (err) {
             lastErr = err instanceof Error ? err.message : String(err)
+            if (lastErr.includes('429')) {
+              push({ type: 'llm_start', label: job.label, msg: `Rate limit! Backoff ${5 * attempt}s...` })
+              await delay(5000 * attempt)
+            } else {
+              await delay(2000)
+            }
           }
         }
+        
         if (!ok) results[job.label] = `errore: ${lastErr}`
         push({
           type: ok ? 'llm_done' : 'llm_error',

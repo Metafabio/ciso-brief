@@ -1,55 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Resilience Revenue Brief (by Mauden)
+
+Intelligence dashboard per System Integrator, MSP e team storage/backup per vendere servizi di cyber resilience.
+
+## Obiettivo
+
+Trasformare segnali di mercato, news vendor e trend ransomware in azioni tecniche e opportunità commerciali. Focus specifico su Mauden / System Integrator storage & backup.
+
+## Funzionalità Core
+
+- **Executive Brief**: Recap settimanale M&A, Product Release e Threat intelligence.
+- **Action Register**: Tabella operativa che collega segnali di mercato a servizi Mauden.
+- **Vendor Matrix**: Confronto tecnico-commerciale tra Veeam, Rubrik, Cohesity, Commvault.
+- **Sales Playbook**: Pitch e objection handling per team sales e pre-sales.
+- **Risk Score**: Analisi del rischio per settore e vendor.
 
 ## Getting Started
 
-First, run the development server:
+Esegui il server di sviluppo locale:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Apri [http://localhost:3000](http://localhost:3000) per visualizzare la dashboard.
 
-## CISO Brief workflow
+## Struttura Dati
 
-The dashboard is populated by two static files:
+La dashboard è data-driven e utilizza file JSON statici in `public/`:
 
-- `public/brief.json`
-- `public/market_analysis.json`
+- `brief.json`: Dati executive settimanali.
+- `market_analysis.json`: Analisi brand e segnali.
+- `action_register.json`: Registro azioni operative.
+- `business_packages.json`: Offerte e servizi Mauden.
+- `sales_playbook.json`: Strategie di vendita.
+- `vendor_matrix.json`: Matrice comparativa vendor.
+- `backupl.json`: Intelligence specifica sul backup.
+- `risk_score.json`: Score di rischio settoriali.
 
-The project does not call an LLM API directly. Generate the content in the reference PromptOps session, then paste the resulting JSON into the two files above.
+## Workflow
 
-Useful commands:
+Il progetto include uno script di generazione (`generate-brief.mjs`) che può essere usato per aggiornare i file JSON tramite LLM.
 
 ```bash
-npm run brief:prompt     # print the manual PromptOps prompt
-npm run brief:validate   # validate the JSON files used by the dashboard
-npm run build            # verify the Next.js app
+npm run brief:validate   # Valida l'integrità dei file JSON
+npm run build            # Verifica la build Next.js
 ```
 
-After updating the JSON files, run `npm run brief:validate` before deploying.
+## Requisiti
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Node.js 20+
+- Nessun database richiesto (static JSON-first architecture)
+- Nessuna autenticazione (progettato per uso locale/VPN)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Progetto basato su Next.js 16 e React 19.*

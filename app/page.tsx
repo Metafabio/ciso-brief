@@ -311,6 +311,29 @@ interface ActionRegisterData {
   actions: ActionItem[]
 }
 
+// ─── Types — Business Packages ──────────────────────────────────────────────
+
+interface BusinessPackage {
+  name: string
+  buyer: string
+  price: string
+  pitch: string
+  deliverables: string[]
+}
+
+interface BusinessMetric {
+  label: string
+  value: string
+  note: string
+  accent: string
+}
+
+interface BusinessData {
+  metrics: BusinessMetric[]
+  packages: BusinessPackage[]
+  differentiators: string[]
+}
+
 // ─── Section metadata ─────────────────────────────────────────────────────────
 
 const SECTION_META: Record<SectionId, { title: string; icon: string; accent: string }> = {
@@ -353,6 +376,8 @@ const CONFIDENCE_STYLE: Record<Confidence, { bg: string; border: string; color: 
 function SourceTrail({ sources = [], confidence }: { sources?: Source[]; confidence?: Confidence }) {
   if (!sources.length && !confidence) return null
   const confidenceStyle = confidence ? CONFIDENCE_STYLE[confidence] : null
+  const hasUrl = sources.some(s => s.url)
+  const showWarning = confidence === 'high' && !hasUrl
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', marginTop: '12px' }}>
@@ -363,6 +388,15 @@ function SourceTrail({ sources = [], confidence }: { sources?: Source[]; confide
           padding: '3px 8px', borderRadius: '4px',
         }}>
           Confidence: {confidenceStyle.label}
+        </span>
+      )}
+      {showWarning && (
+        <span style={{
+          fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.08em',
+          color: '#ef4444', background: 'rgba(239,68,68,0.1)', border: '1px solid #ef4444',
+          padding: '3px 8px', borderRadius: '4px',
+        }}>
+          ⚠️ URL Mancante
         </span>
       )}
       {sources.map((source, index) => {
@@ -1074,50 +1108,14 @@ function RiskScoreView({ data }: { data: RiskScoreData | null }) {
 
 // ─── Business — View ─────────────────────────────────────────────
 
-function BusinessView() {
-  const metrics = [
-    { label: 'Servizi attivabili', value: '6', note: 'assessment, DR test, hardening, runbook, advisory, training', accent: '#10b981' },
-    { label: 'Target buyer', value: '4', note: 'CISO, CIO, IT manager, procurement', accent: '#06b6d4' },
-    { label: 'Output vendibili', value: '5', note: 'brief, board memo, battlecard, report, action plan', accent: '#f59e0b' },
-  ]
+function BusinessView({ data, sales, matrix }: { data: BusinessData | null; sales: SalesData | null; matrix: ComparisonData | null }) {
+  if (!data) return (
+    <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '14px', color: 'var(--text-secondary)', padding: '60px 0', textAlign: 'center' }}>
+      business_packages.json non trovato
+    </div>
+  )
 
-  const packages = [
-    {
-      name: 'Cyber Recovery Assessment',
-      buyer: 'CISO / IT Manager',
-      price: '€4k-€12k',
-      pitch: 'Misura gap tra backup dichiarato e recovery reale. Produce score, rischi, priorita, remediation.',
-      deliverables: ['Recovery readiness score', 'RPO/RTO gap', 'immutability check', '30-day action plan'],
-    },
-    {
-      name: 'Ransomware Restore Test',
-      buyer: 'Operations / Security',
-      price: '€6k-€20k',
-      pitch: 'Test controllato di restore su workload critici. Evidenzia tempi, colli di bottiglia, dati non recuperabili.',
-      deliverables: ['restore evidence', 'runbook', 'lessons learned', 'board summary'],
-    },
-    {
-      name: 'Backup Architecture Modernization',
-      buyer: 'CIO / Infrastructure',
-      price: '€15k-€80k',
-      pitch: 'Ridisegno architettura backup, cloud tiering, offsite, immutable storage, policy lifecycle.',
-      deliverables: ['target architecture', 'vendor matrix', 'migration plan', 'TCO estimate'],
-    },
-    {
-      name: 'Monthly Resilience Brief',
-      buyer: 'CISO / Board',
-      price: '€1.5k-€5k/mese',
-      pitch: 'Brief personalizzato su vendor, minacce, normative, azioni esecutive. Pronto per comitato sicurezza.',
-      deliverables: ['PDF executive', 'vendor watchlist', 'risk memo', 'action register'],
-    },
-  ]
-
-  const differentiators = [
-    'Da news a decisione: ogni segnale produce azione tecnica o commerciale.',
-    'Da backup a resilienza: focus su recovery provato, non solo job completati.',
-    'Da tool a servizio: ogni insight aggancia assessment e progetto Mauden.',
-    'Da generico a settore: storage, backup, data protection, architetture IT.',
-  ]
+  const { metrics, packages, differentiators } = data
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
@@ -1191,6 +1189,94 @@ function BusinessView() {
           Aggiungere action register: ogni fonte genera azione, owner, priorita, servizio Mauden collegato, stato, export PDF.
         </p>
       </div>
+
+      {sales && (
+        <div>
+          <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px' }}>
+            Sales Playbook
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '12px' }}>
+            <div className="card" style={{ padding: '18px 20px' }}>
+              <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent)', marginBottom: '12px' }}>Pitch Angles</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {sales.pitch_angles.map((p, i) => (
+                  <div key={i} style={{ paddingBottom: '12px', borderBottom: i < sales.pitch_angles.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '6px' }}>
+                      <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>{p.vendor}</span>
+                      <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)', background: 'var(--surface)', padding: '2px 6px', borderRadius: '4px' }}>{p.target}</span>
+                    </div>
+                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 8px' }}>{p.pitch}</p>
+                    <div style={{ fontSize: '12px', color: '#8b5cf6', fontStyle: 'italic' }}>Objection: {p.objection_handler}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="card" style={{ padding: '18px 20px' }}>
+              <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#ef4444', marginBottom: '12px' }}>Competitive Battles</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {sales.competitive_battles.map((b, i) => (
+                  <div key={i} style={{ paddingBottom: '12px', borderBottom: i < sales.competitive_battles.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '4px' }}>{b.competitor} vs {b.vs_vendor}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                      <span style={{ color: '#10b981', fontWeight: 600 }}>Win Strategy:</span> {b.win_strategy}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {matrix && (
+        <div>
+          <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px' }}>
+            Vendor Matrix
+          </div>
+          <div className="card" style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--border)', background: 'rgba(255,255,255,0.02)' }}>
+                  <th style={{ padding: '12px 16px', fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Vendor</th>
+                  <th style={{ padding: '12px 16px', fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Target</th>
+                  <th style={{ padding: '12px 16px', fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>AI Score</th>
+                  <th style={{ padding: '12px 16px', fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Price</th>
+                  <th style={{ padding: '12px 16px', fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Security</th>
+                </tr>
+              </thead>
+              <tbody>
+                {matrix.vendors.map((v, i) => (
+                  <tr key={v.name} style={{ borderBottom: i < matrix.vendors.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: 600, color: 'var(--text-primary)' }}>{v.name}</td>
+                    <td style={{ padding: '12px 16px' }}>
+                      <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                        {v.enterprise && <span style={{ fontSize: '9px', background: 'rgba(99,102,241,0.1)', color: '#6366f1', padding: '2px 4px', borderRadius: '3px' }}>ENT</span>}
+                        {v.smb && <span style={{ fontSize: '9px', background: 'rgba(16,185,129,0.1)', color: '#10b981', padding: '2px 4px', borderRadius: '3px' }}>SMB</span>}
+                        {v.government && <span style={{ fontSize: '9px', background: 'rgba(139,92,246,0.1)', color: '#8b5cf6', padding: '2px 4px', borderRadius: '3px' }}>GOV</span>}
+                      </div>
+                    </td>
+                    <td style={{ padding: '12px 16px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ flex: 1, minWidth: '40px', height: '4px', background: 'var(--surface)', borderRadius: '2px' }}>
+                          <div style={{ width: `${v.ai_features * 10}%`, height: '100%', background: '#8b5cf6', borderRadius: '2px' }} />
+                        </div>
+                        <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px' }}>{v.ai_features}</span>
+                      </div>
+                    </td>
+                    <td style={{ padding: '12px 16px', fontFamily: 'var(--font-dm-mono)', fontSize: '11px', color: '#10b981' }}>{v.price_tier.toUpperCase()}</td>
+                    <td style={{ padding: '12px 16px' }}>
+                      <div style={{ display: 'flex', gap: '4px' }}>
+                        {v.ransomware_warranty && <span title="Ransomware Warranty" style={{ cursor: 'help' }}>🛡️</span>}
+                        {v.fedramp && <span title="FedRAMP Certified" style={{ cursor: 'help' }}>🏛️</span>}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -1409,6 +1495,9 @@ export default function Page() {
   const [analysis, setAnalysis] = useState<MarketAnalysis | null>(null)
   const [backup, setBackup] = useState<BackupData | null>(null)
   const [backupPrev, setBackupPrev] = useState<BackupData | null>(null)
+  const [businessData, setBusinessData] = useState<BusinessData | null>(null)
+  const [salesPlaybook, setSalesPlaybook] = useState<SalesData | null>(null)
+  const [vendorMatrix, setVendorMatrix] = useState<ComparisonData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [showCompare, setShowCompare] = useState(false)
@@ -1429,13 +1518,19 @@ export default function Page() {
       fetch('/archive/market-analysis-w16-2026-04-20.json').then(r => r.json()).catch(() => null),
       fetch('/action_register.json').then(r => r.json()).catch(() => null),
       fetch('/risk_score.json').then(r => r.json()).catch(() => null),
-    ]).then(([b, a, bu, prev, ar, rs]) => {
+      fetch('/business_packages.json').then(r => r.json()).catch(() => null),
+      fetch('/sales_playbook.json').then(r => r.json()).catch(() => null),
+      fetch('/vendor_matrix.json').then(r => r.json()).catch(() => null),
+    ]).then(([b, a, bu, prev, ar, rs, bus, sp, vm]) => {
       setBrief(b)
       setAnalysis(a)
       setBackup(bu)
       setBackupPrev(prev as BackupData | null)
       setActionRegister(ar as ActionRegisterData | null)
       setRiskScore(rs as RiskScoreData | null)
+      setBusinessData(bus as BusinessData | null)
+      setSalesPlaybook(sp as SalesData | null)
+      setVendorMatrix(vm as ComparisonData | null)
       setOpenSections(new Set(b.sections.map(s => s.id)))
       setIsLoading(false)
     }).catch(() => setIsLoading(false))
@@ -1563,60 +1658,54 @@ export default function Page() {
       </div>
 
       <header className="header-blur no-print" style={{
-        borderBottom: '1px solid var(--border)', padding: '16px 32px',
+        borderBottom: '1px solid var(--border)', padding: '10px 32px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px',
-        position: 'sticky', top: 0, background: 'rgba(10, 14, 23, 0.85)', zIndex: 20,
+        position: 'sticky', top: 0, background: 'rgba(10, 14, 23, 0.9)', zIndex: 20,
       }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <span style={{ fontSize: '20px', color: 'var(--text-primary)', fontWeight: 600, letterSpacing: '-0.02em' }}>
-              Resilience Revenue Brief
-            </span>
-          </div>
-          <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-            <span>{currentDate ? `Week ${currentWeek} · ${currentDate}` : 'Loading...'}</span>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px' }}>
+          <span style={{ fontSize: '18px', color: 'var(--text-primary)', fontWeight: 700, letterSpacing: '-0.02em' }}>
+            Resilience Revenue Brief
+          </span>
+          <div style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'flex', gap: '12px' }}>
+            <span>{currentDate ? `W${currentWeek} · ${currentDate}` : 'Loading...'}</span>
             {brief && (() => {
               const allItems = brief.sections.flatMap(s => s.items)
               const verified = allItems.filter(i => i.sources?.some(s => s.url)).length
               const total = allItems.length
               return (
-                <span style={{ color: verified === total ? '#10b981' : '#f59e0b' }}>
-                  ◉ {verified}/{total} fonti verificate
+                <span style={{ color: verified === total ? '#10b981' : '#f59e0b', fontWeight: 500 }}>
+                  ◈ {verified}/{total} verificate
                 </span>
               )
             })()}
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button onClick={handleGenerate} disabled={isGenerating} className="btn" title="Rigenera brief con AI + notizie live" style={{ color: isGenerating ? 'var(--accent)' : undefined, borderColor: isGenerating ? 'var(--accent)' : undefined }}>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7, animation: isGenerating ? 'spin 1s linear infinite' : 'none' }}>
-              <path d="M7 1l1.5 3h3L9 6l1 3.5L7 8l-3 1.5L5 6 2.5 4h3z" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            {generateMsg || (isGenerating ? 'Generando...' : 'Rigenera')}
-          </button>
-          <button onClick={handleRefresh} disabled={isRefreshing} className="btn" title="Refresh data">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7, animation: isRefreshing ? 'spin 1s linear infinite' : 'none' }}>
-              <path d="M12 7a5 5 0 11-8.5-3.5M12 3v4H8M12 3L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            {isRefreshing ? 'Refreshing...' : 'Refresh'}
-          </button>
-          <button onClick={handleExportPDF} className="btn" title="Export PDF">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7 }}>
-              <path d="M7 1v8M3 5l4 4 4-4M2 12h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            PDF
-          </button>
-          <button onClick={handleExport} className="btn" title="Export Markdown">
-            MD
-          </button>
-          {backupPrev && (
-            <button onClick={() => setShowCompare(v => !v)} className={`btn ${showCompare ? 'btn-primary' : ''}`} title="Compare with previous week">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.7 }}>
-                <path d="M2 4h4l-4 4V4zM12 10H8l4-4v4z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', background: 'var(--surface)', padding: '2px', borderRadius: '8px', border: '1px solid var(--border)', marginRight: '8px' }}>
+            <button onClick={handleGenerate} disabled={isGenerating} className="btn-icon" title="Rigenera brief" style={{ color: isGenerating ? 'var(--accent)' : undefined }}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ animation: isGenerating ? 'spin 1s linear infinite' : 'none' }}>
+                <path d="M7 1l1.5 3h3L9 6l1 3.5L7 8l-3 1.5L5 6 2.5 4h3z" stroke="currentColor" strokeWidth="1.3" />
               </svg>
-              Compare
             </button>
-          )}
+            <button onClick={handleRefresh} disabled={isRefreshing} className="btn-icon" title="Refresh">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ animation: isRefreshing ? 'spin 1s linear infinite' : 'none' }}>
+                <path d="M12 7a5 5 0 11-8.5-3.5M12 3v4H8M12 3L9 1" stroke="currentColor" strokeWidth="1.5" />
+              </svg>
+            </button>
+          </div>
+
+          <div style={{ display: 'flex', gap: '6px' }}>
+            <button onClick={handleExportPDF} className="btn-sm" title="Export PDF">PDF</button>
+            <button onClick={handleExport} className="btn-sm" title="Export Markdown">MD</button>
+            {backupPrev && (
+              <button onClick={() => setShowCompare(v => !v)} className={`btn-sm ${showCompare ? 'active' : ''}`} title="Compare">
+                Compare
+              </button>
+            )}
+          </div>
+
+          <div style={{ height: '20px', width: '1px', background: 'var(--border)', margin: '0 4px' }} />
+
           {showClientInput ? (
             <input
               type="text"
@@ -1626,18 +1715,14 @@ export default function Page() {
               onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') setShowClientInput(false) }}
               placeholder="Nome cliente..."
               autoFocus
-              style={{
-                fontFamily: 'var(--font-dm-mono)', fontSize: '11px',
-                background: 'var(--surface)', border: '1px solid var(--accent)',
-                color: 'var(--text-primary)', padding: '8px 12px', borderRadius: '6px',
-                width: '160px', outline: 'none', letterSpacing: '0.04em',
-              }}
+              className="client-input-sm"
             />
           ) : (
-            <button onClick={() => setShowClientInput(true)} className="btn" title="Imposta nome cliente per PDF white-label" style={{ color: clientName ? 'var(--accent)' : undefined, borderColor: clientName ? 'var(--accent)' : undefined }}>
-              {clientName ? `📄 ${clientName}` : '📄 Client PDF'}
+            <button onClick={() => setShowClientInput(true)} className="btn-sm" style={{ color: clientName ? 'var(--accent)' : undefined }}>
+              {clientName ? `📄 ${clientName}` : '📄 Client'}
             </button>
           )}
+
           <ThemeSwitcher current={theme} onChange={handleTheme} />
         </div>
       </header>
@@ -1742,7 +1827,7 @@ export default function Page() {
           </div>
         )}
 
-        {tab === 'business' && <BusinessView />}
+        {tab === 'business' && <BusinessView data={businessData} sales={salesPlaybook} matrix={vendorMatrix} />}
         {tab === 'actions' && <ActionRegisterView data={actionRegister} />}
         {tab === 'risk' && <RiskScoreView data={riskScore} />}
       </main>

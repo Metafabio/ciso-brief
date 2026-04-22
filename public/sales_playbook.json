@@ -1,0 +1,34 @@
+{
+  "pitch_angles": [
+    {
+      "vendor": "Veeam",
+      "target": "enterprise",
+      "pitch": "Mauden + Veeam: La libertà dei dati unita all'eccellenza operativa. Proteggiamo carichi eterogenei on-prem e cloud con l'architettura 3-2-1-1-0.",
+      "objection_handler": "Se dicono 'è troppo complesso', rispondi: 'Mauden gestisce la complessità per voi, offrendo una console unificata e restore garantito'."
+    },
+    {
+      "vendor": "Rubrik",
+      "target": "government",
+      "pitch": "Zero Trust Data Security per la Pubblica Amministrazione. L'unico con FedRAMP High per garantire l'immutabilità assoluta dei dati dei cittadini.",
+      "objection_handler": "Se dicono 'costa più di Veeam', rispondi: 'Il costo del downtime e della mancata compliance sanzionata da ACN è infinitamente superiore'."
+    },
+    {
+      "vendor": "Cohesity",
+      "target": "enterprise",
+      "pitch": "Oltre il backup: AI-powered data management. Identifichiamo i dati sensibili e rileviamo l'esfiltrazione prima che diventi un danno reputazionale.",
+      "objection_handler": "Se dicono 'abbiamo già un backup', rispondi: 'Il vostro backup sa dirvi QUALI dati sono stati rubati durante l'attacco? Cohesity sì'."
+    }
+  ],
+  "competitive_battles": [
+    {
+      "competitor": "Dell PowerProtect",
+      "vs_vendor": "Rubrik",
+      "win_strategy": "Puntare sulla semplicità operativa e sull'integrazione cloud nativa. Dell richiede gestione HW complessa, Rubrik è software-defined e cloud-ready."
+    },
+    {
+      "competitor": "Veritas NetBackup",
+      "vs_vendor": "Veeam",
+      "win_strategy": "Modernizzazione. Veritas è percepito come legacy. Veeam è lo standard per la virtualizzazione e il cloud ibrido con costi di gestione inferiori."
+    }
+  ]
+}

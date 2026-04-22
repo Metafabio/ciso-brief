@@ -1,0 +1,78 @@
+{
+  "metrics": [
+    {
+      "label": "Servizi attivabili",
+      "value": "6",
+      "note": "assessment, DR test, hardening, runbook, advisory, training",
+      "accent": "#10b981"
+    },
+    {
+      "label": "Target buyer",
+      "value": "4",
+      "note": "CISO, CIO, IT manager, procurement",
+      "accent": "#06b6d4"
+    },
+    {
+      "label": "Output vendibili",
+      "value": "5",
+      "note": "brief, board memo, battlecard, report, action plan",
+      "accent": "#f59e0b"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Cyber Recovery Assessment",
+      "buyer": "CISO / IT Manager",
+      "price": "€4k-€12k",
+      "pitch": "Misura gap tra backup dichiarato e recovery reale. Produce score, rischi, priorita, remediation.",
+      "deliverables": [
+        "Recovery readiness score",
+        "RPO/RTO gap",
+        "immutability check",
+        "30-day action plan"
+      ]
+    },
+    {
+      "name": "Ransomware Restore Test",
+      "buyer": "Operations / Security",
+      "price": "€6k-€20k",
+      "pitch": "Test controllato di restore su workload critici. Evidenzia tempi, colli di bottiglia, dati non recuperabili.",
+      "deliverables": [
+        "restore evidence",
+        "runbook",
+        "lessons learned",
+        "board summary"
+      ]
+    },
+    {
+      "name": "Backup Architecture Modernization",
+      "buyer": "CIO / Infrastructure",
+      "price": "€15k-€80k",
+      "pitch": "Ridisegno architettura backup, cloud tiering, offsite, immutable storage, policy lifecycle.",
+      "deliverables": [
+        "target architecture",
+        "vendor matrix",
+        "migration plan",
+        "TCO estimate"
+      ]
+    },
+    {
+      "name": "Monthly Resilience Brief",
+      "buyer": "CISO / Board",
+      "price": "€1.5k-€5k/mese",
+      "pitch": "Brief personalizzato su vendor, minacce, normative, azioni esecutive. Pronto per comitato sicurezza.",
+      "deliverables": [
+        "PDF executive",
+        "vendor watchlist",
+        "risk memo",
+        "action register"
+      ]
+    }
+  ],
+  "differentiators": [
+    "Da news a decisione: ogni segnale produce azione tecnica o commerciale.",
+    "Da backup a resilienza: focus su recovery provato, non solo job completati.",
+    "Da tool a servizio: ogni insight aggancia assessment e progetto Mauden.",
+    "Da generico a settore: storage, backup, data protection, architetture IT."
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "vendors": [
+    {
+      "name": "Veeam",
+      "enterprise": true,
+      "smb": true,
+      "government": true,
+      "cloud_native": true,
+      "ai_features": 8,
+      "price_tier": "mid",
+      "ransomware_warranty": false,
+      "fedramp": false
+    },
+    {
+      "name": "Rubrik",
+      "enterprise": true,
+      "smb": false,
+      "government": true,
+      "cloud_native": true,
+      "ai_features": 9,
+      "price_tier": "high",
+      "ransomware_warranty": true,
+      "fedramp": true
+    },
+    {
+      "name": "Cohesity",
+      "enterprise": true,
+      "smb": false,
+      "government": true,
+      "cloud_native": true,
+      "ai_features": 8,
+      "price_tier": "high",
+      "ransomware_warranty": true,
+      "fedramp": true
+    },
+    {
+      "name": "Commvault",
+      "enterprise": true,
+      "smb": false,
+      "government": true,
+      "cloud_native": true,
+      "ai_features": 5,
+      "price_tier": "enterprise",
+      "ransomware_warranty": false,
+      "fedramp": true
+    }
+  ]
+}

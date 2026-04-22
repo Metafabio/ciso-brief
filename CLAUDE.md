@@ -24,6 +24,7 @@ app/
       ... (1 more files)
   ... (4 more files)
 archive/
+  ... (2 more files)
 data/
   ... (2 more files)
 docs/
@@ -44,18 +45,20 @@ tsconfig.json
 
 ## Recently Changed Files
 These files were modified in recent commits — likely relevant to current work:
-- `.github/workflows/generate-brief.yml`
+- `.claude/shared-context.md`
 - `AGENTS.md`
 - `CLAUDE.md`
 - `app/api/generate/route.ts`
 - `app/page.tsx`
-- `data/llmops-log.jsonl`
-- `generate-brief.mjs`
 - `package-lock.json`
 - `package.json`
+- `public/action_register.backup-2026-04-21.json`
 - `public/action_register.json`
+- `public/backupl.backup-2026-04-21.json`
 - `public/backupl.json`
+- `public/brief.backup-2026-04-21.json`
 - `public/brief.json`
+- `public/market_analysis.backup-2026-04-21.json`
 - `public/market_analysis.json`
 
 <!-- /PROMPTOPS:CONTEXT -->
