@@ -1,0 +1,142 @@
+{
+  "week": 17,
+  "generated_at": "2026-04-22",
+  "algorithm": "Zola v0.1",
+  "weekly_prediction": {
+    "highest_risk_sector": "Manifatturiero / Logistica",
+    "most_likely_attack": "The Gentlemen RaaS — exfiltration + encryption",
+    "vendor_to_watch": "Commvault — rischio M&A Thoma Bravo",
+    "confidence": "high",
+    "summary": "Settimana ad alto rischio per PMI manifatturiero e logistica italiane. The Gentlemen ha accelerato a 240 vittime nei primi 4 mesi 2026. Il 6% degli attacchi ora usa sola exfiltration: i backup classici non bastano. Commvault in stato di incertezza M&A — clienti a rischio lock-in."
+  },
+  "sectors": [
+    {
+      "id": "manufacturing",
+      "name": "Manifatturiero",
+      "risk_score": 88,
+      "risk_level": "critical",
+      "trend": "rising",
+      "signals": [
+        "The Gentlemen RaaS — 60% vittime in manifatturiero/logistica",
+        "Breakout time medio sceso a 29 minuti",
+        "Gap OT/IT non coperto da backup tradizionale"
+      ],
+      "top_threats": ["The Gentlemen RaaS", "OT/IT lateral movement", "Supply chain compromise"],
+      "prediction": "Alta probabilità di incidente ransomware nelle prossime 2 settimane per aziende senza immutable backup verificato",
+      "recommended_action": "Ransomware Restore Test",
+      "mauden_service": "Ransomware Restore Test",
+      "service_price": "€6k–€20k",
+      "action_urgency": "high"
+    },
+    {
+      "id": "logistics",
+      "name": "Logistica",
+      "risk_score": 82,
+      "risk_level": "critical",
+      "trend": "rising",
+      "signals": [
+        "The Gentlemen RaaS target prioritario logistica europea",
+        "Sistemi ERP e WMS non coperti da DR test",
+        "Dipendenza da uptime 24/7 — alto impatto ransomware"
+      ],
+      "top_threats": ["The Gentlemen RaaS", "Ransomware ERP", "Data exfiltration"],
+      "prediction": "Rischio elevato per aziende con flotte e WMS senza DR validato. Un downtime di 48h può costare €200k+",
+      "recommended_action": "DR Test + Immutable Backup Assessment",
+      "mauden_service": "Ransomware Restore Test",
+      "service_price": "€6k–€20k",
+      "action_urgency": "high"
+    },
+    {
+      "id": "healthcare",
+      "name": "Healthcare",
+      "risk_score": 75,
+      "risk_level": "high",
+      "trend": "stable",
+      "signals": [
+        "51% organizzazioni healthcare colpite da ransomware nel Q1 2026",
+        "PHI e cartelle cliniche target ad alto valore",
+        "HIPAA/GDPR compliance aumenta costo breach"
+      ],
+      "top_threats": ["Ransomware PHI targeting", "Data exfiltration cartelle cliniche", "Attacchi a sistemi PACS"],
+      "prediction": "Rischio medio-alto stabile. Settore regolamentato riduce velocità attacchi ma aumenta impatto. Rubrik FedRAMP è differenziatore concreto.",
+      "recommended_action": "Cyber Recovery Assessment + Rubrik FedRAMP evaluation",
+      "mauden_service": "Cyber Recovery Assessment",
+      "service_price": "€4k–€12k",
+      "action_urgency": "medium"
+    },
+    {
+      "id": "finance",
+      "name": "Finance / Banking",
+      "risk_score": 68,
+      "risk_level": "high",
+      "trend": "stable",
+      "signals": [
+        "Ransomware senza encryption in crescita — exfiltration dati finanziari",
+        "NIS2 in vigore — sanzioni fino al 2% fatturato",
+        "Requisiti DORA per banche dal 2025"
+      ],
+      "top_threats": ["Data exfiltration PII finanziario", "Ransomware core banking", "Compliance gap NIS2/DORA"],
+      "prediction": "Rischio alto su exfiltration silenziosa. Le banche che non hanno data classification rischiano di non sapere cosa è uscito dopo un attacco.",
+      "recommended_action": "Cohesity DataHound evaluation per GDPR/DORA compliance",
+      "mauden_service": "Cyber Recovery Assessment",
+      "service_price": "€4k–€12k",
+      "action_urgency": "medium"
+    },
+    {
+      "id": "pa",
+      "name": "Pubblica Amministrazione",
+      "risk_score": 61,
+      "risk_level": "medium",
+      "trend": "stable",
+      "signals": [
+        "Rubrik FedRAMP — unica soluzione certificata per PA",
+        "Budget IT PA in crescita post-PNRR",
+        "NIS2 obbligatoria per PA dal 2024"
+      ],
+      "top_threats": ["Ransomware sistemi legacy", "Compliance NIS2", "Exfiltration dati cittadini"],
+      "prediction": "Rischio medio ma crescente post-NIS2. Le PA senza piano di DR verificato sono esposte a sanzioni oltre che ad attacchi.",
+      "recommended_action": "NIS2 Compliance Assessment + Rubrik FedRAMP evaluation",
+      "mauden_service": "Cyber Recovery Assessment",
+      "service_price": "€4k–€12k",
+      "action_urgency": "medium"
+    },
+    {
+      "id": "retail",
+      "name": "Retail / E-commerce",
+      "risk_score": 52,
+      "risk_level": "medium",
+      "trend": "stable",
+      "signals": [
+        "Attacchi POS in calo ma exfiltration carte di credito in crescita",
+        "Stagionalità: rischio picco pre-estate e Black Friday",
+        "Cloud backup adozione bassa nel SMB retail"
+      ],
+      "top_threats": ["Exfiltration dati carta di credito", "Ransomware sistemi POS", "Supply chain attacchi"],
+      "prediction": "Rischio medio, relativamente stabile. Il retail SMB è sotto-protetto ma meno nel mirino dei grandi gruppi ransomware rispetto a manifatturiero.",
+      "recommended_action": "Veeam cloud backup assessment per SMB retail",
+      "mauden_service": "Backup Architecture Modernization",
+      "service_price": "€15k–€80k",
+      "action_urgency": "low"
+    }
+  ],
+  "vendor_risk": [
+    {
+      "vendor": "Commvault",
+      "risk": "high",
+      "risk_type": "business_continuity",
+      "reason": "Thoma Bravo e altri PE valutano acquisizione — titolo -30%. Possibili freeze su roadmap, supporto e pricing post-deal.",
+      "signal": "Goldman Sachs ingaggiato, bids ricevuti, decisione attesa nelle prossime settimane",
+      "impact_for_clients": "Clienti con Commvault attivo dovrebbero avviare valutazione alternativa ora, prima che l'incertezza blocchi i budget",
+      "action": "Backup Architecture Assessment — valutazione Veeam o Rubrik come alternativa"
+    },
+    {
+      "vendor": "Seagate Lyve Cloud",
+      "risk": "medium",
+      "risk_type": "platform_migration",
+      "reason": "Acquisizione da Wasabi completata il 20 aprile. Migrazione in corso — possibili cambi di configurazione, contratto e supporto.",
+      "signal": "Deal chiuso, Seagate diventa azionista Wasabi. Integrazioni mantenute ma roadmap da verificare.",
+      "impact_for_clients": "Clienti con backup target su Lyve Cloud devono verificare l'impatto tecnico e contrattuale entro 60 giorni",
+      "action": "Technical review configurazione storage target + aggiornamento contratti"
+    }
+  ]
+}

@@ -6,7 +6,7 @@ import { useState, useEffect, useCallback } from 'react'
 
 type SectionId = 'ma-funding' | 'product-releases' | 'threat-ransomware' | 'ai-orchestration' | 'market-trends'
 type Theme = 'slate' | 'ember' | 'arctic'
-type Tab = 'backup' | 'brief' | 'analysis' | 'business' | 'actions'
+type Tab = 'backup' | 'brief' | 'analysis' | 'business' | 'actions' | 'risk'
 
 type Confidence = 'high' | 'medium' | 'low'
 
@@ -246,6 +246,48 @@ interface UseCasesData {
     use_case: string
     roi: string
   }[]
+}
+
+// ─── Types — Risk Score ───────────────────────────────────────────────────────
+
+interface RiskSector {
+  id: string
+  name: string
+  risk_score: number
+  risk_level: 'critical' | 'high' | 'medium' | 'low'
+  trend: 'rising' | 'stable' | 'declining'
+  signals: string[]
+  top_threats: string[]
+  prediction: string
+  recommended_action: string
+  mauden_service: string
+  service_price: string
+  action_urgency: 'high' | 'medium' | 'low'
+}
+
+interface VendorRisk {
+  vendor: string
+  risk: 'high' | 'medium' | 'low'
+  risk_type: string
+  reason: string
+  signal: string
+  impact_for_clients: string
+  action: string
+}
+
+interface RiskScoreData {
+  week: number
+  generated_at: string
+  algorithm: string
+  weekly_prediction: {
+    highest_risk_sector: string
+    most_likely_attack: string
+    vendor_to_watch: string
+    confidence: string
+    summary: string
+  }
+  sectors: RiskSector[]
+  vendor_risk: VendorRisk[]
 }
 
 // ─── Types — Action Register ──────────────────────────────────────────────────
@@ -912,6 +954,124 @@ function BackupVendorCard({ vendor, index }: { vendor: BackupVendor; index: numb
   )
 }
 
+// ─── Risk Score — Zola View ───────────────────────────────────────
+
+const RISK_LEVEL_STYLE: Record<string, { color: string; bg: string; border: string; label: string }> = {
+  critical: { color: '#ef4444', bg: 'rgba(239,68,68,0.1)', border: 'rgba(239,68,68,0.3)', label: 'Critico' },
+  high:     { color: '#f59e0b', bg: 'rgba(245,158,11,0.1)', border: 'rgba(245,158,11,0.3)', label: 'Alto' },
+  medium:   { color: '#06b6d4', bg: 'rgba(6,182,212,0.1)',  border: 'rgba(6,182,212,0.3)',  label: 'Medio' },
+  low:      { color: '#10b981', bg: 'rgba(16,185,129,0.1)', border: 'rgba(16,185,129,0.3)', label: 'Basso' },
+}
+
+function RiskScoreView({ data }: { data: RiskScoreData | null }) {
+  if (!data) return (
+    <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '14px', color: 'var(--text-secondary)', padding: '60px 0', textAlign: 'center' }}>
+      risk_score.json non trovato
+    </div>
+  )
+
+  const pred = data.weekly_prediction
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+
+      {/* Header */}
+      <div className="card" style={{ padding: '20px 24px', borderLeft: '3px solid #ef4444' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+          <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#ef4444' }}>
+            {data.algorithm} · Settimana {data.week}
+          </div>
+          <span style={{
+            fontFamily: 'var(--font-dm-mono)', fontSize: '10px',
+            color: '#10b981', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)',
+            padding: '3px 8px', borderRadius: '4px',
+          }}>Confidence: Alta</span>
+        </div>
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
+          {pred.summary}
+        </p>
+      </div>
+
+      {/* Weekly prediction strip */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
+        {[
+          { label: 'Settore più a rischio', value: pred.highest_risk_sector, accent: '#ef4444' },
+          { label: 'Attacco più probabile', value: pred.most_likely_attack, accent: '#f59e0b' },
+          { label: 'Vendor da monitorare', value: pred.vendor_to_watch, accent: '#8b5cf6' },
+        ].map(item => (
+          <div key={item.label} className="card" style={{ padding: '14px 18px', borderTop: `3px solid ${item.accent}` }}>
+            <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: item.accent, marginBottom: '8px' }}>{item.label}</div>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.4 }}>{item.value}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Sector risk scores */}
+      <div>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px' }}>
+          Risk Score per Settore
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {data.sectors.map(sector => {
+            const style = RISK_LEVEL_STYLE[sector.risk_level]
+            const trendColor = sector.trend === 'rising' ? '#ef4444' : sector.trend === 'stable' ? '#64748b' : '#10b981'
+            const trendIcon = sector.trend === 'rising' ? '↑' : sector.trend === 'stable' ? '→' : '↓'
+            return (
+              <div key={sector.id} className="card" style={{ padding: '16px 20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
+                  <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)', minWidth: '140px' }}>{sector.name}</span>
+                  <span style={{ color: trendColor, fontSize: '14px', fontWeight: 700 }}>{trendIcon}</span>
+                  <div style={{ flex: 1, height: '6px', background: 'var(--surface)', borderRadius: '3px', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${sector.risk_score}%`, background: style.color, borderRadius: '3px', transition: 'width 0.6s ease' }} />
+                  </div>
+                  <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '13px', fontWeight: 700, color: style.color, minWidth: '32px', textAlign: 'right' }}>{sector.risk_score}</span>
+                  <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: style.color, background: style.bg, border: `1px solid ${style.border}`, padding: '2px 8px', borderRadius: '4px' }}>{style.label}</span>
+                </div>
+                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 10px' }}>{sector.prediction}</p>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '10px' }}>
+                  {sector.top_threats.map(t => (
+                    <span key={t} style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: '#ef4444', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', padding: '2px 8px', borderRadius: '4px' }}>{t}</span>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Azione raccomandata:</span>
+                  <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{sector.recommended_action}</span>
+                  <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: '#10b981', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)', padding: '2px 8px', borderRadius: '4px', marginLeft: 'auto' }}>{sector.service_price}</span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Vendor risk */}
+      <div>
+        <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '14px' }}>
+          Rischio Vendor — Business Continuity
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {data.vendor_risk.map(vr => {
+            const style = RISK_LEVEL_STYLE[vr.risk]
+            return (
+              <div key={vr.vendor} className="card" style={{ padding: '16px 20px', borderLeft: `3px solid ${style.color}` }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)' }}>{vr.vendor}</span>
+                  <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: style.color, background: style.bg, border: `1px solid ${style.border}`, padding: '2px 8px', borderRadius: '4px' }}>{style.label}</span>
+                  <span style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', color: 'var(--text-muted)', background: 'var(--surface)', border: '1px solid var(--border)', padding: '2px 8px', borderRadius: '4px' }}>{vr.risk_type}</span>
+                </div>
+                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 6px' }}>{vr.reason}</p>
+                <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.5, margin: '0 0 10px', fontStyle: 'italic' }}>Segnale: {vr.signal}</p>
+                <div style={{ fontSize: '12px', color: '#f59e0b', fontWeight: 500 }}>Impatto clienti: {vr.impact_for_clients}</div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+    </div>
+  )
+}
+
 // ─── Business — View ─────────────────────────────────────────────
 
 function BusinessView() {
@@ -1254,6 +1414,7 @@ export default function Page() {
   const [showCompare, setShowCompare] = useState(false)
   const [openSections, setOpenSections] = useState<Set<SectionId>>(new Set())
   const [actionRegister, setActionRegister] = useState<ActionRegisterData | null>(null)
+  const [riskScore, setRiskScore] = useState<RiskScoreData | null>(null)
   const [clientName, setClientName] = useState('')
   const [showClientInput, setShowClientInput] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -1266,12 +1427,14 @@ export default function Page() {
       fetch('/backupl.json').then(r => r.json()) as Promise<BackupData>,
       fetch('/archive/market-analysis-w16-2026-04-20.json').then(r => r.json()).catch(() => null),
       fetch('/action_register.json').then(r => r.json()).catch(() => null),
-    ]).then(([b, a, bu, prev, ar]) => {
+      fetch('/risk_score.json').then(r => r.json()).catch(() => null),
+    ]).then(([b, a, bu, prev, ar, rs]) => {
       setBrief(b)
       setAnalysis(a)
       setBackup(bu)
       setBackupPrev(prev as BackupData | null)
       setActionRegister(ar as ActionRegisterData | null)
+      setRiskScore(rs as RiskScoreData | null)
       setOpenSections(new Set(b.sections.map(s => s.id)))
       setIsLoading(false)
     }).catch(() => setIsLoading(false))
@@ -1453,6 +1616,7 @@ export default function Page() {
         {([
           { id: 'brief' as Tab, label: 'Executive' },
           { id: 'actions' as Tab, label: 'Actions' },
+          { id: 'risk' as Tab, label: 'Risk Score' },
           { id: 'analysis' as Tab, label: 'Vendors' },
           { id: 'backup' as Tab, label: 'AI' },
           { id: 'business' as Tab, label: 'Business' },
@@ -1526,6 +1690,7 @@ export default function Page() {
 
         {tab === 'business' && <BusinessView />}
         {tab === 'actions' && <ActionRegisterView data={actionRegister} />}
+        {tab === 'risk' && <RiskScoreView data={riskScore} />}
       </main>
 
       <footer className="no-print" style={{ borderTop: '1px solid var(--border)', padding: '20px 32px', textAlign: 'center' }}>
