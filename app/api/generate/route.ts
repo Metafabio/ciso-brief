@@ -26,28 +26,30 @@ function getISOWeek(d: Date) {
   return Math.ceil(((date.getTime() - y.getTime()) / 86400000 + 1) / 7)
 }
 
+async function fetchOneFeed(url: string, sevenDaysAgo: number): Promise<string[]> {
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(5000) })
+    const xml = await res.text()
+    const items: string[] = []
+    const entries = xml.matchAll(/<item>([\s\S]*?)<\/item>/g)
+    for (const [, entry] of entries) {
+      const title = entry.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/)?.[1]?.trim()
+      const link = entry.match(/<link>(.*?)<\/link>/)?.[1]?.trim()
+      const pubDate = entry.match(/<pubDate>(.*?)<\/pubDate>/)?.[1]?.trim()
+      if (!title) continue
+      const date = pubDate ? new Date(pubDate) : null
+      if (date && date.getTime() < sevenDaysAgo) continue
+      items.push(`- [${date?.toISOString().split('T')[0] ?? ''}] ${title} | ${link ?? ''}`)
+      if (items.length >= 8) break
+    }
+    return items
+  } catch { return [] }
+}
+
 async function fetchRSSNews(): Promise<string> {
   const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000
-  const items: string[] = []
-
-  for (const url of RSS_FEEDS) {
-    try {
-      const res = await fetch(url, { signal: AbortSignal.timeout(8000) })
-      const xml = await res.text()
-      const entries = xml.matchAll(/<item>([\s\S]*?)<\/item>/g)
-      for (const [, entry] of entries) {
-        const title = entry.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/)?.[1]?.trim()
-        const link = entry.match(/<link>(.*?)<\/link>/)?.[1]?.trim()
-        const pubDate = entry.match(/<pubDate>(.*?)<\/pubDate>/)?.[1]?.trim()
-        if (!title) continue
-        const date = pubDate ? new Date(pubDate) : null
-        if (date && date.getTime() < sevenDaysAgo) continue
-        items.push(`- [${date?.toISOString().split('T')[0] ?? ''}] ${title} | ${link ?? ''}`)
-        if (items.length >= 20) break
-      }
-    } catch { /* feed non raggiungibile */ }
-  }
-
+  const results = await Promise.allSettled(RSS_FEEDS.map(url => fetchOneFeed(url, sevenDaysAgo)))
+  const items = results.flatMap(r => r.status === 'fulfilled' ? r.value : []).slice(0, 30)
   return items.length > 0
     ? '\n\nNOTIZIE REALI DEGLI ULTIMI 7 GIORNI:\n' + items.join('\n')
     : ''

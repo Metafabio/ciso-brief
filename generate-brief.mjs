@@ -362,36 +362,36 @@ const RSS_FEEDS = [
   'https://www.veeam.com/blog/rss.xml',
 ]
 
-async function fetchRSSNews() {
+async function fetchOneFeed(url) {
   const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000
-  const items = []
-
-  for (const url of RSS_FEEDS) {
-    try {
-      const res = await fetch(url, { signal: AbortSignal.timeout(8000) })
-      const xml = await res.text()
-
-      // Estrae titoli, link e date dal RSS con regex semplice
-      const entries = xml.matchAll(/<item>([\s\S]*?)<\/item>/g)
-      for (const [, entry] of entries) {
-        const title = entry.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/)?.[1]?.trim()
-        const link = entry.match(/<link>(.*?)<\/link>/)?.[1]?.trim()
-        const pubDate = entry.match(/<pubDate>(.*?)<\/pubDate>/)?.[1]?.trim()
-        const desc = entry.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/)?.[1]
-          ?.replace(/<[^>]+>/g, '').trim().slice(0, 200)
-
-        if (!title) continue
-        const date = pubDate ? new Date(pubDate) : null
-        if (date && date.getTime() < sevenDaysAgo) continue
-
-        items.push({ title, link, date: date?.toISOString().split('T')[0] ?? DATE, desc })
-      }
-    } catch {
-      // Feed non raggiungibile, continua con gli altri
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(5000) })
+    const xml = await res.text()
+    const items = []
+    const entries = xml.matchAll(/<item>([\s\S]*?)<\/item>/g)
+    for (const [, entry] of entries) {
+      const title = entry.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/)?.[1]?.trim()
+      const link = entry.match(/<link>(.*?)<\/link>/)?.[1]?.trim()
+      const pubDate = entry.match(/<pubDate>(.*?)<\/pubDate>/)?.[1]?.trim()
+      const desc = entry.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/)?.[1]
+        ?.replace(/<[^>]+>/g, '').trim().slice(0, 200)
+      if (!title) continue
+      const date = pubDate ? new Date(pubDate) : null
+      if (date && date.getTime() < sevenDaysAgo) continue
+      items.push({ title, link, date: date?.toISOString().split('T')[0] ?? DATE, desc })
+      if (items.length >= 10) break
     }
-  }
+    return items
+  } catch { return [] }
+}
 
-  return items.slice(0, 40) // max 40 notizie come contesto
+async function fetchRSSNews() {
+  console.log(`[rss] Fetching ${RSS_FEEDS.length} feed in parallelo (timeout 5s)...`)
+  const start = Date.now()
+  const results = await Promise.allSettled(RSS_FEEDS.map(fetchOneFeed))
+  const items = results.flatMap(r => r.status === 'fulfilled' ? r.value : []).slice(0, 40)
+  console.log(`[rss] ${items.length} notizie raccolte in ${((Date.now() - start) / 1000).toFixed(1)}s`)
+  return items
 }
 
 function extractJSON(text) {
