@@ -11,7 +11,18 @@ const FILES = {
   actions: resolve(ROOT, 'public/action_register.json'),
 }
 
-const MODEL = 'gemini-2.0-flash'
+// Free model on OpenRouter — no credits needed
+const MODEL = 'google/gemma-3-27b-it:free'
+
+const RSS_FEEDS = [
+  'https://www.bleepingcomputer.com/feed/',
+  'https://thehackernews.com/feeds/posts/default',
+  'https://krebsonsecurity.com/feed/',
+  'https://feeds.feedburner.com/darkreading',
+]
+
+const KEYWORDS = ['backup', 'ransomware', 'veeam', 'rubrik', 'cohesity', 'hycu', 'commvault',
+  'cyber', 'data protection', 'wasabi', 'restore', 'recovery', 'encryption', 'exfiltration']
 
 function getISOWeek(d: Date) {
   const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
@@ -20,30 +31,71 @@ function getISOWeek(d: Date) {
   return Math.ceil(((date.getTime() - y.getTime()) / 86400000 + 1) / 7)
 }
 
-async function callLLM(prompt: string): Promise<string> {
-  const apiKey = process.env.GEMINI_API_KEY
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        tools: [{ google_search: {} }],
-        generationConfig: { maxOutputTokens: 8192, temperature: 0.3 },
-      }),
+interface RSSItem { title: string; link: string; pubDate: string; source: string }
+
+async function fetchFeed(url: string): Promise<RSSItem[]> {
+  try {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), 6000)
+    const res = await fetch(url, { signal: controller.signal, headers: { 'User-Agent': 'Mozilla/5.0' } })
+    clearTimeout(timer)
+    if (!res.ok) return []
+    const xml = await res.text()
+    const items: RSSItem[] = []
+    const source = url.replace(/https?:\/\/(www\.)?/, '').split('/')[0]
+    const itemRegex = /<item>([\s\S]*?)<\/item>/g
+    let m
+    while ((m = itemRegex.exec(xml)) !== null) {
+      const block = m[1]
+      const title = (block.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/) ||
+                     block.match(/<title>(.*?)<\/title>/))?.[1] ?? ''
+      const link  = (block.match(/<link>(.*?)<\/link>/))?.[1] ?? ''
+      const pub   = (block.match(/<pubDate>(.*?)<\/pubDate>/))?.[1] ?? ''
+      if (title) items.push({ title: title.trim(), link: link.trim(), pubDate: pub.trim(), source })
     }
-  )
+    return items
+  } catch {
+    return []
+  }
+}
+
+async function fetchNews(): Promise<{ headlines: string; items: RSSItem[] }> {
+  const results = await Promise.allSettled(RSS_FEEDS.map(fetchFeed))
+  const all: RSSItem[] = results.flatMap(r => r.status === 'fulfilled' ? r.value : [])
+  const relevant = all.filter(item =>
+    KEYWORDS.some(kw => item.title.toLowerCase().includes(kw))
+  ).slice(0, 20)
+  const headlines = relevant.length > 0
+    ? relevant.map(i => `- ${i.title} [${i.source}]`).join('\n')
+    : '(nessuna notizia recente trovata via RSS — usa la tua conoscenza aggiornata)'
+  return { headlines, items: relevant }
+}
+
+async function callLLM(prompt: string): Promise<string> {
+  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer': 'https://ciso-brief.vercel.app',
+      'X-Title': 'CISO Brief',
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: 4096,
+      temperature: 0.2,
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  })
   if (!res.ok) {
     const err = await res.text()
-    throw new Error(`Gemini error ${res.status}: ${err}`)
+    throw new Error(`OpenRouter error ${res.status}: ${err.slice(0, 200)}`)
   }
   const data = await res.json()
-  return data.candidates?.[0]?.content?.parts?.[0]?.text ?? ''
+  return data.choices?.[0]?.message?.content ?? ''
 }
 
 function extractJSON(text: string): unknown {
-  // strip markdown code fences if present
   const cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '')
   const match = cleaned.match(/\{[\s\S]*\}/)
   if (!match) throw new Error('Nessun JSON nella risposta')
@@ -51,9 +103,9 @@ function extractJSON(text: string): unknown {
 }
 
 export async function POST() {
-  if (!process.env.GEMINI_API_KEY) {
+  if (!process.env.OPENROUTER_API_KEY) {
     return new Response(
-      JSON.stringify({ type: 'error', msg: 'GEMINI_API_KEY non configurata in .env.local' }) + '\n',
+      JSON.stringify({ type: 'error', msg: 'OPENROUTER_API_KEY non configurata in .env.local' }) + '\n',
       { status: 500, headers: { 'Content-Type': 'application/x-ndjson' } }
     )
   }
@@ -63,40 +115,48 @@ export async function POST() {
   const DATE = now.toISOString().split('T')[0]
   const WEEK = getISOWeek(now)
   const DATE_IT = now.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })
-  const SEVEN_DAYS_AGO = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
 
   const stream = new ReadableStream({
     async start(controller) {
       const push = (obj: object) => controller.enqueue(enc.encode(JSON.stringify(obj) + '\n'))
 
-      push({ type: 'rss_start', msg: `Gemini 2.0 Flash + Google Search — ricerca web gratuita` })
-      push({ type: 'rss_done', msg: `Modello: ${MODEL}`, headlines: [] })
+      push({ type: 'rss_start', msg: 'Lettura RSS in corso...' })
+      const { headlines, items } = await fetchNews()
+      push({
+        type: 'rss_done',
+        msg: `${items.length} notizie rilevanti trovate · Modello: ${MODEL}`,
+        headlines: items.map(i => i.title),
+      })
 
-      const SEARCH_INSTRUCTION = `Usa Google Search per trovare notizie reali degli ultimi 7 giorni (${SEVEN_DAYS_AGO} – ${DATE}) su: backup enterprise, ransomware, Veeam, Rubrik, Cohesity, HYCU, Commvault, cyber resilience, data protection. Cita solo fonti trovate realmente.`
+      const NEWS_CONTEXT = `Notizie reali degli ultimi 7 giorni raccolte da RSS (BleepingComputer, Hacker News, Krebs, Dark Reading):\n${headlines}\n\nBasati su queste notizie reali per compilare il JSON.`
 
-      const BRIEF_PROMPT = `Sei un analista di market intelligence specializzato in cybersecurity, data protection e AI. ${SEARCH_INSTRUCTION}
+      const BRIEF_PROMPT = `Sei un analista di market intelligence specializzato in cybersecurity, data protection e AI.
+${NEWS_CONTEXT}
 La data di oggi è ${DATE}. La settimana ISO corrente è ${WEEK}.
 Produci SOLO un oggetto JSON valido con questa struttura esatta, nessun testo prima o dopo:
-{"week":${WEEK},"date":"${DATE_IT}","generated_at":"${DATE}","sections":[{"id":"ma-funding","items":[{"vendor":"...","deal":"...","amount":"...","summary":"2-3 frasi su notizia reale trovata online.","confidence":"high","sources":[{"title":"titolo articolo reale","url":"https://url-reale.com","publisher":"publisher reale","published_at":"${DATE}"}]}],"implication":"Azione concreta per system integrator."},{"id":"product-releases","items":[{"vendor":"...","deal":"...","summary":"2-3 frasi.","confidence":"high","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"implication":"Azione concreta."},{"id":"threat-ransomware","items":[{"vendor":"...","deal":"...","summary":"2-3 frasi.","confidence":"high","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"implication":"Azione concreta."},{"id":"ai-orchestration","items":[{"vendor":"...","deal":"...","summary":"2-3 frasi.","confidence":"medium","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"implication":"Azione concreta."},{"id":"market-trends","items":[{"vendor":"...","deal":"...","summary":"2-3 frasi.","confidence":"medium","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"implication":"Azione concreta."}]}
-Max 3 item per sezione. Tutto in italiano. Usa solo notizie reali trovate con Google Search.`
+{"week":${WEEK},"date":"${DATE_IT}","generated_at":"${DATE}","sections":[{"id":"ma-funding","items":[{"vendor":"...","deal":"...","amount":"...","summary":"2-3 frasi su notizia reale.","confidence":"high","sources":[{"title":"titolo notizia reale","url":"https://...","publisher":"BleepingComputer","published_at":"${DATE}"}]}],"implication":"Azione concreta per system integrator."},{"id":"product-releases","items":[{"vendor":"...","deal":"...","summary":"2-3 frasi.","confidence":"high","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"implication":"Azione concreta."},{"id":"threat-ransomware","items":[{"vendor":"...","deal":"...","summary":"2-3 frasi.","confidence":"high","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"implication":"Azione concreta."},{"id":"ai-orchestration","items":[{"vendor":"...","deal":"...","summary":"2-3 frasi.","confidence":"medium","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"implication":"Azione concreta."},{"id":"market-trends","items":[{"vendor":"...","deal":"...","summary":"2-3 frasi.","confidence":"medium","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"implication":"Azione concreta."}]}
+Max 3 item per sezione. Tutto in italiano.`
 
-      const MARKET_PROMPT = `Sei un analista di market intelligence specializzato in backup, DR e cybersecurity. ${SEARCH_INSTRUCTION}
+      const MARKET_PROMPT = `Sei un analista di market intelligence specializzato in backup, DR e cybersecurity.
+${NEWS_CONTEXT}
 La data di oggi è ${DATE}. La settimana ISO corrente è ${WEEK}.
 Produci SOLO un oggetto JSON valido, nessun testo prima o dopo:
-{"week":${WEEK},"generated_at":"${DATE}","summary":"Executive summary 2-3 frasi basato su notizie reali.","brands":[{"name":"Veeam","segment":"Backup & DR","momentum":"rising","momentum_reason":"motivazione basata su notizie reali","ai_integration":{"score":8,"label":"Advanced","features":["feature reale"],"llm_model":"n.d."},"products_in_focus":[{"name":"...","category":"...","key_differentiator":"...","ai_feature":"...","target_buyer":"IT Manager"}],"competitive_threat":"...","sales_angle":"..."}],"market_signals":[{"signal":"...","type":"consolidation","impact":"high","description":"...","who_wins":"...","who_loses":"...","confidence":"high","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"ai_llm_leaderboard":[{"rank":1,"brand":"...","product":"...","why":"...","integration_type":"..."}],"recommendation":{"for_manager":"...","for_sales":"...","watch_next_week":"..."}}
+{"week":${WEEK},"generated_at":"${DATE}","summary":"Executive summary 2-3 frasi.","brands":[{"name":"Veeam","segment":"Backup & DR","momentum":"rising","momentum_reason":"motivazione reale","ai_integration":{"score":8,"label":"Advanced","features":["feature reale"],"llm_model":"n.d."},"products_in_focus":[{"name":"...","category":"...","key_differentiator":"...","ai_feature":"...","target_buyer":"IT Manager"}],"competitive_threat":"...","sales_angle":"..."}],"market_signals":[{"signal":"...","type":"consolidation","impact":"high","description":"...","who_wins":"...","who_loses":"...","confidence":"high","sources":[{"title":"...","url":"https://...","publisher":"...","published_at":"${DATE}"}]}],"ai_llm_leaderboard":[{"rank":1,"brand":"...","product":"...","why":"...","integration_type":"..."}],"recommendation":{"for_manager":"...","for_sales":"...","watch_next_week":"..."}}
 5 brand (Veeam, Rubrik, Cohesity, HYCU, Commvault), 4 signals, 5 leaderboard. Tutto in italiano.`
 
-      const BACKUP_PROMPT = `Sei un analista di backup e cyber resilience. ${SEARCH_INSTRUCTION}
+      const BACKUP_PROMPT = `Sei un analista di backup e cyber resilience.
+${NEWS_CONTEXT}
 La data di oggi è ${DATE}. La settimana ISO corrente è ${WEEK}.
 Produci SOLO un oggetto JSON valido, nessun testo prima o dopo:
-{"version":"1.0","generated_at":"${DATE}","week":${WEEK},"summary":{"headline":"Tema dominante settimana basato su notizie reali.","key_points":["punto 1","punto 2","punto 3","punto 4"],"trend":"rising"},"ai_leaderboard":[{"rank":1,"vendor":"Rubrik","product":"...","ai_score":9,"key_feature":"...","why":"2 frasi."},{"rank":2,"vendor":"Veeam","product":"...","ai_score":8,"key_feature":"...","why":"2 frasi."},{"rank":3,"vendor":"Cohesity","product":"...","ai_score":8,"key_feature":"...","why":"2 frasi."},{"rank":4,"vendor":"HYCU","product":"...","ai_score":7,"key_feature":"...","why":"2 frasi."},{"rank":5,"vendor":"Commvault","product":"...","ai_score":5,"key_feature":"...","why":"2 frasi."}],"news":[{"section":"market","title":"...","vendor":"...","amount":"n.d.","description":"2-3 frasi su notizia reale.","implication":"Azione concreta."},{"section":"threat","title":"...","vendor":"...","amount":"n.d.","description":"2-3 frasi.","implication":"Azione concreta."},{"section":"product","title":"...","vendor":"...","amount":"n.d.","description":"2-3 frasi.","implication":"Azione concreta."}]}
-Tutto in italiano. Solo notizie reali trovate con Google Search.`
+{"version":"1.0","generated_at":"${DATE}","week":${WEEK},"summary":{"headline":"Tema dominante settimana.","key_points":["punto 1","punto 2","punto 3","punto 4"],"trend":"rising"},"ai_leaderboard":[{"rank":1,"vendor":"Rubrik","product":"...","ai_score":9,"key_feature":"...","why":"2 frasi."},{"rank":2,"vendor":"Veeam","product":"...","ai_score":8,"key_feature":"...","why":"2 frasi."},{"rank":3,"vendor":"Cohesity","product":"...","ai_score":8,"key_feature":"...","why":"2 frasi."},{"rank":4,"vendor":"HYCU","product":"...","ai_score":7,"key_feature":"...","why":"2 frasi."},{"rank":5,"vendor":"Commvault","product":"...","ai_score":5,"key_feature":"...","why":"2 frasi."}],"news":[{"section":"market","title":"...","vendor":"...","amount":"n.d.","description":"2-3 frasi.","implication":"Azione concreta."},{"section":"threat","title":"...","vendor":"...","amount":"n.d.","description":"2-3 frasi.","implication":"Azione concreta."},{"section":"product","title":"...","vendor":"...","amount":"n.d.","description":"2-3 frasi.","implication":"Azione concreta."}]}
+Tutto in italiano.`
 
-      const ACTIONS_PROMPT = `Sei un consulente commerciale per system integrator italiani specializzati in backup e DR. ${SEARCH_INSTRUCTION}
+      const ACTIONS_PROMPT = `Sei un consulente commerciale per system integrator italiani specializzati in backup e DR.
+${NEWS_CONTEXT}
 La data di oggi è ${DATE}. La settimana ISO corrente è ${WEEK}.
-Basandoti sulle notizie reali trovate con Google Search, produci SOLO un oggetto JSON valido con 5 azioni commerciali concrete per Mauden, nessun testo prima o dopo:
-{"week":${WEEK},"generated_at":"${DATE}","actions":[{"id":"act-001","source_signal":"notizia reale trovata online","risk":"2 frasi rischio cliente basate su notizia reale.","action":"Azione specifica con chi contattare e come.","owner":"Sales","priority":"high","mauden_service":"Ransomware Restore Test","service_price":"€6k–€20k","status":"open","deadline":"${new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"},{"id":"act-002","source_signal":"...","risk":"...","action":"...","owner":"Pre-Sales","priority":"high","mauden_service":"Backup Architecture Modernization","service_price":"€15k–€80k","status":"open","deadline":"${new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"},{"id":"act-003","source_signal":"...","risk":"...","action":"...","owner":"Sales / Pre-Sales","priority":"medium","mauden_service":"Cyber Recovery Assessment","service_price":"€4k–€12k","status":"open","deadline":"${new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"},{"id":"act-004","source_signal":"...","risk":"...","action":"...","owner":"Technical","priority":"medium","mauden_service":"...","service_price":"...","status":"open","deadline":"${new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"},{"id":"act-005","source_signal":"...","risk":"...","action":"...","owner":"Sales","priority":"low","mauden_service":"...","service_price":"...","status":"open","deadline":"${new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"}]}
-Tutto in italiano. Azioni concrete basate su notizie reali di questa settimana.`
+Produci SOLO un oggetto JSON valido con 5 azioni commerciali concrete per Mauden, nessun testo prima o dopo:
+{"week":${WEEK},"generated_at":"${DATE}","actions":[{"id":"act-001","source_signal":"titolo notizia reale da RSS","risk":"2 frasi rischio cliente.","action":"Azione specifica con chi contattare e come.","owner":"Sales","priority":"high","mauden_service":"Ransomware Restore Test","service_price":"€6k–€20k","status":"open","deadline":"${new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"},{"id":"act-002","source_signal":"...","risk":"...","action":"...","owner":"Pre-Sales","priority":"high","mauden_service":"Backup Architecture Modernization","service_price":"€15k–€80k","status":"open","deadline":"${new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"},{"id":"act-003","source_signal":"...","risk":"...","action":"...","owner":"Sales / Pre-Sales","priority":"medium","mauden_service":"Cyber Recovery Assessment","service_price":"€4k–€12k","status":"open","deadline":"${new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"},{"id":"act-004","source_signal":"...","risk":"...","action":"...","owner":"Technical","priority":"medium","mauden_service":"...","service_price":"...","status":"open","deadline":"${new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"},{"id":"act-005","source_signal":"...","risk":"...","action":"...","owner":"Sales","priority":"low","mauden_service":"...","service_price":"...","status":"open","deadline":"${new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}"}]}
+Tutto in italiano.`
 
       const jobs = [
         { label: 'brief.json',           prompt: BRIEF_PROMPT,   file: FILES.brief },
@@ -108,7 +168,7 @@ Tutto in italiano. Azioni concrete basate su notizie reali di questa settimana.`
       const results: Record<string, string> = {}
 
       for (const job of jobs) {
-        push({ type: 'llm_start', label: job.label, msg: `Gemini in corso...` })
+        push({ type: 'llm_start', label: job.label, msg: 'LLM in corso...' })
         const t = Date.now()
         let lastErr = ''
         let ok = false
