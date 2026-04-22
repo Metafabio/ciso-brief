@@ -11,7 +11,7 @@ const FILES = {
   actions: resolve(ROOT, 'public/action_register.json'),
 }
 
-const MODEL = 'perplexity/llama-3.1-sonar-large-128k-online'
+const MODEL = 'perplexity/sonar-pro'
 
 function getISOWeek(d: Date) {
   const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
