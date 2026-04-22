@@ -1,0 +1,197 @@
+{
+  "week": 17,
+  "date": "21 aprile 2026",
+  "generated_at": "2026-04-21",
+  "sections": [
+    {
+      "id": "ma-funding",
+      "items": [
+        {
+          "vendor": "Wasabi Technologies",
+          "deal": "Acquisizione Seagate Lyve Cloud",
+          "amount": "n.d.",
+          "summary": "Wasabi Technologies ha acquisito il business Lyve Cloud di Seagate (annuncio 9 aprile, chiusura 20 aprile). Seagate diventa azionista di Wasabi. L'operazione consolida Wasabi come principale pure-play cloud storage vendor e rafforza integrazioni con Veeam, Rubrik, Cohesity, Commvault.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "Wasabi Technologies Acquires Seagate's Lyve Cloud Business",
+              "url": "https://www.businesswire.com/news/home/20260409188097/en/Wasabi-Technologies-Acquires-Seagates-Lyve-Cloud-Business",
+              "publisher": "BusinessWire",
+              "published_at": "2026-04-09"
+            },
+            {
+              "title": "Wasabi buys out Seagate's Lyve Cloud",
+              "url": "https://www.tech-arrow.com/2026/04/20/wasabi-buys-out-seagates-lyve-cloud/",
+              "publisher": "Tech-Arrow",
+              "published_at": "2026-04-20"
+            }
+          ]
+        },
+        {
+          "vendor": "Commvault",
+          "deal": "Private equity interest — possibile acquisizione",
+          "amount": "~$3.5B market cap",
+          "summary": "Thoma Bravo e altri PE stanno valutando l'acquisizione di Commvault. Il titolo è crollato del 30% (da $129 a $89) dopo risultati deludenti. L'azienda lavora con Goldman Sachs per valutare opzioni strategiche. Il mercato vede gap su cyber-resilience AI rispetto a Rubrik e Cohesity.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "Hungry private equity eyeing up Commvault",
+              "url": "https://www.blocksandfiles.com/data-protection/2026/04/13/hungry-private-equity-eyeing-up-commvault/5216813",
+              "publisher": "Blocks & Files",
+              "published_at": "2026-04-13"
+            }
+          ]
+        }
+      ],
+      "implication": "Il mercato si consolida: Wasabi cresce, Commvault è vulnerabile. Opportunità per Mauden di rinegoziare posizionamento Commvault nei deal aperti e puntare su Veeam o Rubrik come alternativa."
+    },
+    {
+      "id": "product-releases",
+      "items": [
+        {
+          "vendor": "Rubrik",
+          "deal": "Cloud Vault esteso a Google Cloud — copertura multi-cloud completa",
+          "summary": "Rubrik estende il suo Cloud Vault air-gapped a Google Cloud, completando la copertura AWS + Azure + GCP. Il vault fornisce backup immutabili e isolati nella cloud del cliente senza gestione infrastruttura. Unico vendor con vault immutabile su tutti e tre i major cloud.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "Rubrik extends air-gapped cloud backup vault to Google",
+              "url": "https://www.blocksandfiles.com/data-management/2025/09/01/rubrik-extends-air-gapped-cloud-backup-vault-to-google/1596672",
+              "publisher": "Blocks & Files",
+              "published_at": "2026-04-10"
+            }
+          ]
+        },
+        {
+          "vendor": "HYCU",
+          "deal": "R-Shield + Halcyon — prevenzione e recovery ransomware in unico prodotto",
+          "summary": "HYCU integra Halcyon (ransomware detection) nel suo R-Shield: unica soluzione che combina prevenzione e recovery in un singolo prodotto. Entrambe sotto influenza Bain Capital. Target mid-market senza SOC dedicato — apre una nuova categoria di conversazione commerciale.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "Halcyon days for HYCU as the pair link up on ransomware pitch",
+              "url": "https://www.blocksandfiles.com/security/2026/04/01/halcyon-days-for-hycu-as-the-pair-link-up-on-ransomware-pitch/5213837",
+              "publisher": "Blocks & Files",
+              "published_at": "2026-04-01"
+            }
+          ]
+        }
+      ],
+      "implication": "Rubrik GCP vault è argomento concreto per clienti Google Workspace. HYCU R-Shield è apertura di conversazione perfetta per mid-market senza SOC — valutare inserimento nel portfolio Mauden."
+    },
+    {
+      "id": "threat-ransomware",
+      "items": [
+        {
+          "vendor": "The Gentlemen (RaaS)",
+          "deal": "320+ vittime nel 2026 — gruppo più attivo d'Europa",
+          "summary": "The Gentlemen ransomware group ha pubblicato oltre 320 vittime sul data leak site, di cui 240 solo nei primi mesi 2026. È il gruppo RaaS con crescita più rapida. Target principale: PMI europee nei settori manifatturiero e logistica — clienti tipici Mauden.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "The Gentlemen RaaS Is Surging in 2026",
+              "url": "https://blog.checkpoint.com/research/the-gentlemen-a-new-ransomware-threat-climbing-the-charts-fast",
+              "publisher": "Check Point Research",
+              "published_at": "2026-04-15"
+            }
+          ]
+        },
+        {
+          "vendor": "Qilin / Multiple groups",
+          "deal": "Ransomware senza encryption — exfiltration pura raddoppiata",
+          "summary": "Il 6% degli attacchi ransomware 2025 ha usato solo exfiltration (senza encryption), doppio rispetto all'anno precedente. I backup classici non proteggono da questo scenario: i dati vengono copiati prima di qualsiasi alert. Breakout time medio: 29 minuti.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "Ransomware Without Encryption: Why Pure Exfiltration Attacks Are Surging",
+              "url": "https://www.morphisec.com/blog/ransomware-without-encryption-why-pure-exfiltration-attacks-are-surging-and-why-theyre-so-hard-to-catch",
+              "publisher": "Morphisec Blog",
+              "published_at": "2026-04-16"
+            },
+            {
+              "title": "New approaches to tackling ransomware recovery",
+              "url": "https://www.blocksandfiles.com/data-protection/2026/04/16/new-approaches-to-tackling-ransomware-recovery/5217913",
+              "publisher": "Blocks & Files",
+              "published_at": "2026-04-16"
+            }
+          ]
+        }
+      ],
+      "implication": "Il ransomware senza encryption rende i backup tradizionali insufficienti. Aggiungere data classification e DLP alle conversazioni di backup. Usare i dati su The Gentlemen per urgency nei settori manifatturiero e logistica."
+    },
+    {
+      "id": "ai-orchestration",
+      "items": [
+        {
+          "vendor": "Mercato AI Orchestration",
+          "deal": "$18.38B 2026 → $58.42B 2032 — crescita +21% CAGR",
+          "summary": "Il mercato AI Orchestration vale $18.38B nel 2026 con crescita al 21% CAGR. Il trend principale è lo shift a framework cloud-native che coordinano più modelli ML, analytics engine e workflow automatizzati. Il backup diventa infrastruttura critica per l'enterprise AI.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "AI Orchestration Market Size, Industry Share | Forecast 2026-2034",
+              "url": "https://www.fortunebusinessinsights.com/ai-orchestration-market-107177",
+              "publisher": "Fortune Business Insights",
+              "published_at": "2026-04-01"
+            }
+          ]
+        },
+        {
+          "vendor": "Industria backup",
+          "deal": "World Backup Day 2026: backup come mandato AI",
+          "summary": "World Backup Day 2026 ha introdotto il tema 'Backup as AI Mandate': il backup dei dati di training e dei modelli AI è diventato requisito operativo per l'enterprise. Attacchi AI-enabled sono aumentati dell'89% nel 2025. Il breakout time medio è sceso a 29 minuti.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "World Backup Day 2026: Backup as an AI mandate",
+              "url": "https://www.frontier-enterprise.com/world-backup-day-2026-backup-as-an-ai-mandate",
+              "publisher": "Frontier Enterprise",
+              "published_at": "2026-03-31"
+            }
+          ]
+        }
+      ],
+      "implication": "Posizionare il backup come componente dell'infrastruttura AI, non solo DR tradizionale. I clienti che costruiscono pipeline AI hanno bisogno di proteggere modelli e dataset — nuovo servizio da proporre."
+    },
+    {
+      "id": "market-trends",
+      "items": [
+        {
+          "vendor": "Mercato backup",
+          "deal": "Recovery speed come nuovo differenziatore — SLA in minuti non ore",
+          "summary": "Con breakout time a 29 minuti, le organizzazioni stanno rivalutando i SLA di recovery. Il 3-2-1-1-0 (immutable + verified recovery zero errors) è diventato lo standard minimo raccomandato. Solo il 28% delle aziende riesce a recuperare completamente da ransomware.",
+          "confidence": "high",
+          "sources": [
+            {
+              "title": "SOC Threat Radar — April 2026",
+              "url": "https://blog.barracuda.com/2026/04/14/soc-threat-radar-april-2026",
+              "publisher": "Barracuda Networks",
+              "published_at": "2026-04-14"
+            },
+            {
+              "title": "Ransomware in 2026: Why Backups Alone Are Not Enough",
+              "url": "https://www.rutter-net.com/blog/ransomware-in-2026-why-backups-alone-are-not-enough-rutter",
+              "publisher": "Rutter",
+              "published_at": "2026-04-10"
+            }
+          ]
+        },
+        {
+          "vendor": "Rubrik / Veeam / Cohesity / Commvault",
+          "deal": "Gartner Magic Quadrant 2026 — quattro leader in cluster",
+          "summary": "Gartner Backup & Data Protection 2026: Rubrik guida su completeness of vision, Veeam guida su ability to execute. Cohesity e Commvault nel gruppo di testa. Dell e Druva nel quadrante leader ma meno rilevanti per il mid-market italiano.",
+          "confidence": "medium",
+          "sources": [
+            {
+              "title": "Rubrik, Veeam Lead in Changing Backup & Data Protection Market",
+              "url": "https://virtualizationreview.com/articles/2025/07/01/rubrik-veeam-among-leaders-in-changing-backup-data-protection-market.aspx",
+              "publisher": "Virtualization Review",
+              "published_at": "2026-04-01"
+            }
+          ]
+        }
+      ],
+      "implication": "Comunicare il 3-2-1-1-0 come framework concreto nei preventivi. Usare il Magic Quadrant aggiornato nelle presentazioni board-level per giustificare la scelta vendor."
+    }
+  ]
+}

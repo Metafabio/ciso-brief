@@ -1,0 +1,234 @@
+{
+  "week": 17,
+  "generated_at": "2026-04-21",
+  "summary": "Settimana 17 dominata da consolidamento: Wasabi acquisisce Lyve Cloud, Commvault nel mirino del private equity. Rubrik completa copertura multi-cloud. The Gentlemen RaaS è il gruppo più pericoloso per le PMI europee. Il backup diventa mandato AI.",
+  "brands": [
+    {
+      "name": "Rubrik",
+      "segment": "Backup & DR / Cyber Resilience",
+      "momentum": "rising",
+      "momentum_reason": "Cloud Vault esteso a GCP completa copertura multi-cloud, unico vendor su AWS+Azure+GCP con vault air-gapped.",
+      "ai_integration": {
+        "score": 9,
+        "label": "Native",
+        "features": ["Ruby AI threat detection", "AI-powered anomaly detection", "Automated remediation", "FedRAMP certified AI"],
+        "llm_model": "Proprietario (Ruby AI)"
+      },
+      "products_in_focus": [
+        {
+          "name": "Rubrik Cloud Vault",
+          "category": "Immutable Cloud Backup",
+          "key_differentiator": "Ora disponibile su AWS, Azure e GCP — unico vault air-gapped multi-cloud.",
+          "ai_feature": "Ruby AI integrata per threat detection e recovery orchestration.",
+          "target_buyer": "CISO / IT Manager con ambienti multi-cloud"
+        }
+      ],
+      "competitive_threat": "Veeam perde terreno nel segmento cloud-native enterprise dove Rubrik ha ora copertura completa.",
+      "sales_angle": "Chiedi al cliente su quale cloud sono i suoi dati critici. Se usano GCP oltre AWS/Azure, Rubrik è ora l'unica scelta con vault immutabile su tutti e tre."
+    },
+    {
+      "name": "Veeam",
+      "segment": "Backup & DR",
+      "momentum": "stable",
+      "momentum_reason": "Leadership Gartner confermata su ability to execute, ma pressione crescente da Rubrik sul cloud-native.",
+      "ai_integration": {
+        "score": 8,
+        "label": "Advanced",
+        "features": ["Intelligent Hub AI orchestration", "AI-powered anomaly detection", "Automated backup policy management"],
+        "llm_model": "Proprietario (Intelligent Hub)"
+      },
+      "products_in_focus": [
+        {
+          "name": "Veeam Data Platform v12.3",
+          "category": "Enterprise Backup",
+          "key_differentiator": "Piattaforma più diffusa nel mid-market, ecosistema partner più ampio.",
+          "ai_feature": "Intelligent Hub con orchestrazione AI job backup e anomaly detection.",
+          "target_buyer": "IT Manager / Sales Engineer mid-market"
+        }
+      ],
+      "competitive_threat": "Rubrik supera su cloud-native e AI. HYCU attacca il mid-market con R-Shield.",
+      "sales_angle": "Per clienti già su Veeam: presentare l'upgrade v12.3 come must-have per l'AI orchestration. Mostrare gap vs versioni precedenti."
+    },
+    {
+      "name": "Cohesity",
+      "segment": "Backup & DR / Data Management",
+      "momentum": "stable",
+      "momentum_reason": "Post-merger Veritas completato, piattaforma combinata in fase di integrazione prodotto.",
+      "ai_integration": {
+        "score": 8,
+        "label": "Advanced",
+        "features": ["DataHound AI", "GDPR compliance automation", "FortKnox immutable vault", "Threat intelligence integration"],
+        "llm_model": "Proprietario (DataHound)"
+      },
+      "products_in_focus": [
+        {
+          "name": "Cohesity DataHound",
+          "category": "AI Data Classification",
+          "key_differentiator": "Unico vendor con data classification AI integrata nel backup — identifica dati sensibili automaticamente.",
+          "ai_feature": "LLM per classificazione dati GDPR/PII e risposta automatica a DSAR.",
+          "target_buyer": "DPO / CISO / Compliance Officer"
+        }
+      ],
+      "competitive_threat": "Veeam non ha data classification nativa. Opportunità nei clienti con alta esposizione GDPR.",
+      "sales_angle": "Con il ransomware da exfiltration in crescita, non basta il backup — serve sapere cosa è stato rubato. Cohesity DataHound risponde a questa domanda."
+    },
+    {
+      "name": "Commvault",
+      "segment": "Backup & DR / Enterprise",
+      "momentum": "declining",
+      "momentum_reason": "Titolo -30% dopo risultati deludenti, private equity Thoma Bravo in valutazione acquisizione. Incertezza strategica.",
+      "ai_integration": {
+        "score": 6,
+        "label": "Basic",
+        "features": ["Metallic AI insights", "Automated policy management"],
+        "llm_model": "n.d."
+      },
+      "products_in_focus": [
+        {
+          "name": "Commvault Cloud (Metallic)",
+          "category": "Enterprise Backup SaaS",
+          "key_differentiator": "Forte nel legacy enterprise con NetBackup, ampia base installata.",
+          "ai_feature": "AI insights base su Metallic — meno avanzato di Rubrik e Cohesity.",
+          "target_buyer": "Enterprise IT legacy / Large account"
+        }
+      ],
+      "competitive_threat": "L'incertezza M&A può bloccare decisioni di acquisto. Clienti Commvault potrebbero accelerare la valutazione alternative.",
+      "sales_angle": "Ai clienti con Commvault: è il momento giusto per fare un assessment alternativo. L'incertezza sul futuro del vendor è un rischio reale per la continuità operativa."
+    },
+    {
+      "name": "Wasabi Technologies",
+      "segment": "Cloud Storage / Backup Target",
+      "momentum": "rising",
+      "momentum_reason": "Acquisizione Lyve Cloud raddoppia capacità e cliente base. Diventa il cloud storage target più integrato nel mercato backup.",
+      "ai_integration": {
+        "score": 4,
+        "label": "Basic",
+        "features": ["Predictive storage tiering", "Cost optimization AI"],
+        "llm_model": "n.d."
+      },
+      "products_in_focus": [
+        {
+          "name": "Wasabi Hot Cloud Storage",
+          "category": "Cloud Storage Target",
+          "key_differentiator": "Pricing fisso senza egress fee, ora con capacità Lyve Cloud integrata.",
+          "ai_feature": "n.d.",
+          "target_buyer": "IT Manager / MSP / System Integrator"
+        }
+      ],
+      "competitive_threat": "AWS S3 e Azure Blob perdono clienti sensibili al costo. Vantaggio Wasabi: prezzo prevedibile.",
+      "sales_angle": "Per clienti con backup su AWS/Azure: mostrare il TCO comparison Wasabi vs S3. Con egress fee eliminate, il risparmio è immediato e misurabile."
+    }
+  ],
+  "market_signals": [
+    {
+      "signal": "Commvault nel mirino del private equity — possibile delisting",
+      "type": "consolidation",
+      "impact": "high",
+      "description": "Thoma Bravo e altri PE valutano acquisizione Commvault dopo crollo -30% del titolo. Il mercato percepisce gap su AI e cyber-resilience rispetto a Rubrik e Cohesity.",
+      "who_wins": "Rubrik e Veeam — clienti Commvault valutano alternative in anticipo.",
+      "who_loses": "Commvault — incertezza blocca nuovi deal. Partner Commvault a rischio.",
+      "confidence": "high",
+      "sources": [
+        {
+          "title": "Hungry private equity eyeing up Commvault",
+          "url": "https://www.blocksandfiles.com/data-protection/2026/04/13/hungry-private-equity-eyeing-up-commvault/5216813",
+          "publisher": "Blocks & Files",
+          "published_at": "2026-04-13"
+        }
+      ]
+    },
+    {
+      "signal": "Wasabi + Lyve Cloud — consolidamento cloud storage backup",
+      "type": "consolidation",
+      "impact": "high",
+      "description": "Wasabi acquisisce Lyve Cloud da Seagate, diventando il principale target cloud per backup con integrazioni Veeam, Rubrik, Cohesity, Commvault. Seagate diventa azionista.",
+      "who_wins": "Wasabi — scala globale e base clienti raddoppiata.",
+      "who_loses": "AWS S3 / Azure Blob — perdono deal cloud storage per backup su pricing.",
+      "confidence": "high",
+      "sources": [
+        {
+          "title": "Wasabi Technologies Acquires Seagate's Lyve Cloud Business",
+          "url": "https://www.businesswire.com/news/home/20260409188097/en/Wasabi-Technologies-Acquires-Seagates-Lyve-Cloud-Business",
+          "publisher": "BusinessWire",
+          "published_at": "2026-04-09"
+        }
+      ]
+    },
+    {
+      "signal": "Ransomware senza encryption — exfiltration pura in crescita",
+      "type": "disruption",
+      "impact": "high",
+      "description": "Il 6% degli attacchi ransomware usa solo exfiltration senza encryption (+100% YoY). I backup tradizionali non proteggono: i dati escono prima che il backup riesca a intervenire.",
+      "who_wins": "Vendor con data classification AI (Cohesity DataHound) e DLP integrato.",
+      "who_loses": "Vendor backup tradizionali senza data visibility (alcuni segmenti Veeam, Commvault).",
+      "confidence": "high",
+      "sources": [
+        {
+          "title": "Ransomware Without Encryption: Why Pure Exfiltration Attacks Are Surging",
+          "url": "https://www.morphisec.com/blog/ransomware-without-encryption-why-pure-exfiltration-attacks-are-surging-and-why-theyre-so-hard-to-catch",
+          "publisher": "Morphisec",
+          "published_at": "2026-04-16"
+        }
+      ]
+    },
+    {
+      "signal": "AI Orchestration Market $18.38B — il backup è infrastruttura AI",
+      "type": "adoption",
+      "impact": "medium",
+      "description": "Il mercato AI Orchestration vale $18.38B nel 2026, crescita +21% CAGR. Il backup dei modelli AI e dei dataset di training diventa requisito operativo per l'enterprise.",
+      "who_wins": "Vendor con AI integration nativa (Rubrik Ruby AI, Cohesity DataHound).",
+      "who_loses": "Vendor senza AI roadmap credibile.",
+      "confidence": "high",
+      "sources": [
+        {
+          "title": "World Backup Day 2026: Backup as an AI mandate",
+          "url": "https://www.frontier-enterprise.com/world-backup-day-2026-backup-as-an-ai-mandate",
+          "publisher": "Frontier Enterprise",
+          "published_at": "2026-03-31"
+        }
+      ]
+    }
+  ],
+  "ai_llm_leaderboard": [
+    {
+      "rank": 1,
+      "brand": "Rubrik",
+      "product": "Ruby AI",
+      "why": "Unico vendor con AI threat detection FedRAMP certified, multi-cloud vault e anomaly detection nativa. Copertura AWS+Azure+GCP completa.",
+      "integration_type": "Agentic threat detection + automated recovery orchestration"
+    },
+    {
+      "rank": 2,
+      "brand": "Cohesity",
+      "product": "DataHound AI",
+      "why": "Data classification AI integrata nel backup — identifica PII, GDPR data e dati sensibili automaticamente. Unico nel suo genere per compliance automation.",
+      "integration_type": "LLM per data classification + GDPR DSAR automation"
+    },
+    {
+      "rank": 3,
+      "brand": "Veeam",
+      "product": "Intelligent Hub",
+      "why": "AI orchestration per job management e anomaly detection. Il più diffuso nel mid-market, con ecosistema partner più ampio.",
+      "integration_type": "AI-powered backup policy management + anomaly detection"
+    },
+    {
+      "rank": 4,
+      "brand": "HYCU",
+      "product": "R-Shield + Halcyon",
+      "why": "Prima soluzione che combina prevenzione ransomware (Halcyon) e recovery (HYCU) in unico prodotto. Ideale mid-market senza SOC.",
+      "integration_type": "Ransomware prevention + recovery in single pane"
+    },
+    {
+      "rank": 5,
+      "brand": "Commvault",
+      "product": "Metallic AI",
+      "why": "AI insights base su piattaforma SaaS. In ritardo rispetto ai competitor su AI nativa, ma ancora rilevante per large enterprise legacy.",
+      "integration_type": "Basic AI insights + automated policy management"
+    }
+  ],
+  "recommendation": {
+    "for_manager": "Monitorare da vicino la situazione Commvault: se l'acquisizione PE si concretizza, i clienti Commvault entreranno in una fase di incertezza — è il momento di proporre assessment alternativo.",
+    "for_sales": "Usare The Gentlemen RaaS (320 vittime, target PMI manifatturiero/logistica) come trigger per aprire conversazioni su Ransomware Restore Test con i clienti nei settori esposti.",
+    "watch_next_week": "Commvault: sviluppi M&A con Thoma Bravo potrebbero accelerare o definitivamente confermare l'acquisizione nelle prossime 2 settimane."
+  }
+}
